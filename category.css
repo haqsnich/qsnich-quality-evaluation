@@ -2715,11 +2715,13 @@ Version : 2.0.1
 }
 
     .welcome-content {
-        width: 88vw;
-        max-width: 560px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+    width: 88vw;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: -45px;
+}
 
     .welcome-card {
     width: 88vw !important;
@@ -2778,11 +2780,13 @@ Version : 2.0.1
     }
 
     .welcome-content {
-        width: 88vw;
-        max-width: 560px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+    width: 88vw;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: -45px;
+}
 
     .welcome-card {
     width: 88vw !important;
