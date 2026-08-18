@@ -1,0 +1,2844 @@
+/*
+========================================================
+ระบบประเมินผลงาน
+category.css
+Version : 2.0.1
+========================================================
+*/
+
+.category-page {
+  min-height: 100vh;
+}
+
+.category-content {
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 0px 0 55px;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.category-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  min-height: 78px;
+
+  padding: 16px 24px;
+
+  margin-bottom: 45px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  border:
+    1px solid rgba(74, 153, 148, 0.12);
+
+  box-shadow:
+    0 8px 28px rgba(60, 80, 80, 0.07);
+
+  backdrop-filter:
+    blur(12px);
+
+}
+
+.category-header-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.category-logo-wrap,
+.category-logo {
+  display: none;
+}
+
+.category-header-text {
+  min-width: 0;
+}
+
+.category-event-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #3F6664;
+  line-height: 1.5;
+}
+
+.category-event-year {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #777;
+}
+
+
+/* =====================================================
+   JUDGE
+   ===================================================== */
+
+.category-judge {
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding: 9px 16px;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.78);
+
+  border: 1px solid rgba(74, 153, 148, 0.13);
+
+  box-shadow:
+    0 7px 22px rgba(60, 80, 80, 0.06);
+}
+
+.category-judge-label {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 2px;
+}
+
+.category-judge-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #356F6C;
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.category-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.category-title-mark {
+  flex-shrink: 0;
+
+  width: 5px;
+  height: 43px;
+
+  margin-top: 3px;
+
+  border-radius: 99px;
+
+  background:
+    linear-gradient(to bottom,
+      #4A9994,
+      #D9B45A);
+}
+
+.category-title h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+
+  color: #293636;
+}
+
+.category-title p {
+  margin: 7px 0 0;
+
+  font-size: 15px;
+  color: #777;
+}
+
+
+/* =====================================================
+   WORKS HEADER
+   ===================================================== */
+
+.works-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 6px !important;
+}
+
+
+/* =====================================================
+   WORKS HEADER - LEFT
+   ===================================================== */
+
+.works-header-text {
+
+  min-width: 0;
+
+  flex: 1;
+
+}
+
+
+.works-header-text h1 {
+
+  margin: 0;
+
+  font-size: 30px;
+
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  color: #202B35;
+
+}
+
+
+.works-header-text p {
+
+  margin: 5px 0 0;
+
+  font-size: 16px;
+
+  line-height: 1.45;
+
+  color: #666;
+
+}
+
+
+/* =====================================================
+   SUMMARY
+   ===================================================== */
+
+.category-summary {
+
+  margin: 0;
+
+  flex-shrink: 0;
+
+}
+
+
+.summary-cards {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+/* =====================================================
+   SUMMARY CARD
+   ===================================================== */
+
+.summary-card {
+
+  width: 104px;
+
+  min-width: 104px;
+
+  height: 62px;
+
+  padding: 7px 8px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #FFFFFF;
+
+  border: 1px solid rgba(74, 153, 148, 0.15);
+
+  box-shadow:
+    0 2px 8px rgba(60, 80, 80, 0.06);
+
+}
+
+
+.summary-label {
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  font-weight: 500;
+
+  color: #666;
+
+  white-space: nowrap;
+
+}
+
+
+.summary-value {
+
+  margin-top: 2px;
+
+  font-size: 24px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  color: #3E8C87;
+
+}
+
+
+/* =====================================================
+   WORK LIST
+   ===================================================== */
+
+.work-list {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 10px;
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+
+/* =====================================================
+   WORK CARD
+   ===================================================== */
+
+.work-card {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 18px 20px;
+
+  background: #FFFFFF;
+
+  border: 1px solid #DCE9E8;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 14px rgba(60, 80, 80, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+
+.work-card:hover {
+
+  transform: translateY(-2px);
+
+  border-color: rgba(74, 153, 148, 0.28);
+
+  box-shadow:
+    0 8px 20px rgba(60, 80, 80, 0.08);
+
+}
+
+
+/* =====================================================
+   WORK ORDER
+   ===================================================== */
+
+.work-order {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #F1F6F3;
+
+  color: #3E8C87;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+}
+
+
+/* =====================================================
+   WORK CONTENT
+   ===================================================== */
+
+.work-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+}
+
+
+/* =====================================================
+   CATEGORY
+   ===================================================== */
+
+.work-category {
+
+  margin-bottom: 5px;
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+
+  color: #D28A00;
+
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.work-title {
+
+  width: 100%;
+
+  font-size: 17px;
+
+  line-height: 1.45;
+
+  font-weight: 600;
+
+  color: #182B35;
+
+  word-break: break-word;
+
+}
+
+
+/* =====================================================
+   DEPARTMENT
+   ===================================================== */
+
+.work-department {
+
+  margin-top: 5px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 400;
+
+  color: #5F6B70;
+
+}
+
+
+/* =====================================================
+   BUTTON
+   ===================================================== */
+
+.work-button {
+
+  min-width: 64px;
+
+  height: 40px;
+
+  padding: 0 16px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #4A9994;
+
+  color: #FFFFFF;
+
+  font-family: "Prompt", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.work-button:hover {
+
+  background: #3E8C87;
+
+  transform: translateY(-1px);
+
+}
+
+
+.work-button:active {
+
+  transform: translateY(0);
+
+}
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.category-loading {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 35px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+}
+
+
+.category-loading-character {
+
+  width: 90px;
+
+  max-width: 100%;
+
+  margin-bottom: 10px;
+
+  object-fit: contain;
+
+}
+
+
+.category-loading-title {
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  color: #3E8C87;
+
+}
+
+
+.category-loading-text {
+
+  margin-top: 4px;
+
+  font-size: 14px;
+
+  color: #777;
+
+}
+
+
+/* =====================================================
+   EMPTY
+   ===================================================== */
+
+.empty-state {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 50px 20px;
+
+  text-align: center;
+
+}
+
+
+.empty-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  margin: 0 auto 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #EDF7F5;
+
+  color: #3E8C87;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+
+.empty-state h2 {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #26343A;
+
+}
+
+
+.empty-state p {
+
+  margin: 7px 0 0;
+
+  font-size: 14px;
+
+  color: #777;
+
+}
+
+
+/* =====================================================
+   ERROR
+   ===================================================== */
+
+.category-error {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 25px;
+
+  border-radius: 14px;
+
+  background: #FFF5F5;
+
+  border: 1px solid #F3D0D0;
+
+  text-align: center;
+
+}
+
+
+.category-error-title {
+
+  font-size: 18px;
+
+  font-weight: 600;
+
+  color: #C94A4A;
+
+}
+
+
+.category-error-message {
+
+  margin-top: 6px;
+
+  font-size: 14px;
+
+  color: #777;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  .works-header {
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+  }
+
+
+  .works-header-text h1 {
+
+    font-size: 26px;
+
+  }
+
+
+  .works-header-text p {
+
+    font-size: 14px;
+
+  }
+
+
+  .summary-card {
+
+    width: 82px;
+
+    min-height: 58px;
+
+    padding: 7px 8px;
+
+  }
+
+
+  .summary-label {
+
+    font-size: 11px;
+
+  }
+
+
+  .summary-value {
+
+    font-size: 22px;
+
+  }
+
+
+  .work-card {
+
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+
+    gap: 12px;
+
+    padding: 15px;
+
+  }
+
+
+  .work-order {
+
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 15px;
+
+  }
+
+
+  .work-title {
+
+    font-size: 16px;
+
+  }
+
+
+  .work-department {
+
+    font-size: 13px;
+
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .works-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .category-summary {
+
+    width: 100%;
+
+  }
+
+
+  .summary-cards {
+
+    justify-content: flex-start;
+
+  }
+
+
+  .summary-card {
+
+    width: 120px;
+
+  }
+
+
+  .work-card {
+
+    grid-template-columns: 40px minmax(0, 1fr);
+
+    gap: 10px;
+
+  }
+
+
+  .work-button {
+
+    grid-column: 2;
+
+    justify-self: start;
+
+    margin-top: 4px;
+
+  }
+
+}
+
+
+/* =====================================================
+   HEADER TEXT
+   ===================================================== */
+
+.works-header-text {
+
+  min-width: 0;
+
+}
+
+
+.works-header-text h1 {
+
+  margin: 0;
+
+}
+
+
+.works-header-text p {
+
+  margin: 5px 0 0;
+
+}
+
+
+/* =====================================================
+   SUMMARY
+   ===================================================== */
+
+.category-summary {
+
+  margin: 0;
+
+  flex-shrink: 0;
+
+}
+
+
+.summary-cards {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+.summary-card {
+
+  width: 92px;
+
+  min-height: 62px;
+
+  padding: 8px 10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  background: #FFFFFF;
+
+  border: 1px solid rgba(74, 153, 148, 0.15);
+
+  box-shadow:
+    0 2px 8px rgba(60, 80, 80, 0.06);
+
+}
+
+
+.summary-label {
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  font-weight: 500;
+
+  color: #666;
+
+  white-space: nowrap;
+
+}
+
+
+.summary-value {
+
+  margin-top: 2px;
+
+  font-size: 24px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  color: #3E8C87;
+
+}
+
+/* =====================================================
+   CATEGORY GROUP
+   รองรับทั้ง class ใหม่และของเดิม
+   ===================================================== */
+
+.category-group {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.category-group-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 12px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #356F6C;
+}
+
+.category-group-title::before {
+  content: "";
+
+  width: 4px;
+  height: 22px;
+
+  border-radius: 99px;
+
+  background: #4A9994;
+}
+
+
+/* =====================================================
+   WORK LIST
+   ===================================================== */
+
+.work-list {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   WORK CARD
+   ===================================================== */
+
+.work-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  min-height: 128px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(74, 153, 148, 0.13);
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 8px 25px rgba(60, 80, 80, 0.055);
+
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(74, 153, 148, 0.28);
+
+  box-shadow:
+    0 12px 30px rgba(60, 80, 80, 0.09);
+}
+
+
+/* =====================================================
+   NUMBER
+   รองรับ work-number + work-order
+   ===================================================== */
+
+.work-number,
+.work-order {
+  flex-shrink: 0;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(135deg,
+      rgba(74, 153, 148, 0.13),
+      rgba(233, 179, 63, 0.10));
+
+  color: #418B87;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   WORK CONTENT
+   รองรับ work-info + work-content
+   ===================================================== */
+
+.work-info,
+.work-content {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =====================================================
+   CATEGORY
+   ===================================================== */
+
+.work-category {
+
+  margin-bottom: 5px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 600;
+
+  color: #D95C5C;
+
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.work-title {
+
+  margin: 0;
+
+  font-size: 21px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+
+  color: #263838;
+
+}
+
+
+/* =====================================================
+   PRESENTER
+   ชื่อผู้นำเสนอ
+   ===================================================== */
+
+.work-presenter {
+
+  margin-top: 9px;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+
+  color: #4A9994;
+
+}
+
+
+/* =====================================================
+   DEPARTMENT
+   หน่วยงาน
+   ===================================================== */
+
+.work-department {
+
+  margin-top: 3px;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  font-weight: 500;
+
+  color: #7A8585;
+
+}
+
+
+/* =====================================================
+   BUTTON
+   รองรับทั้ง work-arrow + work-button
+   ===================================================== */
+
+.work-arrow,
+.work-button {
+  flex-shrink: 0;
+
+  width: 70px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #4A9994;
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* ถ้า JS สร้างลูกศร → เปลี่ยนเป็นคำว่า ประเมิน */
+
+.work-arrow {
+  font-size: 0;
+}
+
+.work-arrow::after {
+  content: "ประเมิน";
+  font-size: 13px;
+}
+
+.work-arrow:hover,
+.work-button:hover {
+  background: #3F8884;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(74, 153, 148, 0.20);
+}
+
+
+/* =====================================================
+   EMPTY
+   ===================================================== */
+
+.empty-state {
+  padding: 55px 20px;
+
+  text-align: center;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.78);
+
+  border: 1px solid rgba(74, 153, 148, 0.10);
+}
+
+.empty-icon {
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(74, 153, 148, 0.10);
+
+  color: #4A9994;
+}
+
+.empty-state h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #555;
+}
+
+.empty-state p {
+  margin: 8px 0 0;
+
+  font-size: 14px;
+
+  color: #999;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  .category-content {
+    width: min(100% - 32px, 680px);
+    padding-top: 0px;
+  }
+
+  .category-header {
+    align-items: flex-start;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .category-content {
+    width: calc(100% - 24px);
+  }
+
+  .category-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .category-judge {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .category-title h1 {
+    font-size: 26px;
+  }
+
+  .work-card {
+    min-height: 120px;
+    padding: 15px;
+    gap: 13px;
+  }
+
+  .work-number,
+  .work-order {
+    width: 40px;
+    height: 40px;
+  }
+
+  .work-title {
+    font-size: 15px;
+  }
+
+  .work-arrow,
+  .work-button {
+    width: 62px;
+    height: 38px;
+  }
+
+}
+
+/* =====================================================
+   HEADER V3 — CARNIVAL THEME
+   ===================================================== */
+
+.category-header {
+
+  width: 100vw;
+
+  min-height: 82px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding: 14px 28px;
+
+  margin-left: 50%;
+
+  transform: translateX(-50%);
+
+  margin-bottom: 45px;
+
+  background:
+    linear-gradient(110deg,
+      #FFF1F3 0%,
+      #FFE8E1 45%,
+      #F2E8FF 100%);
+
+  color: #3F4548;
+
+  border-radius: 0;
+
+  border-bottom:
+    4px solid #E58B91;
+
+  box-shadow:
+    0 5px 18px rgba(180, 120, 130, 0.12);
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+.category-header::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+
+  height: 220px;
+
+  right: 18%;
+
+  top: -170px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(194, 168, 235, 0.25);
+
+}
+
+.category-header::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+
+  height: 130px;
+
+  right: 5%;
+
+  bottom: -90px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(239, 151, 138, 0.20);
+
+}
+
+.category-header-left {
+
+  min-width: 0;
+
+}
+
+
+.category-system-name {
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+  line-height: 1.3;
+
+  color: #41484B;
+
+}
+
+
+.category-event-name {
+
+  font-size: 13px;
+
+  font-weight: 400;
+
+  color: #D56F78;
+
+}
+
+
+.category-event-year {
+
+  font-size: 12px;
+
+  color: #8C7A82;
+
+}
+
+
+.category-header-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  flex-shrink: 0;
+
+}
+
+
+.category-judge {
+
+  padding: 8px 17px;
+
+  border-radius: 12px;
+
+  background: #E9DFFF;
+
+  box-shadow:
+    0 3px 10px rgba(130, 100, 170, 0.12);
+
+}
+
+.category-judge-label {
+
+  display: block;
+
+  font-size: 11px;
+
+  color: #8875A5;
+
+  margin-bottom: 2px;
+
+}
+
+
+.category-judge-name {
+
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #5D4C78;
+
+}
+
+
+.category-logout-button {
+
+  padding: 10px 17px;
+
+  border-radius: 12px;
+
+  border: 1px solid #E8A0A4;
+
+  background: #FFE0E2;
+
+  color: #B85D67;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+
+}
+
+.category-logout-button:hover {
+
+  background: #FFD1D5;
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.category-logout-button:active {
+
+  transform: scale(0.97);
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .category-header {
+
+    align-items: flex-start;
+
+  }
+
+
+  .category-header-right {
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .category-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 20px;
+
+  }
+
+
+  .category-header-right {
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+  }
+
+}
+
+.category-loading {
+
+  min-height: 250px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+}
+
+
+.runner-animation {
+
+  width: 110px;
+
+  height: 110px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+
+.runner-svg {
+
+  width: 90px;
+
+  height: 90px;
+
+  overflow: visible;
+
+  fill: none;
+
+  stroke: #4A9994;
+
+  stroke-width: 5;
+
+  stroke-linecap: round;
+
+  stroke-linejoin: round;
+
+  animation:
+    runnerBounce 0.45s ease-in-out infinite alternate;
+
+}
+
+
+/* แขน */
+
+.runner-arm {
+
+  transform-origin: 60px 34px;
+
+  animation:
+    armRun 0.45s ease-in-out infinite alternate;
+
+}
+
+
+/* ขา */
+
+.runner-leg {
+
+  transform-origin: 55px 54px;
+
+  animation:
+    legRun 0.45s ease-in-out infinite alternate;
+
+}
+
+
+/* ตัวเด้ง */
+
+@keyframes runnerBounce {
+
+  from {
+
+    transform:
+      translateY(2px);
+
+  }
+
+  to {
+
+    transform:
+      translateY(-5px);
+
+  }
+
+}
+
+
+/* แขนวิ่ง */
+
+@keyframes armRun {
+
+  from {
+
+    transform:
+      rotate(-18deg);
+
+  }
+
+  to {
+
+    transform:
+      rotate(18deg);
+
+  }
+
+}
+
+
+/* ขาวิ่ง */
+
+@keyframes legRun {
+
+  from {
+
+    transform:
+      rotate(-20deg);
+
+  }
+
+  to {
+
+    transform:
+      rotate(20deg);
+
+  }
+
+}
+
+
+.category-loading-title {
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #303838;
+
+}
+
+
+.category-loading-text {
+
+  font-size: 14px;
+
+  color: #888;
+
+}
+
+/* =====================================================
+   LOADING CHARACTER
+   ===================================================== */
+
+.category-loading {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+}
+
+
+.category-loading-character {
+
+  width: 180px;
+
+  height: auto;
+
+  display: block;
+
+  animation:
+    runnerBounce 0.55s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes runnerBounce {
+
+  0% {
+
+    transform:
+      translateY(5px) rotate(-2deg);
+
+  }
+
+  100% {
+
+    transform:
+      translateY(-8px) rotate(2deg);
+
+  }
+
+}
+
+
+.category-loading-title {
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #303838;
+
+}
+
+
+.category-loading-text {
+
+  font-size: 14px;
+
+  color: #888;
+
+}
+
+.category-loading {
+
+  min-height: 0;
+
+  max-height: 320px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  opacity: 1;
+
+  margin-top: 0;
+
+  margin-bottom: 30px;
+
+  transition:
+    max-height 0.55s ease,
+    opacity 0.35s ease,
+    margin 0.55s ease;
+
+}
+
+
+.category-loading.hide {
+
+  max-height: 0;
+
+  opacity: 0;
+
+  margin-top: 0;
+
+  margin-bottom: 0;
+
+}
+
+/* =====================================================
+   TYPOGRAPHY — ขยายตัวอักษรหน้ารายการผลงาน
+   ===================================================== */
+
+/* ชื่อระบบบน Header */
+.category-system-name {
+  font-size: 22px;
+}
+
+/* ชื่องาน */
+.category-event-name {
+  font-size: 15px;
+}
+
+/* ปี */
+.category-event-year {
+  margin-top: 0 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #000000 !important;
+  line-height: 1.5 !important;
+}
+
+
+/* หัวข้อหลัก */
+.category-title h1 {
+  font-size: 30px;
+}
+
+/* คำอธิบายใต้หัวข้อ */
+.category-title p {
+  font-size: 16px;
+}
+
+
+/* กล่องจำนวนผลงาน */
+.summary-label {
+  font-size: 15px;
+}
+
+.summary-value {
+  font-size: 20px;
+}
+
+.summary-unit {
+  font-size: 15px;
+}
+
+
+/* ชื่อประเภทผลงาน */
+.work-category-title {
+  font-size: 17px;
+}
+
+
+/* ชื่อผลงาน */
+.work-title {
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* หน่วยงาน/รายละเอียดผลงาน */
+.work-meta {
+  font-size: 13px;
+}
+
+
+/* ปุ่มประเมิน */
+.work-evaluate-button {
+  font-size: 14px;
+}
+
+/* =====================================================
+   FIX CATEGORY GROUP SPACING
+   ===================================================== */
+
+/* หัวหมวดผลงาน เช่น CQI Oral Presentation */
+
+.work-category-group,
+.category-group,
+.work-group,
+.work-group-title,
+.category-title-text {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+
+/* ถ้าหัวหมวดเป็นตัวแรกของรายการ */
+
+#workList>div:first-child {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+/* =====================================================
+   CATEGORY GROUP TITLE
+   ===================================================== */
+
+.work-category-group-title {
+
+  grid-column: 1 / -1;
+
+  margin-top: 0 !important;
+
+  margin-bottom: 10px !important;
+
+  padding-top: 0 !important;
+
+  padding-bottom: 0 !important;
+
+  font-size: 18px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+
+  color: #D64545;
+
+}
+
+
+/* หัวหมวดตัวแรก - ลดช่องว่างด้านบน */
+
+#workList>.work-category-group-title:first-child {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+/* =====================================================
+   FINAL FIX
+   ระยะระหว่าง WORKS HEADER → CATEGORY TITLE
+   ===================================================== */
+
+#workList {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  row-gap: 8px !important;
+  width: 100%;
+  margin-top: -10px !important;
+  padding-top: 0 !important;
+}
+
+
+/* หัวหมวด เช่น CQI Oral Presentation */
+
+#workList>.work-category-group-title {
+  grid-column: 1 / -1;
+
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+
+/* หัวหมวดตัวแรกโดยเฉพาะ */
+
+#workList>.work-category-group-title:first-child {
+  margin-top: 0 !important;
+}
+
+
+/* HEADER ก่อนรายการผลงาน */
+
+.works-header {
+  margin-bottom: 0 !important;
+}
+
+/* =====================================================
+   FINAL — ขยายข้อมูลผู้นำเสนอและหน่วยงาน
+   ===================================================== */
+
+/* ชื่อผู้นำเสนอ */
+.work-presenter {
+
+  font-size: 17px !important;
+
+  font-weight: 600 !important;
+
+  line-height: 1.6 !important;
+
+  color: #3E8C87 !important;
+
+  margin-top: 5px !important;
+
+}
+
+
+/* หน่วยงาน */
+.work-department {
+
+  font-size: 15px !important;
+
+  font-weight: 400 !important;
+
+  line-height: 1.5 !important;
+
+  color: #666666 !important;
+
+  margin-top: 2px !important;
+
+}
+
+/* =====================================================
+   HEADER — กรรมการ + ออกจากระบบ
+   ===================================================== */
+
+/* กล่องกรรมการ */
+.category-judge {
+  min-width: 210px !important;
+  padding: 12px 18px !important;
+}
+
+
+/* คำว่า กรรมการ */
+.category-judge-label {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+
+/* ชื่อกรรมการ */
+.category-judge-name {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+}
+
+
+/* ปุ่มออกจากระบบ */
+.category-logout-button {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+
+  padding: 12px 20px !important;
+
+  min-width: 110px !important;
+  min-height: 46px !important;
+}
+
+/* =====================================================
+   WORK CARD — เพิ่มลูกเล่นให้รายการผลงาน
+   ===================================================== */
+
+
+/* -----------------------------------------------------
+   1. การ์ดผลงาน
+   ----------------------------------------------------- */
+
+.work-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(74, 153, 148, 0.16) !important;
+
+  box-shadow:
+    0 4px 14px rgba(40, 70, 70, 0.06) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease !important;
+
+}
+
+
+/* แถบสีด้านซ้าย */
+
+.work-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: linear-gradient(to bottom,
+      #4A9994,
+      #D8B85A);
+
+  opacity: 0.75;
+
+  border-radius: 10px 0 0 10px;
+
+}
+
+
+/* -----------------------------------------------------
+   2. ตอนเอาเมาส์วาง
+   ----------------------------------------------------- */
+
+.work-card:hover {
+
+  transform: translateY(-3px);
+
+  border-color: rgba(74, 153, 148, 0.28) !important;
+
+  box-shadow:
+    0 9px 24px rgba(40, 70, 70, 0.10) !important;
+
+}
+
+
+/* -----------------------------------------------------
+   3. เลขลำดับ
+   ----------------------------------------------------- */
+
+.work-order {
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-order {
+
+  transform: scale(1.06);
+
+}
+
+
+/* -----------------------------------------------------
+   4. ชื่อประเภท
+   ----------------------------------------------------- */
+
+.work-category {
+
+  letter-spacing: 0.1px;
+
+}
+
+
+/* -----------------------------------------------------
+   5. ชื่อผลงาน
+   ----------------------------------------------------- */
+
+.work-title {
+
+  transition:
+    color 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-title {
+
+  color: #2F7773 !important;
+
+}
+
+
+/* -----------------------------------------------------
+   6. หน่วยงาน / ผู้นำเสนอ
+   ----------------------------------------------------- */
+
+.work-department {
+
+  transition:
+    color 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-department {
+
+  color: #4A7774 !important;
+
+}
+
+
+/* -----------------------------------------------------
+   7. ปุ่มประเมิน
+   ----------------------------------------------------- */
+
+.work-button {
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease !important;
+
+}
+
+
+.work-button:hover {
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(62, 140, 135, 0.22) !important;
+
+}
+
+
+.work-button:active {
+
+  transform: translateY(0);
+
+}
+
+/* =====================================================
+   WORK ORDER — Badge
+   ===================================================== */
+
+.work-order {
+
+  position: relative;
+
+  font-weight: 700 !important;
+
+  border: 1px solid rgba(74, 153, 148, 0.10);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+
+}
+
+/* =====================================================
+   WORK CARD — ซ่อนประเภทผลงานที่ซ้ำในแต่ละการ์ด
+   ===================================================== */
+
+.work-card .work-category {
+  display: none !important;
+}
+
+/* =====================================================
+   WORK CARD — ขยับเฉพาะตอนกดปุ่ม
+   ===================================================== */
+
+
+/* การ์ดปกติ */
+
+.work-card {
+
+  cursor: default !important;
+
+}
+
+
+/* เอา Hover movement ออก */
+
+.work-card:hover {
+
+  transform: none !important;
+
+}
+
+
+/* ไม่ให้ hover เปลี่ยนเงาหรือขอบ */
+
+.work-card:hover {
+
+  box-shadow:
+    0 4px 14px rgba(60, 80, 80, 0.05) !important;
+
+  border-color:
+    #DCE9E8 !important;
+
+}
+
+
+/* -----------------------------------------------------
+   เมื่อกดปุ่มประเมิน
+   ----------------------------------------------------- */
+
+.work-card:has(.work-button:active) {
+
+  transform:
+    translateY(-2px) !important;
+
+  box-shadow:
+    0 8px 20px rgba(60, 80, 80, 0.10) !important;
+
+}
+
+
+/* ปุ่มยังมี Hover ได้ตามปกติ */
+
+.work-button:hover {
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* ตอนกดปุ่ม */
+
+.work-button:active {
+
+  transform:
+    translateY(0) scale(0.97);
+
+}
+
+/* =====================================================
+   WORK CARD — ล็อกสีชื่อเรื่อง
+   ===================================================== */
+
+.work-card:hover .work-title {
+
+  color: #263238 !important;
+
+}
+
+/* =====================================================
+   WORK BUTTON — ปุ่มประเมิน
+   ===================================================== */
+
+.work-button {
+
+  /* ขนาด */
+  min-width: 72px;
+  min-height: 42px;
+
+  padding: 9px 18px !important;
+
+  /* ตัวอักษร */
+  font-family: "Prompt", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+
+  /* สี */
+  color: #FFFFFF !important;
+  background: #4A9994 !important;
+
+  /* ขอบ */
+  border: none !important;
+  border-radius: 10px !important;
+
+  /* เงา */
+  box-shadow:
+    0 3px 8px rgba(74, 153, 148, 0.16) !important;
+
+  /* Interaction */
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease !important;
+
+}
+
+
+/* =====================================================
+   HOVER
+   ===================================================== */
+
+.work-button:hover {
+
+  background: #3E8C87 !important;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(74, 153, 148, 0.24) !important;
+
+}
+
+
+/* =====================================================
+   CLICK
+   ===================================================== */
+
+.work-button:active {
+
+  background: #357A76 !important;
+
+  transform: translateY(1px) scale(0.97);
+
+  box-shadow:
+    0 2px 5px rgba(74, 153, 148, 0.18) !important;
+
+}
+
+
+/* =====================================================
+   FOCUS
+   ===================================================== */
+
+.work-button:focus-visible {
+
+  outline: 3px solid rgba(74, 153, 148, 0.25);
+
+  outline-offset: 3px;
+
+}
+
+/* =====================================================
+   WORK ACTIONS
+   ===================================================== */
+
+.work-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  flex-wrap: nowrap;
+
+  white-space: nowrap;
+
+  margin-left: auto;
+
+}
+
+
+/* =====================================================
+   ปุ่มดูบทคัดย่อ / ดูโปสเตอร์
+   ===================================================== */
+
+.work-file-button {
+
+  width: clamp(106px, 10vw, 130px);
+
+  min-height: 42px;
+
+  padding: 8px 14px !important;
+
+  font-family: "Prompt", sans-serif !important;
+
+  font-size: 14px !important;
+
+  white-space: nowrap;
+
+  font-weight: 500 !important;
+
+  color: #4A7774 !important;
+
+  background: #FFFFFF !important;
+
+  border: 1px solid #BFD8D6 !important;
+
+  border-radius: 10px !important;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease !important;
+
+}
+
+
+.work-file-button:hover {
+
+  background: #F3F9F8 !important;
+
+  border-color: #4A9994 !important;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(74, 153, 148, 0.10) !important;
+
+}
+
+
+/* =====================================================
+   ปุ่มลงคะแนน
+   ===================================================== */
+
+.work-button {
+
+  width: clamp(92px, 9vw, 120px);
+
+  min-height: 42px;
+
+  padding: 8px 16px !important;
+
+  font-family: "Prompt", sans-serif !important;
+
+  font-size: 15px !important;
+
+  white-space: nowrap;
+
+  font-weight: 600 !important;
+
+  color: #FFFFFF !important;
+
+  background: #4A9994 !important;
+
+  border: none !important;
+
+  border-radius: 10px !important;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px rgba(74, 153, 148, 0.16) !important;
+
+  transition:
+    background 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease !important;
+
+}
+
+
+.work-button:hover {
+
+  background: #3E8C87 !important;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(74, 153, 148, 0.24) !important;
+
+}
+
+
+.work-button:active {
+
+  background: #357A76 !important;
+
+  transform:
+    translateY(1px) scale(0.97);
+
+}
+
+
+/* =====================================================
+   มือถือ / หน้าจอแคบ
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .work-actions {
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    margin-left: 0;
+
+    margin-top: 12px;
+
+  }
+
+}
+
+/* ค่าเริ่มต้น — คอม / iPad แนวนอน */
+.presenter-ipad-portrait {
+    display: none;
+}
+
+.presenter-desktop {
+    display: inline;
+}
+
+
+/* =====================================================
+   iPad แนวตั้งเท่านั้น
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    .presenter-desktop {
+        display: none;
+    }
+
+    .presenter-ipad-portrait {
+        display: inline;
+    }
+
+}
+
+/* =====================================================
+   iPAD แนวตั้ง — WELCOME PAGE
+   ===================================================== */
+
+@media (min-width: 768px)
+    and (max-width: 1024px)
+    and (orientation: portrait) {
+
+    /* จัดการ์ดให้อยู่กลางหน้าจอ */
+    .welcome-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+    .welcome-content {
+        width: 88vw;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-card {
+    width: 88vw !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    position: relative !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+    /* -------------------------------
+       ลดขนาดตัวอักษรเฉพาะ iPad แนวตั้ง
+       ------------------------------- */
+
+    .welcome-system-title {
+        font-size: 28px !important;
+    }
+
+    .welcome-subtitle {
+        font-size: 15px !important;
+    }
+
+    .welcome-instruction {
+        font-size: 15px !important;
+    }
+
+    .welcome-form label {
+        font-size: 15px !important;
+    }
+
+    .welcome-form select {
+        font-size: 15px !important;
+    }
+
+    .welcome-login-button {
+        font-size: 16px !important;
+    }
+
+    /* =====================================================
+   iPad แนวนอน — WELCOME PAGE
+   ===================================================== */
+
+@media (min-width: 768px)
+    and (max-width: 1180px)
+    and (orientation: landscape) {
+
+    .welcome-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    .welcome-content {
+        width: 88vw;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-card {
+    width: 88vw !important;
+    max-width: 560px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    position: relative !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+    /* ลดขนาดตัวอักษรเฉพาะ iPad */
+
+    .welcome-system-title {
+        font-size: 28px !important;
+    }
+
+    .welcome-subtitle {
+        font-size: 15px !important;
+    }
+
+    .welcome-instruction {
+        font-size: 15px !important;
+    }
+
+    .welcome-form label {
+        font-size: 15px !important;
+    }
+
+    .welcome-form select {
+        font-size: 15px !important;
+    }
+
+    .welcome-login-button {
+        font-size: 16px !important;
+    }
+
+}
+
+}
+
+/* =====================================================
+   iPad แนวนอน — WELCOME PAGE
+   ===================================================== */
+
+@media (min-width: 768px)
+    and (max-width: 1180px)
+    and (orientation: landscape) {
+
+    .welcome-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+}
