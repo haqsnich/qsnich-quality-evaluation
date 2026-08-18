@@ -10,7 +10,9 @@
 
 .login-page {
 
-  min-height: 100vh;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
 
   display: flex;
 
@@ -30,7 +32,6 @@
 
   animation:
     loginPageFade 0.55s ease both;
-
 }
 
 
@@ -67,9 +68,7 @@
   backdrop-filter: blur(8px);
 
   animation:
-    loginContentIn 0.7s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    loginContentIn 0.7s cubic-bezier(.22, 1, .36, 1) both;
 
 }
 
@@ -89,10 +88,7 @@
   margin-bottom: 10px;
 
   animation:
-    loginItemIn 0.55s
-    0.05s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    loginItemIn 0.55s 0.05s cubic-bezier(.22, 1, .36, 1) both;
 
 }
 
@@ -117,8 +113,7 @@
 .login-logo:hover {
 
   transform:
-    translateY(-2px)
-    scale(1.02);
+    translateY(-2px) scale(1.02);
 
 }
 
@@ -132,10 +127,7 @@
   text-align: center;
 
   animation:
-    loginItemIn 0.55s
-    0.10s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    loginItemIn 0.55s 0.10s cubic-bezier(.22, 1, .36, 1) both;
 
 }
 
@@ -220,9 +212,7 @@
   position: relative;
 
   animation:
-    dividerIn 0.6s
-    0.18s
-    ease both;
+    dividerIn 0.6s 0.18s ease both;
 
 }
 
@@ -287,10 +277,7 @@
   text-align: center;
 
   animation:
-    loginItemIn 0.55s
-    0.24s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    loginItemIn 0.55s 0.24s cubic-bezier(.22, 1, .36, 1) both;
 
 }
 
@@ -354,10 +341,7 @@
   text-align: left;
 
   animation:
-    panelIn 0.65s
-    0.30s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    panelIn 0.65s 0.30s cubic-bezier(.22, 1, .36, 1) both;
 
   transition:
     transform 0.3s ease,
@@ -554,8 +538,7 @@
 .login-button:active:not(:disabled) {
 
   transform:
-    translateY(1px)
-    scale(0.995);
+    translateY(1px) scale(0.995);
 
   box-shadow:
     0 3px 8px rgba(210, 120, 125, 0.14);
@@ -643,10 +626,7 @@
   font-weight: 400;
 
   animation:
-    loginItemIn 0.55s
-    0.40s
-    cubic-bezier(.22, 1, .36, 1)
-    both;
+    loginItemIn 0.55s 0.40s cubic-bezier(.22, 1, .36, 1) both;
 
 }
 
@@ -698,7 +678,7 @@
 
   .login-title h1 {
 
-    font-size: 36px;
+    font-size: 42px;
 
   }
 
@@ -737,10 +717,7 @@
    IPAD PORTRAIT
    ======================================================== */
 
-@media
-  (min-width: 768px)
-  and (max-width: 1199px)
-  and (orientation: portrait) {
+@media (min-width: 768px) and (max-width: 1199px) and (orientation: portrait) {
 
   .login-page {
     min-height: 100svh;
@@ -791,10 +768,7 @@
    IPAD LANDSCAPE
    ======================================================== */
 
-@media
-  (orientation: landscape)
-  and (min-width: 768px)
-  and (max-width: 1199px) {
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1199px) {
 
   .login-page {
     min-height: 100svh;
@@ -1001,8 +975,7 @@
     opacity: 0;
 
     transform:
-      translateY(14px)
-      scale(0.985);
+      translateY(14px) scale(0.985);
 
   }
 
@@ -1011,8 +984,7 @@
     opacity: 1;
 
     transform:
-      translateY(0)
-      scale(1);
+      translateY(0) scale(1);
 
   }
 
@@ -1195,8 +1167,7 @@
 .login-logo:hover {
 
   transform:
-    translateY(-3px)
-    scale(1.025);
+    translateY(-3px) scale(1.025);
 
 }
 
@@ -1257,8 +1228,7 @@
     #4A9994;
 
   box-shadow:
-    0 0 0 4px
-    rgba(74, 153, 148, 0.10);
+    0 0 0 4px rgba(74, 153, 148, 0.10);
 
 }
 
@@ -1279,8 +1249,7 @@
     translateY(-2px);
 
   box-shadow:
-    0 8px 20px
-    rgba(210, 120, 125, 0.20);
+    0 8px 20px rgba(210, 120, 125, 0.20);
 
 }
 
@@ -1288,8 +1257,7 @@
 .login-button:not(:disabled):active {
 
   transform:
-    translateY(1px)
-    scale(0.99);
+    translateY(1px) scale(0.99);
 
 }
 
@@ -1318,8 +1286,7 @@
     opacity: 0;
 
     transform:
-      translateY(18px)
-      scale(0.985);
+      translateY(18px) scale(0.985);
 
   }
 
@@ -1328,8 +1295,7 @@
     opacity: 1;
 
     transform:
-      translateY(0)
-      scale(1);
+      translateY(0) scale(1);
 
   }
 
@@ -1366,8 +1332,7 @@
     opacity: 0;
 
     transform:
-      translateY(16px)
-      scale(0.99);
+      translateY(16px) scale(0.99);
 
   }
 
@@ -1376,8 +1341,7 @@
     opacity: 1;
 
     transform:
-      translateY(0)
-      scale(1);
+      translateY(0) scale(1);
 
   }
 
@@ -1547,14 +1511,12 @@
 }
 
 
-.custom-select.open
-.custom-select-trigger {
+.custom-select.open .custom-select-trigger {
 
   border-color: #4A9994;
 
   box-shadow:
-    0 0 0 4px
-    rgba(74, 153, 148, 0.10);
+    0 0 0 4px rgba(74, 153, 148, 0.10);
 
   background: #FFFFFF;
 
@@ -1580,8 +1542,7 @@
   justify-content: center;
 
   transition:
-    transform 0.3s
-    cubic-bezier(.22, 1, .36, 1);
+    transform 0.3s cubic-bezier(.22, 1, .36, 1);
 
 }
 
@@ -1599,14 +1560,12 @@
   border-bottom: 2px solid #6E7777;
 
   transform:
-    rotate(45deg)
-    translateY(-2px);
+    rotate(45deg) translateY(-2px);
 
 }
 
 
-.custom-select.open
-.custom-select-arrow {
+.custom-select.open .custom-select-arrow {
 
   transform:
     rotate(180deg);
@@ -1639,8 +1598,7 @@
   visibility: hidden;
 
   transform:
-    translateY(-7px)
-    scale(0.985);
+    translateY(-7px) scale(0.985);
 
   transform-origin:
     top center;
@@ -1657,15 +1615,12 @@
   background: #FFFFFF;
 
   box-shadow:
-    0 12px 30px
-    rgba(60, 65, 65, 0.10);
+    0 12px 30px rgba(60, 65, 65, 0.10);
 
   transition:
-    max-height 0.35s
-    cubic-bezier(.22, 1, .36, 1),
+    max-height 0.35s cubic-bezier(.22, 1, .36, 1),
     opacity 0.22s ease,
-    transform 0.30s
-    cubic-bezier(.22, 1, .36, 1),
+    transform 0.30s cubic-bezier(.22, 1, .36, 1),
     visibility 0.30s ease,
     padding 0.30s ease,
     border-color 0.30s ease;
@@ -1673,8 +1628,7 @@
 }
 
 
-.custom-select.open
-.custom-select-menu {
+.custom-select.open .custom-select-menu {
 
   max-height: 360px;
 
@@ -1685,8 +1639,7 @@
   visibility: visible;
 
   transform:
-    translateY(0)
-    scale(1);
+    translateY(0) scale(1);
 
   border-color:
     #E4E9E8;
@@ -1738,8 +1691,7 @@
   transition:
     background-color 0.18s ease,
     color 0.18s ease,
-    transform 0.25s
-    cubic-bezier(.22, 1, .36, 1),
+    transform 0.25s cubic-bezier(.22, 1, .36, 1),
     opacity 0.25s ease;
 
 }
@@ -1748,8 +1700,7 @@
 /* ตอน dropdown เปิด
    ให้แต่ละชื่อค่อย ๆ ลงมา */
 
-.custom-select.open
-.custom-select-option {
+.custom-select.open .custom-select-option {
 
   opacity: 1;
 
@@ -1759,48 +1710,39 @@
 }
 
 
-.custom-select.open
-.custom-select-option:nth-child(1) {
+.custom-select.open .custom-select-option:nth-child(1) {
   transition-delay: 0.03s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(2) {
+.custom-select.open .custom-select-option:nth-child(2) {
   transition-delay: 0.05s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(3) {
+.custom-select.open .custom-select-option:nth-child(3) {
   transition-delay: 0.07s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(4) {
+.custom-select.open .custom-select-option:nth-child(4) {
   transition-delay: 0.09s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(5) {
+.custom-select.open .custom-select-option:nth-child(5) {
   transition-delay: 0.11s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(6) {
+.custom-select.open .custom-select-option:nth-child(6) {
   transition-delay: 0.13s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(7) {
+.custom-select.open .custom-select-option:nth-child(7) {
   transition-delay: 0.15s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(8) {
+.custom-select.open .custom-select-option:nth-child(8) {
   transition-delay: 0.17s;
 }
 
-.custom-select.open
-.custom-select-option:nth-child(9) {
+.custom-select.open .custom-select-option:nth-child(9) {
   transition-delay: 0.19s;
 }
 
@@ -1974,8 +1916,7 @@
   scrollbar-width: thin;
 
   scrollbar-color:
-    rgba(74, 153, 148, 0.25)
-    transparent;
+    rgba(74, 153, 148, 0.25) transparent;
 
 }
 
@@ -2011,14 +1952,11 @@
    ถ้าจอเตี้ยมาก ให้ Dropdown เลื่อนข้างใน
    -------------------------------------------------------- */
 
-.custom-select.open
-.custom-select-menu {
+.custom-select.open .custom-select-menu {
 
   max-height:
-    min(
-      470px,
-      calc(100svh - 170px)
-    );
+    min(470px,
+      calc(100svh - 170px));
 
 }
 
@@ -2064,14 +2002,11 @@
 
 @media (max-width: 767px) {
 
-  .custom-select.open
-  .custom-select-menu {
+  .custom-select.open .custom-select-menu {
 
     max-height:
-      min(
-        420px,
-        calc(100svh - 150px)
-      );
+      min(420px,
+        calc(100svh - 150px));
 
   }
 
@@ -2082,19 +2017,13 @@
    9. iPad Portrait
    -------------------------------------------------------- */
 
-@media
-  (min-width: 768px)
-  and (max-width: 1199px)
-  and (orientation: portrait) {
+@media (min-width: 768px) and (max-width: 1199px) and (orientation: portrait) {
 
-  .custom-select.open
-  .custom-select-menu {
+  .custom-select.open .custom-select-menu {
 
     max-height:
-      min(
-        470px,
-        calc(100svh - 180px)
-      );
+      min(470px,
+        calc(100svh - 180px));
 
   }
 
@@ -2105,19 +2034,13 @@
    10. iPad Landscape
    -------------------------------------------------------- */
 
-@media
-  (orientation: landscape)
-  and (min-width: 768px)
-  and (max-width: 1199px) {
+@media (orientation: landscape) and (min-width: 768px) and (max-width: 1199px) {
 
-  .custom-select.open
-  .custom-select-menu {
+  .custom-select.open .custom-select-menu {
 
     max-height:
-      min(
-        300px,
-        calc(100svh - 130px)
-      );
+      min(300px,
+        calc(100svh - 130px));
 
   }
 
@@ -2193,8 +2116,7 @@
   scrollbar-width: thin;
 
   scrollbar-color:
-    rgba(74, 153, 148, 0.28)
-    transparent;
+    rgba(74, 153, 148, 0.28) transparent;
 
 }
 
@@ -2221,8 +2143,7 @@
    OPEN STATE
    ======================================================== */
 
-.custom-select.open
-.custom-select-menu {
+.custom-select.open .custom-select-menu {
 
   max-height: 204px;
 
