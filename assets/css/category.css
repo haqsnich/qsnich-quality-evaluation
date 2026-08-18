@@ -2669,3 +2669,79 @@ Version : 2.0.1
   }
 
 }
+
+/* =====================================================
+   iPAD — WELCOME PAGE
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1180px) {
+
+    .welcome-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .welcome-content {
+        width: min(90vw, 560px);
+        margin: 0 auto;
+    }
+
+    .welcome-card {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ลดตัวอักษรเฉพาะ iPad */
+    .welcome-system-title {
+        font-size: 30px;
+    }
+
+    .welcome-subtitle {
+        font-size: 16px;
+    }
+
+    .welcome-instruction {
+        font-size: 16px;
+    }
+
+    .welcome-form label {
+        font-size: 16px;
+    }
+
+    .welcome-form select {
+        font-size: 16px;
+    }
+
+    .welcome-login-button {
+        font-size: 17px;
+    }
+
+}
+
+/* ค่าเริ่มต้น — คอม / iPad แนวนอน */
+.presenter-ipad-portrait {
+    display: none;
+}
+
+.presenter-desktop {
+    display: inline;
+}
+
+
+/* =====================================================
+   iPad แนวตั้งเท่านั้น
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+    .presenter-desktop {
+        display: none;
+    }
+
+    .presenter-ipad-portrait {
+        display: inline;
+    }
+
+}

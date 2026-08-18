@@ -668,16 +668,25 @@ function createWorkCard(
        ----------------------------------------------- */
 
     const presenter =
-        document.createElement(
-            "div"
-        );
+    document.createElement(
+        "div"
+    );
 
-    presenter.className =
-        "work-presenter";
+presenter.className =
+    "work-presenter";
 
-    presenter.textContent =
-        work.presenter ||
-        "";
+const presenterText =
+    String(work.presenter || "");
+
+presenter.innerHTML = `
+    <span class="presenter-desktop">
+        ${presenterText}
+    </span>
+
+    <span class="presenter-ipad-portrait">
+        ${presenterText.replace(/,\s*/g, "<br>")}
+    </span>
+`;
 
 
     /* -----------------------------------------------
