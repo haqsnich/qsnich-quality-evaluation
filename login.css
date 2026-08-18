@@ -712,20 +712,26 @@
 
 @media (min-width: 768px) and (max-width: 1199px) and (orientation: portrait) {
 
-  .login-page {
-    width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
+.login-page {
+  position: fixed;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  inset: 0;
 
-    padding: 20px;
-    margin: 0;
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
 
-    box-sizing: border-box;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
 
   .login-content {
     width: min(520px, 90vw);
@@ -775,19 +781,23 @@
 
 @media (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
 
-  .login-page {
+.login-page {
+    position: fixed;
+    inset: 0;
+
     width: 100%;
     height: 100dvh;
-    min-height: 100dvh;
+    min-height: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
     margin: 0;
+    padding: 0;
 
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .login-content {
