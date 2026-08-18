@@ -1,0 +1,2344 @@
+/* ========================================================
+   LOGIN PAGE
+   ระบบประเมินผลงาน V.2
+   ======================================================== */
+
+
+/* ========================================================
+   PAGE
+   ======================================================== */
+
+.login-page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  box-sizing: border-box;
+
+  padding: 32px 20px;
+
+  font-family: 'Prompt', sans-serif;
+
+  position: relative;
+
+  overflow: hidden;
+
+  animation:
+    loginPageFade 0.55s ease both;
+
+}
+
+
+/* ========================================================
+   MAIN CONTENT CARD
+   การ์ดจางครอบเนื้อหาทั้งหมด
+   ======================================================== */
+
+.login-content {
+
+  width: min(520px, 100%);
+
+  margin: 0 auto;
+
+  padding: 30px 34px 24px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  position: relative;
+
+  z-index: 2;
+
+  background: rgba(255, 255, 255, 0.58);
+
+  border: 1px solid rgba(255, 255, 255, 0.82);
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 18px 45px rgba(80, 70, 60, 0.055);
+
+  backdrop-filter: blur(8px);
+
+  animation:
+    loginContentIn 0.7s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+}
+
+
+/* ========================================================
+   LOGO
+   ======================================================== */
+
+.login-logo-wrap {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  margin-bottom: 10px;
+
+  animation:
+    loginItemIn 0.55s
+    0.05s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+}
+
+
+.login-logo {
+
+  width: 82px;
+
+  height: 82px;
+
+  object-fit: contain;
+
+  display: block;
+
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+
+}
+
+
+.login-logo:hover {
+
+  transform:
+    translateY(-2px)
+    scale(1.02);
+
+}
+
+
+/* ========================================================
+   EVENT
+   ======================================================== */
+
+.login-event {
+
+  text-align: center;
+
+  animation:
+    loginItemIn 0.55s
+    0.10s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+}
+
+
+.login-event-name {
+
+  margin: 0;
+
+  color: #3D908D;
+
+  font-size: 30px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+
+  letter-spacing: -0.2px;
+
+}
+
+
+.login-event-number {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-top: 6px;
+
+  padding: 4px 15px;
+
+  border-radius: 999px;
+
+  background: #FBE5E4;
+
+  color: #D96B6B;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  font-weight: 500;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+}
+
+
+.login-event-number:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 4px 12px rgba(217, 107, 107, 0.10);
+
+}
+
+
+/* ========================================================
+   DIVIDER
+   ======================================================== */
+
+.login-divider {
+
+  width: 105px;
+
+  height: 16px;
+
+  margin: 9px auto 10px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  position: relative;
+
+  animation:
+    dividerIn 0.6s
+    0.18s
+    ease both;
+
+}
+
+
+.login-divider::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: 50%;
+
+  height: 1px;
+
+  background: #E9DED4;
+
+}
+
+
+.login-divider-mark {
+
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #E55B5B;
+
+  position: relative;
+
+  z-index: 2;
+
+  box-shadow:
+    11px 0 0 #E9B33F,
+    22px 0 0 #4A9994;
+
+  transition:
+    transform 0.3s ease;
+
+}
+
+
+.login-divider:hover .login-divider-mark {
+
+  transform:
+    scale(1.15);
+
+}
+
+
+/* ========================================================
+   SYSTEM TITLE
+   ======================================================== */
+
+.login-title {
+
+  text-align: center;
+
+  animation:
+    loginItemIn 0.55s
+    0.24s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+}
+
+
+.login-title h1 {
+
+  margin: 0;
+
+  color: #252B35;
+
+  font-size: 42px;
+
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+
+}
+
+
+.login-title p {
+
+  margin: 7px 0 0;
+
+  color: #777777;
+
+  font-size: 17px;
+
+  line-height: 1.5;
+
+  font-weight: 400;
+
+}
+
+
+/* ========================================================
+   LOGIN PANEL
+   การ์ดขาวด้านใน
+   ======================================================== */
+
+.login-panel {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: 20px;
+
+  padding: 23px 26px 25px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid #E4E9E8;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 10px 26px rgba(80, 70, 60, 0.055);
+
+  text-align: left;
+
+  animation:
+    panelIn 0.65s
+    0.30s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+}
+
+
+.login-panel:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 13px 30px rgba(80, 70, 60, 0.07);
+
+}
+
+
+/* ========================================================
+   FORM
+   ======================================================== */
+
+.login-form {
+
+  width: 100%;
+
+}
+
+
+.form-label {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #30353D;
+
+  font-size: 17px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+
+}
+
+
+/* ========================================================
+   SELECT
+   ======================================================== */
+
+.select-wrap {
+
+  width: 100%;
+
+}
+
+
+.judge-select {
+
+  width: 100%;
+
+  height: 50px;
+
+  box-sizing: border-box;
+
+  padding: 0 15px;
+
+  border: 1px solid #D7D7D7;
+
+  border-radius: 11px;
+
+  background-color: #FFFFFF;
+
+  color: #30353D;
+
+  font-family: 'Prompt', sans-serif;
+
+  font-size: 17px;
+
+  line-height: 1.5;
+
+  font-weight: 400;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.2s ease;
+
+}
+
+
+.judge-select:hover {
+
+  border-color:
+    #B9D1CF;
+
+  background-color:
+    #FFFDFC;
+
+}
+
+
+.judge-select:focus {
+
+  border-color: #4A9994;
+
+  box-shadow:
+    0 0 0 3px rgba(74, 153, 148, 0.10);
+
+}
+
+
+/* ========================================================
+   ERROR
+   ======================================================== */
+
+.form-error {
+
+  min-height: 18px;
+
+  margin-top: 6px;
+
+  color: #D9534F;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+/* ========================================================
+   LOGIN BUTTON
+   ======================================================== */
+
+.login-button {
+
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 10px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #E9A0A2;
+
+  color: #FFFFFF;
+
+  font-family: 'Prompt', sans-serif;
+
+  font-size: 18px;
+
+  line-height: 1.5;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    transform 0.15s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
+
+}
+
+
+.login-button:hover:not(:disabled) {
+
+  background: #DF8F92;
+
+  box-shadow:
+    0 6px 16px rgba(210, 120, 125, 0.18);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.login-button:active:not(:disabled) {
+
+  transform:
+    translateY(1px)
+    scale(0.995);
+
+  box-shadow:
+    0 3px 8px rgba(210, 120, 125, 0.14);
+
+}
+
+
+.login-button:disabled {
+
+  opacity: 0.75;
+
+  cursor: not-allowed;
+
+}
+
+
+/* ========================================================
+   LOADING
+   ใช้ class="loading" บนปุ่มตอนกำลัง Login
+   ======================================================== */
+
+.login-button.loading {
+
+  cursor: wait;
+
+  pointer-events: none;
+
+  position: relative;
+
+}
+
+
+.login-button.loading::after {
+
+  content: "";
+
+  display: inline-block;
+
+  width: 15px;
+
+  height: 15px;
+
+  margin-left: 9px;
+
+  vertical-align: -2px;
+
+  border:
+    2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color:
+    #FFFFFF;
+
+  border-radius: 50%;
+
+  animation:
+    buttonSpin 0.7s linear infinite;
+
+}
+
+
+/* ========================================================
+   FOOTER
+   ======================================================== */
+
+.login-footer {
+
+  margin-top: 12px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 1px;
+
+  color: #8A8A8A;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  font-weight: 400;
+
+  animation:
+    loginItemIn 0.55s
+    0.40s
+    cubic-bezier(.22, 1, .36, 1)
+    both;
+
+}
+
+
+.login-footer .footer-year {
+
+  font-size: 0.95em;
+
+}
+
+
+/* ========================================================
+   NOTEBOOK / DESKTOP
+   ======================================================== */
+
+@media (min-width: 1200px) {
+
+  .login-content {
+
+    width: 520px;
+
+    padding: 32px 30px 26px;
+
+  }
+
+
+  .login-logo {
+
+    width: 86px;
+
+    height: 86px;
+
+  }
+
+
+  .login-event-name {
+
+    font-size: 27px;
+
+  }
+
+
+  .login-event-number {
+
+    font-size: 15px;
+
+  }
+
+
+  .login-title h1 {
+
+    font-size: 36px;
+
+  }
+
+
+  .login-title p {
+
+    font-size: 16px;
+
+  }
+
+
+  .form-label {
+
+    font-size: 18px;
+
+  }
+
+
+  .judge-select {
+
+    font-size: 18px;
+
+  }
+
+
+  .login-button {
+
+    font-size: 19px;
+
+  }
+
+}
+
+
+/* ========================================================
+   IPAD PORTRAIT
+   ======================================================== */
+
+@media
+  (min-width: 768px)
+  and (max-width: 1199px)
+  and (orientation: portrait) {
+
+  .login-content {
+
+    width: min(520px, 100%);
+
+    padding: 32px 30px 26px;
+
+  }
+
+
+  .login-logo {
+
+    width: 84px;
+
+    height: 84px;
+
+  }
+
+
+  .login-event-name {
+
+    font-size: 32px;
+
+  }
+
+
+  .login-event-number {
+
+    font-size: 15px;
+
+  }
+
+
+  .login-title h1 {
+
+    font-size: 44px;
+
+  }
+
+
+  .login-title p {
+
+    font-size: 18px;
+
+  }
+
+
+  .form-label {
+
+    font-size: 18px;
+
+  }
+
+
+  .judge-select {
+
+    height: 52px;
+
+    font-size: 18px;
+
+  }
+
+
+  .login-button {
+
+    height: 52px;
+
+    font-size: 19px;
+
+  }
+
+}
+
+
+/* ========================================================
+   IPAD LANDSCAPE
+   ======================================================== */
+
+@media
+  (orientation: landscape)
+  and (min-width: 768px)
+  and (max-width: 1199px) {
+
+  .login-page {
+
+    padding: 24px;
+
+  }
+
+
+  .login-content {
+
+    width: min(520px, 90vw);
+
+    padding: 22px 28px 20px;
+
+  }
+
+
+  .login-logo {
+
+    width: 64px;
+
+    height: 64px;
+
+  }
+
+
+  .login-logo-wrap {
+
+    margin-bottom: 7px;
+
+  }
+
+
+  .login-event-name {
+
+    font-size: 27px;
+
+  }
+
+
+  .login-event-number {
+
+    margin-top: 4px;
+
+    font-size: 13px;
+
+  }
+
+
+  .login-divider {
+
+    margin: 6px auto 7px;
+
+  }
+
+
+  .login-title h1 {
+
+    font-size: 38px;
+
+  }
+
+
+  .login-title p {
+
+    margin-top: 4px;
+
+    font-size: 16px;
+
+  }
+
+
+  .login-panel {
+
+    margin-top: 14px;
+
+    padding: 18px 22px 20px;
+
+  }
+
+
+  .form-label {
+
+    font-size: 17px;
+
+  }
+
+
+  .judge-select {
+
+    height: 48px;
+
+    font-size: 17px;
+
+  }
+
+
+  .login-button {
+
+    height: 48px;
+
+    font-size: 18px;
+
+  }
+
+}
+
+
+/* ========================================================
+   MOBILE
+   ======================================================== */
+
+@media (max-width: 767px) {
+
+  .login-page {
+
+    min-height: 100svh;
+
+    padding: 24px 16px;
+
+  }
+
+
+  .login-content {
+
+    width: 100%;
+
+    padding: 25px 18px 22px;
+
+    border-radius: 22px;
+
+  }
+
+
+  .login-logo {
+
+    width: 70px;
+
+    height: 70px;
+
+  }
+
+
+  .login-logo-wrap {
+
+    margin-bottom: 8px;
+
+  }
+
+
+  .login-event-name {
+
+    font-size: 25px;
+
+  }
+
+
+  .login-event-number {
+
+    margin-top: 5px;
+
+    padding: 4px 13px;
+
+    font-size: 13px;
+
+  }
+
+
+  .login-divider {
+
+    width: 95px;
+
+    margin: 8px auto 9px;
+
+  }
+
+
+  .login-title h1 {
+
+    font-size: 32px;
+
+  }
+
+
+  .login-title p {
+
+    margin-top: 6px;
+
+    font-size: 14px;
+
+  }
+
+
+  .login-panel {
+
+    margin-top: 18px;
+
+    padding: 20px 18px 22px;
+
+    border-radius: 15px;
+
+  }
+
+
+  .form-label {
+
+    font-size: 16px;
+
+  }
+
+
+  .judge-select {
+
+    height: 50px;
+
+    font-size: 16px;
+
+  }
+
+
+  .login-button {
+
+    height: 50px;
+
+    font-size: 17px;
+
+  }
+
+
+  .login-footer {
+
+    margin-top: 11px;
+
+    font-size: 11px;
+
+  }
+
+}
+
+
+/* ========================================================
+   ANIMATIONS
+   ======================================================== */
+
+@keyframes loginPageFade {
+
+  from {
+
+    opacity: 0;
+
+  }
+
+  to {
+
+    opacity: 1;
+
+  }
+
+}
+
+
+@keyframes loginContentIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(14px)
+      scale(0.985);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+@keyframes loginItemIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(9px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+@keyframes panelIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(13px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+@keyframes dividerIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      scaleX(0.65);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+
+  }
+
+}
+
+
+@keyframes decorationFloat {
+
+  0%,
+  100% {
+
+    transform:
+      translate(0, 0);
+
+  }
+
+  50% {
+
+    transform:
+      translate(8px, 6px);
+
+  }
+
+}
+
+
+@keyframes decorationFloatReverse {
+
+  0%,
+  100% {
+
+    transform:
+      translate(0, 0);
+
+  }
+
+  50% {
+
+    transform:
+      translate(-8px, -6px);
+
+  }
+
+}
+
+
+@keyframes buttonSpin {
+
+  to {
+
+    transform:
+      rotate(360deg);
+
+  }
+
+}
+
+
+/* ========================================================
+   REDUCED MOTION
+   ======================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .login-page,
+  .login-content,
+  .login-logo-wrap,
+  .login-event,
+  .login-divider,
+  .login-title,
+  .login-panel,
+  .login-footer {
+
+    animation: none;
+
+  }
+
+
+  .login-page::before,
+  .login-page::after {
+
+    animation: none;
+
+  }
+
+
+  .login-logo,
+  .login-event-number,
+  .login-panel,
+  .judge-select,
+  .login-button {
+
+    transition: none;
+
+  }
+
+}
+
+/* ========================================================
+   ✨ MICRO INTERACTION
+   ======================================================== */
+
+.login-logo {
+
+  transition:
+    transform 0.35s cubic-bezier(.22, 1, .36, 1);
+
+}
+
+
+.login-logo:hover {
+
+  transform:
+    translateY(-3px)
+    scale(1.025);
+
+}
+
+
+.login-event-number {
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+}
+
+
+.login-event-number:hover {
+
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 5px 15px rgba(217, 107, 107, 0.12);
+
+}
+
+
+.login-panel {
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+}
+
+
+.login-panel:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 14px 32px rgba(70, 65, 60, 0.075);
+
+}
+
+
+.judge-select {
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+
+}
+
+
+.judge-select:focus {
+
+  border-color:
+    #4A9994;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(74, 153, 148, 0.10);
+
+}
+
+
+.login-button {
+
+  transition:
+    transform 0.2s cubic-bezier(.22, 1, .36, 1),
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+
+}
+
+
+.login-button:not(:disabled):hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(210, 120, 125, 0.20);
+
+}
+
+
+.login-button:not(:disabled):active {
+
+  transform:
+    translateY(1px)
+    scale(0.99);
+
+}
+
+
+/* ========================================================
+   ✨ KEYFRAMES
+   ======================================================== */
+
+@keyframes pageBackgroundIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes cardAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(18px)
+      scale(0.985);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+@keyframes itemAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+@keyframes panelAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.99);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+@keyframes dividerAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      scaleX(0.5);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      scaleX(1);
+
+  }
+
+}
+
+
+/* ---------- พื้นหลังขยับช้า ๆ ---------- */
+
+@keyframes backgroundFloat1 {
+
+  0%,
+  100% {
+
+    transform:
+      translate(0, 0);
+
+  }
+
+  50% {
+
+    transform:
+      translate(20px, 15px);
+
+  }
+
+}
+
+
+@keyframes backgroundFloat2 {
+
+  0%,
+  100% {
+
+    transform:
+      translate(0, 0);
+
+  }
+
+  50% {
+
+    transform:
+      translate(-18px, -12px);
+
+  }
+
+}
+
+
+/* ========================================================
+   ลด animation ถ้าเครื่องตั้งค่า Reduce Motion
+   ======================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .login-page,
+  .login-content,
+  .login-logo-wrap,
+  .login-event,
+  .login-divider,
+  .login-title,
+  .login-panel,
+  .login-footer,
+  .login-page::before,
+  .login-page::after {
+
+    animation: none !important;
+
+  }
+
+}
+
+/* ========================================================
+   CUSTOM JUDGE DROPDOWN
+   ======================================================== */
+
+.custom-select {
+
+  width: 100%;
+
+  position: relative;
+
+  font-family: 'Prompt', sans-serif;
+
+}
+
+
+/* ========================================================
+   TRIGGER
+   ======================================================== */
+
+.custom-select-trigger {
+
+  width: 100%;
+
+  min-height: 50px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border: 1px solid #D7D7D7;
+
+  border-radius: 11px;
+
+  background: #FFFFFF;
+
+  color: #30353D;
+
+  font-family: 'Prompt', sans-serif;
+
+  font-size: 17px;
+
+  font-weight: 400;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
+
+}
+
+
+.custom-select-trigger:hover {
+
+  border-color: #B9D1CF;
+
+  background: #FFFDFC;
+
+}
+
+
+.custom-select.open
+.custom-select-trigger {
+
+  border-color: #4A9994;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(74, 153, 148, 0.10);
+
+  background: #FFFFFF;
+
+}
+
+
+/* ========================================================
+   ARROW
+   ======================================================== */
+
+.custom-select-arrow {
+
+  width: 22px;
+
+  height: 22px;
+
+  flex: 0 0 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transition:
+    transform 0.3s
+    cubic-bezier(.22, 1, .36, 1);
+
+}
+
+
+.custom-select-arrow span {
+
+  width: 8px;
+
+  height: 8px;
+
+  display: block;
+
+  border-right: 2px solid #6E7777;
+
+  border-bottom: 2px solid #6E7777;
+
+  transform:
+    rotate(45deg)
+    translateY(-2px);
+
+}
+
+
+.custom-select.open
+.custom-select-arrow {
+
+  transform:
+    rotate(180deg);
+
+}
+
+
+/* ========================================================
+   DROPDOWN MENU
+   ======================================================== */
+
+.custom-select-menu {
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: calc(100% + 8px);
+
+  z-index: 50;
+
+  max-height: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform:
+    translateY(-7px)
+    scale(0.985);
+
+  transform-origin:
+    top center;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 13px;
+
+  background: #FFFFFF;
+
+  box-shadow:
+    0 12px 30px
+    rgba(60, 65, 65, 0.10);
+
+  transition:
+    max-height 0.35s
+    cubic-bezier(.22, 1, .36, 1),
+    opacity 0.22s ease,
+    transform 0.30s
+    cubic-bezier(.22, 1, .36, 1),
+    visibility 0.30s ease,
+    padding 0.30s ease,
+    border-color 0.30s ease;
+
+}
+
+
+.custom-select.open
+.custom-select-menu {
+
+  max-height: 360px;
+
+  padding: 6px;
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  border-color:
+    #E4E9E8;
+
+}
+
+
+/* ========================================================
+   OPTION
+   ======================================================== */
+
+.custom-select-option {
+
+  width: 100%;
+
+  min-height: 46px;
+
+  padding: 9px 12px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #30353D;
+
+  font-family: 'Prompt', sans-serif;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transform:
+    translateY(-5px);
+
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.25s
+    cubic-bezier(.22, 1, .36, 1),
+    opacity 0.25s ease;
+
+}
+
+
+/* ตอน dropdown เปิด
+   ให้แต่ละชื่อค่อย ๆ ลงมา */
+
+.custom-select.open
+.custom-select-option {
+
+  opacity: 1;
+
+  transform:
+    translateY(0);
+
+}
+
+
+.custom-select.open
+.custom-select-option:nth-child(1) {
+  transition-delay: 0.03s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(2) {
+  transition-delay: 0.05s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(3) {
+  transition-delay: 0.07s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(4) {
+  transition-delay: 0.09s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(5) {
+  transition-delay: 0.11s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(6) {
+  transition-delay: 0.13s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(7) {
+  transition-delay: 0.15s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(8) {
+  transition-delay: 0.17s;
+}
+
+.custom-select.open
+.custom-select-option:nth-child(9) {
+  transition-delay: 0.19s;
+}
+
+
+/* hover */
+
+.custom-select-option:hover {
+
+  background:
+    #F0F7F6;
+
+  color:
+    #397F7C;
+
+  transform:
+    translateX(2px);
+
+}
+
+
+/* selected */
+
+.custom-select-option.selected {
+
+  background:
+    #EAF4F3;
+
+  color:
+    #397F7C;
+
+  font-weight: 600;
+
+}
+
+
+/* ========================================================
+   MOBILE
+   ======================================================== */
+
+@media (max-width: 767px) {
+
+  .custom-select-trigger {
+
+    min-height: 50px;
+
+    font-size: 16px;
+
+  }
+
+
+  .custom-select-option {
+
+    min-height: 46px;
+
+    font-size: 15px;
+
+  }
+
+}
+
+
+/* ========================================================
+   IPAD / DESKTOP
+   ======================================================== */
+
+@media (min-width: 768px) {
+
+  .custom-select-trigger {
+
+    min-height: 52px;
+
+    font-size: 18px;
+
+  }
+
+
+  .custom-select-option {
+
+    min-height: 48px;
+
+    font-size: 17px;
+
+  }
+
+}
+
+/* ========================================================
+   CUSTOM DROPDOWN - FIX SCROLL + LAYER
+   ======================================================== */
+
+
+/* --------------------------------------------------------
+   1. ให้หน้าเว็บสามารถ Scroll ได้
+   -------------------------------------------------------- */
+
+.login-page {
+
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
+  -webkit-overflow-scrolling: touch;
+
+}
+
+
+/* --------------------------------------------------------
+   2. ยก Login Panel ให้อยู่เหนือ Footer
+   -------------------------------------------------------- */
+
+.login-panel {
+
+  position: relative;
+
+  z-index: 20;
+
+}
+
+
+/* ตอนเปิด Dropdown ยกขึ้นอีกชั้น */
+
+.login-panel:has(.custom-select.open) {
+
+  z-index: 1000;
+
+}
+
+
+/* ตัว Dropdown */
+
+.custom-select {
+
+  position: relative;
+
+  z-index: 1001;
+
+}
+
+
+/* --------------------------------------------------------
+   3. Dropdown Menu
+   -------------------------------------------------------- */
+
+.custom-select-menu {
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  top: calc(100% + 8px);
+
+  z-index: 9999;
+
+  /*
+    เดิม 360px ทำให้เห็นไม่ครบ
+    เพิ่มพื้นที่ให้ครบ 9 คน
+  */
+
+  max-height: 470px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  /*
+    ซ่อน scrollbar แบบสวย ๆ
+  */
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(74, 153, 148, 0.25)
+    transparent;
+
+}
+
+
+/* Chrome / Edge / Safari */
+
+.custom-select-menu::-webkit-scrollbar {
+
+  width: 5px;
+
+}
+
+
+.custom-select-menu::-webkit-scrollbar-track {
+
+  background: transparent;
+
+}
+
+
+.custom-select-menu::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(74, 153, 148, 0.25);
+
+  border-radius: 999px;
+
+}
+
+
+/* --------------------------------------------------------
+   4. จำกัดความสูงตามหน้าจอ
+   ถ้าจอเตี้ยมาก ให้ Dropdown เลื่อนข้างใน
+   -------------------------------------------------------- */
+
+.custom-select.open
+.custom-select-menu {
+
+  max-height:
+    min(
+      470px,
+      calc(100svh - 170px)
+    );
+
+}
+
+
+/* --------------------------------------------------------
+   5. ให้ Footer อยู่ชั้นหลัง Dropdown
+   -------------------------------------------------------- */
+
+.login-footer {
+
+  position: relative;
+
+  z-index: 1;
+
+}
+
+
+/* --------------------------------------------------------
+   6. กัน Login Content ตัด Dropdown
+   -------------------------------------------------------- */
+
+.login-content {
+
+  overflow: visible;
+
+}
+
+
+/* --------------------------------------------------------
+   7. กัน Login Panel ตัด Dropdown
+   -------------------------------------------------------- */
+
+.login-panel {
+
+  overflow: visible;
+
+}
+
+
+/* --------------------------------------------------------
+   8. มือถือ
+   -------------------------------------------------------- */
+
+@media (max-width: 767px) {
+
+  .custom-select.open
+  .custom-select-menu {
+
+    max-height:
+      min(
+        420px,
+        calc(100svh - 150px)
+      );
+
+  }
+
+}
+
+
+/* --------------------------------------------------------
+   9. iPad Portrait
+   -------------------------------------------------------- */
+
+@media
+  (min-width: 768px)
+  and (max-width: 1199px)
+  and (orientation: portrait) {
+
+  .custom-select.open
+  .custom-select-menu {
+
+    max-height:
+      min(
+        470px,
+        calc(100svh - 180px)
+      );
+
+  }
+
+}
+
+
+/* --------------------------------------------------------
+   10. iPad Landscape
+   -------------------------------------------------------- */
+
+@media
+  (orientation: landscape)
+  and (min-width: 768px)
+  and (max-width: 1199px) {
+
+  .custom-select.open
+  .custom-select-menu {
+
+    max-height:
+      min(
+        300px,
+        calc(100svh - 130px)
+      );
+
+  }
+
+}
+
+/* ========================================================
+   CUSTOM DROPDOWN
+   แสดง 4 รายชื่อ + เลื่อนเฉพาะใน Dropdown
+   ======================================================== */
+
+
+/* หน้าเว็บไม่ต้อง Scroll */
+
+.login-page {
+  overflow: hidden;
+}
+
+
+/* Dropdown ต้องอยู่เหนือ Footer */
+
+.login-panel {
+  position: relative;
+  z-index: 20;
+  overflow: visible;
+}
+
+.custom-select {
+  position: relative;
+  z-index: 100;
+}
+
+
+/* ตอนเปิด ยก Dropdown ขึ้น */
+
+.login-panel:has(.custom-select.open) {
+  z-index: 1000;
+}
+
+.custom-select.open {
+  z-index: 1001;
+}
+
+
+/* ========================================================
+   MENU
+   ======================================================== */
+
+.custom-select-menu {
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: calc(100% + 8px);
+
+  z-index: 9999 !important;
+
+  /*
+    4 รายชื่อ
+    แต่ละคนประมาณ 48px
+    + padding 12px
+  */
+
+  max-height: 204px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(74, 153, 148, 0.28)
+    transparent;
+
+}
+
+
+/* Chrome / Edge / Safari */
+
+.custom-select-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-select-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-select-menu::-webkit-scrollbar-thumb {
+  background:
+    rgba(74, 153, 148, 0.28);
+
+  border-radius: 999px;
+}
+
+
+/* ========================================================
+   OPEN STATE
+   ======================================================== */
+
+.custom-select.open
+.custom-select-menu {
+
+  max-height: 204px;
+
+  overflow-y: auto;
+
+}
+
+
+/* ========================================================
+   OPTION
+   ======================================================== */
+
+.custom-select-option {
+
+  min-height: 48px;
+
+  box-sizing: border-box;
+
+}
+
+
+/* ========================================================
+   ไม่ให้ส่วนอื่นของการ์ดทับ Dropdown
+   ======================================================== */
+
+.login-footer {
+  position: relative;
+  z-index: 1;
+}
