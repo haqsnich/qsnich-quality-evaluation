@@ -9,28 +9,35 @@
    ======================================================== */
 
 .login-page {
+  box-sizing: border-box;
+  padding: 32px 20px;
+  font-family: 'Prompt', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
 
-  min-height: 100dvh;
-  height: 100dvh;
+
+/* BODY — ไม่ให้ body เป็นตัวจัดกลาง */
+body.app-page.login-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  display: block;
+}
+
+
+/* MAIN — ตัวนี้เท่านั้นที่จัดการ์ดกลางจอ */
+main.login-page {
+  width: 100%;
+  min-height: 100vh;
 
   display: flex;
-
   justify-content: center;
-
   align-items: center;
 
   box-sizing: border-box;
-
-  padding: 32px 20px;
-
-  font-family: 'Prompt', sans-serif;
-
-  position: relative;
-
-  overflow: hidden;
-
-  animation:
-    loginPageFade 0.55s ease both;
 }
 
 
@@ -736,11 +743,11 @@
   }
 
   .login-event-number {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .login-title h1 {
-    font-size: 26px;
+    font-size: 32px;
   }
 
   .login-title p {
@@ -752,13 +759,15 @@
   }
 
   .judge-select {
-    height: 50px;
     font-size: 16px;
   }
 
   .login-button {
-    height: 50px;
     font-size: 17px;
+  }
+
+  .login-footer {
+    font-size: 11px;
   }
 }
 
@@ -787,11 +796,11 @@
   }
 
   .login-event-number {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .login-title h1 {
-    font-size: 26px;
+    font-size: 32px;
   }
 
   .login-title p {
@@ -803,13 +812,15 @@
   }
 
   .judge-select {
-    height: 50px;
     font-size: 16px;
   }
 
   .login-button {
-    height: 50px;
     font-size: 17px;
+  }
+
+  .login-footer {
+    font-size: 11px;
   }
 }
 
