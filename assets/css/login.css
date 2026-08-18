@@ -232,7 +232,6 @@
 .login-divider-mark {
 
   width: 6px;
-
   height: 6px;
 
   border-radius: 50%;
@@ -247,17 +246,14 @@
     11px 0 0 #E9B33F,
     22px 0 0 #4A9994;
 
+  transform: translateX(-11px);
+
   transition:
     transform 0.3s ease;
-
 }
 
-
 .login-divider:hover .login-divider-mark {
-
-  transform:
-    scale(1.15);
-
+  transform: translateX(-11px) scale(1.15);
 }
 
 
@@ -2292,4 +2288,8 @@
     box-sizing: border-box !important;
   }
 
+}
+
+.login-event-number {
+  margin-bottom: 24px !important;
 }

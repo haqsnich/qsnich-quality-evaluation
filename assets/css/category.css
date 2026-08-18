@@ -97,12 +97,12 @@ Version : 2.0.1
 
   border-radius: 14px;
 
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.82);
 
-  border: 1px solid rgba(74, 153, 148, 0.13);
+  border: 1px solid rgba(74, 153, 148, 0.30);
 
   box-shadow:
-    0 7px 22px rgba(60, 80, 80, 0.06);
+    0 7px 22px rgba(74, 153, 148, 0.10);
 }
 
 .category-judge-label {
@@ -1380,9 +1380,9 @@ Version : 2.0.1
 
   background:
     linear-gradient(110deg,
-      #FFF1F3 0%,
-      #FFE8E1 45%,
-      #F2E8FF 100%);
+      #FBE5E4 0%,
+      #FBE5E4 45%,
+      #E8F4F2 100%);
 
   color: #3F4548;
 
@@ -1417,7 +1417,7 @@ Version : 2.0.1
   border-radius: 50%;
 
   background:
-    rgba(194, 168, 235, 0.25);
+    rgba(74,153,148,0.12);
 
 }
 
@@ -2694,4 +2694,25 @@ Version : 2.0.1
         display: inline;
     }
 
+}
+
+/* =====================================================
+   JUDGE BOX — GREEN THEME
+   ===================================================== */
+
+.category-judge {
+  background: #E8F4F2 !important;
+
+  border: 1px solid rgba(74, 153, 148, 0.30) !important;
+
+  box-shadow:
+    0 7px 22px rgba(74, 153, 148, 0.10) !important;
+}
+
+.category-judge-name {
+  color: #356F6C !important;
+}
+
+.category-judge-label {
+  color: #4A9994 !important;
 }
