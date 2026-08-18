@@ -2240,3 +2240,56 @@
     overflow: hidden !important;
   }
 }
+
+/* ========================================================
+   FINAL FIX — iPad LOGIN
+   ล็อกหน้าให้พอดี viewport ไม่มี page scroll
+   ======================================================== */
+
+@media (min-width: 768px) and (max-width: 1199px) {
+
+  html,
+  body {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .app-page {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #app {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .login-page {
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+}
