@@ -9,35 +9,22 @@
    ======================================================== */
 
 .login-page {
-  box-sizing: border-box;
-  padding: 32px 20px;
-  font-family: 'Prompt', sans-serif;
-  position: relative;
-  overflow: hidden;
-}
-
-
-/* BODY — ไม่ให้ body เป็นตัวจัดกลาง */
-body.app-page.login-page {
   width: 100%;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
-
-  display: block;
-}
-
-
-/* MAIN — ตัวนี้เท่านั้นที่จัดการ์ดกลางจอ */
-main.login-page {
-  width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   box-sizing: border-box;
+
+  padding: 32px 20px;
+
+  font-family: 'Prompt', sans-serif;
+
+  position: relative;
+  overflow: hidden;
 }
 
 
