@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        ระบบประเมินผลงาน มหกรรมคุณภาพ ส.เด็ก
+    </title>
+
+
+    <!-- ================= GOOGLE FONT ================= -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ================= CSS ================= -->
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/background.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/category.css"
+    >
+
+</head>
+
+
+<body class="app-page category-page">
+
+
+    <div id="app">
+
+
+        <!-- ==========================================
+             CATEGORY PAGE
+             ========================================== -->
+
+        <main class="category-page">
+
+
+            <div class="category-content">
+
+
+                <!-- ======================================
+                     HEADER
+                     ====================================== -->
+
+                <header class="category-header">
+
+                    <div class="category-header-left">
+
+                        <div class="category-header-text">
+
+                            <div class="category-system-name">
+                                ระบบประเมินผลงาน
+                            </div>
+
+                            <div class="category-event-name">
+                                งานมหกรรมคุณภาพ ส.เด็กฯ
+                            </div>
+
+                            <div class="category-event-year">
+                                ครั้งที่ 28 ประจำปี 2569
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="category-header-right">
+
+                        <div class="category-judge">
+
+                            <span class="category-judge-label">
+                                กรรมการ
+                            </span>
+
+                            <span
+                                id="judgeName"
+                                class="category-judge-name"
+                            >
+                                -
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="logoutButton"
+                            class="category-logout-button"
+                        >
+                            ออกจากระบบ
+                        </button>
+
+                    </div>
+
+                </header>
+
+
+                <!-- ======================================
+                     WORKS HEADER
+                     ====================================== -->
+
+                <div class="works-header">
+
+
+                    <!-- ===============================
+                         ฝั่งซ้าย
+                         =============================== -->
+
+                    <div class="works-header-text">
+
+                        <h1>
+                            รายการผลงาน
+                        </h1>
+
+                        <p>
+                            กรุณาเลือกผลงานที่ต้องการประเมิน
+                        </p>
+
+                    </div>
+
+
+                    <!-- ===============================
+                         ฝั่งขวา
+                         =============================== -->
+
+                    <section class="category-summary">
+
+                        <div class="summary-cards">
+
+
+                            <!-- ผลงานทั้งหมด -->
+
+                            <div class="summary-card">
+
+                                <span class="summary-label">
+                                    ผลงานทั้งหมด
+                                </span>
+
+                                <strong
+                                    id="workCount"
+                                    class="summary-value"
+                                >
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <!-- ประเมินแล้ว -->
+
+                            <div class="summary-card">
+
+                                <span class="summary-label">
+                                    ประเมินแล้ว
+                                </span>
+
+                                <strong
+                                    id="evaluatedCount"
+                                    class="summary-value"
+                                >
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+                </div>
+
+
+                <!-- ======================================
+                     LOADING
+                     ====================================== -->
+
+                <section
+                    id="categoryLoading"
+                    class="category-loading"
+                >
+
+                    <img
+                        src="./assets/images/qsnich-running.png"
+                        alt="กำลังโหลด"
+                        class="category-loading-character"
+                    >
+
+                    <div class="category-loading-title">
+                        กำลังโหลดข้อมูล...
+                    </div>
+
+                    <div class="category-loading-text">
+                        โปรดรอสักครู่
+                    </div>
+
+                </section>
+
+
+                <!-- ======================================
+                     WORK LIST
+                     ====================================== -->
+
+                <section
+                    id="workList"
+                    class="work-list"
+                >
+
+                    <!-- JavaScript จะสร้างรายการผลงานตรงนี้ -->
+
+                </section>
+
+
+                <!-- ======================================
+                     EMPTY
+                     ====================================== -->
+
+                <section
+                    id="emptyState"
+                    class="empty-state"
+                    hidden
+                >
+
+                    <div class="empty-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        ไม่มีผลงานที่ได้รับมอบหมาย
+                    </h2>
+
+                    <p>
+                        ขณะนี้ยังไม่มีรายการผลงานสำหรับกรรมการท่านนี้
+                    </p>
+
+                </section>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+
+    <!-- ================= JS ================= -->
+
+    <script src="./assets/js/config.js"></script>
+
+    <script src="./assets/js/category.js"></script>
+
+
+</body>
+
+</html>
