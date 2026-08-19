@@ -1556,6 +1556,14 @@ async function loadOldScore() {
         selectedWork.work_id ||
         "";
 
+    console.log(
+        "OLD SCORE REQUEST:",
+        {
+            judgeId: judgeId,
+            workId: workId
+        }
+    );
+
 
     if (
         !judgeId ||
