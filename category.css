@@ -2428,49 +2428,12 @@
   line-height: 1;
 }
 
-
-/* =====================================================
-   TEXT
-   ===================================================== */
-
 .work-action-text {
   display: inline-block;
-
   width: auto;
-
-  flex: 0 0 auto;
-
+  margin: 0;
+  padding: 0;
   text-align: center;
-
-  line-height: 1;
-}
-
-/* =====================================================
-   ข้อความ — กลางกรอบจริง
-   ===================================================== */
-
-.work-action-text {
-  display: block;
-
-  width: 100%;
-
-  text-align: center;
-
-  line-height: 1;
-}
-
-
-/* =====================================================
-   ไอคอน — ไม่ดันข้อความ
-   ===================================================== */
-
-.work-action-text {
-  grid-column: 2;
-
-  width: auto;
-
-  text-align: center;
-
   line-height: 1;
 }
 
