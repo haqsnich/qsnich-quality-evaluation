@@ -2534,15 +2534,18 @@ Version : 2.0.1
 
 /* =====================================================
    ปุ่มดูบทคัดย่อ / ดูโปสเตอร์
+   กรอบเท่ากัน + เนื้อหาอยู่กลาง
    ===================================================== */
 
 .work-file-button {
 
-  width: clamp(106px, 10vw, 130px);
+  width: 125px !important;
+  min-width: 125px !important;
+  max-width: 125px !important;
 
-  min-height: 42px;
+  height: 42px !important;
 
-  padding: 8px 14px !important;
+  padding: 0 !important;
 
   display: inline-flex !important;
 
@@ -2551,33 +2554,23 @@ Version : 2.0.1
 
   text-align: center !important;
 
-  font-family: "Prompt", sans-serif !important;
+  box-sizing: border-box !important;
 
+  font-family: "Prompt", sans-serif !important;
   font-size: 14px !important;
+  font-weight: 500 !important;
 
   white-space: nowrap;
-
-  font-weight: 500 !important;
 
   color: #4A7774 !important;
 
   background: #FFFFFF !important;
 
   border: 1px solid #BFD8D6 !important;
-
   border-radius: 10px !important;
 
   cursor: pointer;
-
-  box-sizing: border-box !important;
-
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.15s ease,
-    box-shadow 0.18s ease !important;
 }
-
 
 .work-file-button:hover {
 
