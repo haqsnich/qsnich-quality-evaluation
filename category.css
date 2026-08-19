@@ -2570,3 +2570,15 @@
   }
 
 }
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-actions {
+    justify-content: center !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+}
