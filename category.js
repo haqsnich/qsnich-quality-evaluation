@@ -612,8 +612,8 @@ function createWorkCard(
         "work-order";
 
     number.textContent =
-        work.order ||
-        index + 1;
+        work.id ||
+        "-";
 
 
     /* -----------------------------------------------
@@ -958,7 +958,6 @@ function showCategoryError(
     title.className =
         "category-error-title";
 
-
     title.textContent =
         "ไม่สามารถโหลดข้อมูลได้";
 
@@ -974,9 +973,7 @@ function showCategoryError(
 
 
     text.textContent =
-        message ||
-        "เกิดข้อผิดพลาด";
-
+        "กรุณากด “ออกจากระบบ” ที่มุมขวาบน แล้วเข้าสู่ระบบใหม่อีกครั้ง";
 
     error.appendChild(
         title
