@@ -2716,3 +2716,37 @@ Version : 2.0.1
 .category-judge-label {
   color: #4A9994 !important;
 }
+
+/* =====================================================
+   FIX — จัดกลุ่มปุ่มการ์ดให้อยู่กลาง
+   ===================================================== */
+
+.work-card {
+  display: grid !important;
+
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    minmax(360px, 1fr) !important;
+
+  align-items: center !important;
+
+  gap: 16px !important;
+}
+
+
+.work-actions {
+  width: 100% !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 8px !important;
+
+  margin-left: 0 !important;
+
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
