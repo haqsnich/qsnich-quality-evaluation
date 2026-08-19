@@ -12,7 +12,7 @@ Version : 2.0.1
    ===================================================== */
 
 const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbyBy3Op76Yt6JJUH__YM-cgJi8KxKHPlcgW0eg0-Zkr_qLsjbUshT1VwAAAGY5Hg6WT/exec";
+    "https://script.google.com/macros/s/AKfycbxM65eSGEZHx91D_N2dqQAHFN-llCdjWt7tV8_zfI4Gq6n21QgbQRaqpStDjG-VAy5B_w/exec";
 
 
 /* =====================================================
@@ -612,8 +612,8 @@ function createWorkCard(
         "work-order";
 
     number.textContent =
-        work.order ||
-        index + 1;
+        work.id ||
+        "-";
 
 
     /* -----------------------------------------------
@@ -668,17 +668,17 @@ function createWorkCard(
        ----------------------------------------------- */
 
     const presenter =
-    document.createElement(
-        "div"
-    );
+        document.createElement(
+            "div"
+        );
 
-presenter.className =
-    "work-presenter";
+    presenter.className =
+        "work-presenter";
 
-const presenterText =
-    String(work.presenter || "");
+    const presenterText =
+        String(work.presenter || "");
 
-presenter.innerHTML = `
+    presenter.innerHTML = `
     <span class="presenter-desktop">
         ${presenterText}
     </span>
@@ -742,180 +742,120 @@ presenter.innerHTML = `
 
 
     /* =================================================
-       ACTIONS
-       ================================================= */
+   ACTION BUTTONS
+   ================================================= */
 
-    const actionArea =
-        document.createElement(
-            "div"
-        );
-
-    actionArea.className =
-        "work-actions";
+    const actionArea = document.createElement("div");
+    actionArea.className = "work-actions";
 
 
     /* =================================================
-       กำหนดหมวดที่มีโปสเตอร์
+       สร้างปุ่มมาตรฐาน
        ================================================= */
 
-    const posterCategories = [
+    function createActionButton(icon, text, className, onClick) {
 
-        "CQI Poster Presentation",
+        const button = document.createElement("button");
 
-        "CQI Digital Poster presentation",
+        button.type = "button";
 
-        "KM"
+        button.className =
+            "work-action-button" +
+            (className ? ` ${className}` : "");
 
-    ];
+        button.innerHTML = `
+        <span class="work-action-icon">${icon}</span>
+        <span class="work-action-text">${text}</span>
+    `;
 
-
-    const currentCategory =
-        String(
-            work.category ||
-            ""
-        ).trim();
-
-
-    const hasPoster =
-        posterCategories.includes(
-            currentCategory
-        );
-
-
-    /* =================================================
-       ปุ่มดูบทคัดย่อ
-       มีทุกหมวด
-       ================================================= */
-
-    const abstractButton =
-        document.createElement(
-            "button"
-        );
-
-    abstractButton.type =
-        "button";
-
-    abstractButton.className =
-        "work-file-button";
-
-    abstractButton.innerHTML =
-        "📄 ดูบทคัดย่อ";
-
-
-    abstractButton.addEventListener(
-        "click",
-        function (event) {
+        button.addEventListener("click", function (event) {
 
             event.stopPropagation();
 
-            if (
-                work.pdf_url
-            ) {
+            onClick();
 
-                window.open(
-                    work.pdf_url,
-                    "_blank"
-                );
+        });
 
-            }
-
-        }
-    );
-
-
-    actionArea.appendChild(
-        abstractButton
-    );
-
-
-    /* =================================================
-       ปุ่มดูโปสเตอร์
-       เฉพาะ 3 หมวด
-       ================================================= */
-
-    if (
-        hasPoster
-    ) {
-
-        const posterButton =
-            document.createElement(
-                "button"
-            );
-
-        posterButton.type =
-            "button";
-
-        posterButton.className =
-            "work-file-button";
-
-        posterButton.innerHTML =
-            "🖼️ ดูโปสเตอร์";
-
-
-        posterButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                if (
-                    work.poster_url
-                ) {
-
-                    window.open(
-                        work.poster_url,
-                        "_blank"
-                    );
-
-                }
-
-            }
-        );
-
-
-        actionArea.appendChild(
-            posterButton
-        );
-
+        return button;
     }
 
 
     /* =================================================
-       ปุ่มลงคะแนน
+       ดูบทคัดย่อ
        ================================================= */
 
-    const voteButton =
-        document.createElement(
-            "button"
+    const abstractButton = createActionButton(
+        "📄",
+        "ดูบทคัดย่อ",
+        "",
+        function () {
+
+            openWorkFileModal(
+                work,
+                "abstract"
+            );
+
+        }
+
+    );
+
+    actionArea.appendChild(abstractButton);
+
+
+    /* =================================================
+   ดูโปสเตอร์
+   ================================================= */
+
+    const posterCategories = [
+        "CQI Poster Presentation",
+        "CQI Digital Poster presentation",
+        "KM"
+    ];
+
+    const hasPoster =
+        posterCategories.includes(
+            String(work.category || "").trim()
         );
 
-    voteButton.type =
-        "button";
+    if (hasPoster) {
 
-    voteButton.className =
-        "work-button";
+        const posterButton =
+            createActionButton(
+                "🖼️",
+                "ดูโปสเตอร์",
+                "",
+                function () {
 
-    voteButton.innerHTML =
-        "📝 ลงคะแนน";
+                    openWorkFileModal(
+                        work,
+                        "poster"
+                    );
 
-
-    voteButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.stopPropagation();
-
-            selectWork(
-                work
+                }
             );
+
+        actionArea.appendChild(
+            posterButton
+        );
+    }
+
+
+    /* =================================================
+       ลงคะแนน
+       ================================================= */
+
+    const scoreButton = createActionButton(
+        "📝",
+        "ลงคะแนน",
+        "is-primary",
+        function () {
+
+            selectWork(work);
 
         }
     );
 
-
-    actionArea.appendChild(
-        voteButton
-    );
+    actionArea.appendChild(scoreButton);
 
 
     /* =================================================
@@ -948,6 +888,17 @@ function selectWork(
     work
 ) {
 
+    if (!work) {
+
+        console.error(
+            "ไม่พบข้อมูลผลงาน"
+        );
+
+        return;
+
+    }
+
+
     sessionStorage.setItem(
         "selectedWork",
         JSON.stringify(
@@ -962,10 +913,8 @@ function selectWork(
     );
 
 
-    /*
-       ตอนนี้ยังไม่เปลี่ยนหน้า
-       เดี๋ยวเราทำ Evaluation ต่อ
-    */
+    window.location.href =
+        "./evaluation.html";
 
 }
 
@@ -1013,7 +962,6 @@ function showCategoryError(
     title.className =
         "category-error-title";
 
-
     title.textContent =
         "ไม่สามารถโหลดข้อมูลได้";
 
@@ -1029,9 +977,7 @@ function showCategoryError(
 
 
     text.textContent =
-        message ||
-        "เกิดข้อผิดพลาด";
-
+        "กรุณากด “ออกจากระบบ” ที่มุมขวาบน แล้วเข้าสู่ระบบใหม่อีกครั้ง";
 
     error.appendChild(
         title
@@ -1099,6 +1045,277 @@ document.addEventListener(
 
                 window.location.href =
                     "./index.html";
+
+            }
+        );
+
+    }
+);
+
+/* =================================================
+   WORK FILE POPUP
+   ================================================= */
+
+function openWorkFileModal(
+    work,
+    type
+) {
+
+    const modal =
+        document.getElementById(
+            "workFileModal"
+        );
+
+    const title =
+        document.getElementById(
+            "workFileModalTitle"
+        );
+
+    const pdf =
+        document.getElementById(
+            "workFilePdf"
+        );
+
+    const poster =
+        document.getElementById(
+            "workFilePoster"
+        );
+
+    const empty =
+        document.getElementById(
+            "workFileModalEmpty"
+        );
+
+    const score =
+        document.getElementById(
+            "workFileScore"
+        );
+
+    const fullscreen =
+        document.getElementById(
+            "workFileFullscreen"
+        );
+
+
+    if (
+        !modal ||
+        !title ||
+        !pdf ||
+        !poster ||
+        !empty
+    ) {
+        return;
+    }
+
+
+    /* -----------------------------------------
+       Reset
+       ----------------------------------------- */
+
+    pdf.hidden = true;
+    poster.hidden = true;
+    empty.hidden = true;
+
+    pdf.src = "";
+    poster.src = "";
+
+    fullscreen.hidden = true;
+
+
+    /* -----------------------------------------
+       Title
+       ----------------------------------------- */
+
+    title.textContent =
+        type === "poster"
+            ? "ดูโปสเตอร์"
+            : "ดูบทคัดย่อ";
+
+
+    /* -----------------------------------------
+       PDF
+       ----------------------------------------- */
+
+    if (
+        type === "abstract" &&
+        work.pdf_url
+    ) {
+
+        pdf.src =
+            work.pdf_url;
+
+        pdf.hidden = false;
+
+        fullscreen.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       Poster
+       ----------------------------------------- */
+
+    else if (
+        type === "poster" &&
+        work.poster_url
+    ) {
+
+        poster.src =
+            work.poster_url;
+
+        poster.hidden = false;
+
+        fullscreen.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       No file
+       ----------------------------------------- */
+
+    else {
+
+        empty.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       Score
+       ----------------------------------------- */
+
+    score.onclick =
+        function () {
+
+            selectWork(
+                work
+            );
+
+        };
+
+
+    /* -----------------------------------------
+       Fullscreen
+       ----------------------------------------- */
+
+    fullscreen.onclick =
+        function () {
+
+            const target =
+                type === "abstract"
+                    ? pdf
+                    : poster;
+
+            if (
+                target.requestFullscreen
+            ) {
+
+                target.requestFullscreen();
+
+            }
+
+        };
+
+
+    modal.hidden = false;
+
+    document.body.classList.add(
+        "work-file-modal-open"
+    );
+}
+
+/* =====================================================
+   WORK FILE POPUP — CLOSE
+   ===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const modal =
+            document.getElementById(
+                "workFileModal"
+            );
+
+        const closeButton =
+            document.getElementById(
+                "workFileModalClose"
+            );
+
+        if (!modal) {
+            return;
+        }
+
+
+        function closeWorkFileModal() {
+
+            modal.hidden = true;
+
+            const pdf =
+                document.getElementById(
+                    "workFilePdf"
+                );
+
+            const poster =
+                document.getElementById(
+                    "workFilePoster"
+                );
+
+            if (pdf) {
+                pdf.src = "";
+            }
+
+            if (poster) {
+                poster.src = "";
+            }
+
+            document.body.classList.remove(
+                "work-file-modal-open"
+            );
+        }
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeWorkFileModal
+            );
+
+        }
+
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target.hasAttribute(
+                        "data-modal-close"
+                    )
+                ) {
+
+                    closeWorkFileModal();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape" &&
+                    !modal.hidden
+                ) {
+
+                    closeWorkFileModal();
+
+                }
 
             }
         );

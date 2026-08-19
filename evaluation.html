@@ -5,45 +5,33 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>
-        ระบบประเมินผลงาน
-    </title>
+    <title>ระบบประเมินผลงาน</title>
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <!-- =================================================
+         FONT
+         ================================================= -->
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/base.css"
-    >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/background.css"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/evaluation.css"
-    >
+
+    <!-- =================================================
+         CSS
+         ================================================= -->
+
+    <link rel="stylesheet" href="./assets/css/base.css">
+
+    <link rel="stylesheet" href="./assets/css/background.css">
+
+    <link rel="stylesheet" href="./assets/css/category.css">
+
+    <link rel="stylesheet" href="./assets/css/evaluation.css">
 
 </head>
 
@@ -51,176 +39,394 @@
 <body class="app-page">
 
 
-<div id="app">
+    <div id="app">
 
 
-    <!-- =================================================
-         EVALUATION PAGE
+        <main class="evaluation-page">
+
+
+            <div class="evaluation-content">
+
+
+                <!-- =================================================
+         TOPBAR
          ================================================= -->
 
-    <main class="evaluation-page">
+                <header class="category-header">
 
+                    <div class="category-header-left">
 
-        <div class="evaluation-content">
+                        <div class="category-header-text">
 
+                            <div class="category-system-name">
+                                ระบบประเมินผลงาน
+                            </div>
 
-            <!-- HEADER -->
+                            <div class="category-event-name">
+                                งานมหกรรมคุณภาพ ส.เด็กฯ
+                            </div>
 
-            <header class="evaluation-header">
+                            <div class="category-event-year">
+                                ครั้งที่ 28 ประจำปี 2569
+                            </div>
 
-                <button
-                    type="button"
-                    id="backButton"
-                    class="evaluation-back-button"
-                >
-                    ← กลับรายการ
-                </button>
+                        </div>
 
-
-                <div class="evaluation-header-info">
-
-                    <div
-                        id="evaluationWorkId"
-                        class="evaluation-work-id"
-                    >
-                        -
                     </div>
 
-                    <div
-                        id="evaluationCategory"
-                        class="evaluation-category"
-                    >
-                        -
+
+                    <div class="category-header-right">
+
+                        <div class="category-judge">
+
+                            <span class="category-judge-label">
+                                กรรมการ
+                            </span>
+
+                            <span id="judgeName" class="category-judge-name">
+                                -
+                            </span>
+
+                        </div>
+
+
+                        <button type="button" id="logoutButton" class="category-logout-button">
+                            ออกจากระบบ
+                        </button>
+
                     </div>
 
+                </header>
+
+
+
+                <!-- =================================================
+         MAIN AREA
+         ================================================= -->
+
+                <div class="evaluation-main">
+
+
+                    <!-- =================================================
+             BACK BUTTON
+             ================================================= -->
+
+                    <div class="evaluation-back-row">
+
+                        <button type="button" id="evaluationBackButton" class="evaluation-back-button">
+
+                            <span class="back-icon">
+                                ←
+                            </span>
+
+                            <span>
+                                เลือกผลงาน
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+             WORK SUMMARY
+             ================================================= -->
+
+                    <section class="evaluation-work-summary">
+
+
+                        <!-- WORK ID -->
+
+                        <div id="evaluationWorkId" class="evaluation-work-id-box">
+                            -
+                        </div>
+
+
+                        <!-- WORK INFO -->
+
+                        <div class="evaluation-work-info">
+
+
+                            <!-- CATEGORY -->
+
+                            <div id="evaluationCategory" class="evaluation-category">
+                                -
+                            </div>
+
+
+                            <!-- TITLE -->
+
+                            <div id="evaluationWorkTitle" class="evaluation-work-title">
+                                -
+                            </div>
+
+
+                            <!-- PRESENTER -->
+
+                            <div class="evaluation-work-meta">
+
+                                <div class="evaluation-meta-label">
+                                    ผู้นำเสนอ
+                                </div>
+
+                                <div id="evaluationPresenter" class="evaluation-presenter">
+                                    -
+                                </div>
+
+                            </div>
+
+
+                            <!-- DEPARTMENT -->
+
+                            <div class="evaluation-work-meta">
+
+                                <div class="evaluation-meta-label">
+                                    หน่วยงาน
+                                </div>
+
+                                <div id="evaluationDepartment" class="evaluation-department">
+                                    -
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =================================================
+             CRITERIA SECTION
+             ================================================= -->
+
+                    <section class="evaluation-section">
+
+
+                        <div class="evaluation-section-header">
+
+                            <h2>
+                                เกณฑ์การประเมิน
+                            </h2>
+
+                            <div id="criteriaProgress" class="criteria-progress-summary">
+                                ประเมินแล้ว 0/8
+                            </div>
+
+                        </div>
+
                 </div>
 
 
-                <div class="evaluation-header-space"></div>
+                <!-- =================================================
+                 CRITERIA CONTAINER
+                 ================================================= -->
 
-            </header>
-
-
-            <!-- WORK INFO -->
-
-            <section class="evaluation-work-info">
-
-                <h1
-                    id="evaluationWorkTitle"
-                >
-                    -
-                </h1>
-
-                <div
-                    id="evaluationDepartment"
-                    class="evaluation-department"
-                >
-                    -
-                </div>
-
-            </section>
+                <div id="criteriaContainer" class="evaluation-criteria"></div>
 
 
-            <!-- CRITERIA -->
-
-            <section
-                id="criteriaContainer"
-                class="evaluation-criteria"
-            >
-
-                <div class="evaluation-loading">
-
-                    กำลังโหลดเกณฑ์การประเมิน...
-
-                </div>
-
-            </section>
+                </section>
 
 
-            <!-- TOTAL -->
 
-            <section class="evaluation-total">
+                <!-- =================================================
+             TOTAL
+             ================================================= -->
 
-                <span>
-                    รวมคะแนน
-                </span>
+                <section class="evaluation-total">
 
-                <strong id="totalScore">
-                    0
-                </strong>
+                    <span>
+                        รวมคะแนน
+                    </span>
 
-                <span>
-                    คะแนน
-                </span>
+                    <strong id="totalScore">
+                        0
+                    </strong>
 
-            </section>
+                    <span id="totalScoreMax">
+                        /0 คะแนน
+                    </span>
 
-
-            <!-- COMMENT -->
-
-            <section class="evaluation-comment">
-
-                <h2>
-                    ความคิดเห็นเพิ่มเติม
-                </h2>
-
-                <textarea
-                    id="scoreComment"
-                    placeholder="กรุณาระบุความคิดเห็นเพิ่มเติม"
-                ></textarea>
-
-            </section>
+                </section>
 
 
-            <!-- SAVE -->
 
-            <section class="evaluation-save">
+                <!-- =================================================
+             COMMENT
+             ================================================= -->
 
-                <div
-                    id="saveStatus"
-                    class="save-status"
-                >
-                    ⚪ ยังไม่ได้บันทึกคะแนน
-                </div>
+                <section class="evaluation-comment">
 
-                <div
-                    id="lastSavedTime"
-                    class="save-time"
-                >
-                    ยังไม่มีการบันทึก
-                </div>
+                    <div class="evaluation-comment-header">
+
+                        <h2>
+                            ความคิดเห็นเพิ่มเติม
+                        </h2>
+
+                    </div>
 
 
-                <div class="score-divider"></div>
+                    <textarea id="scoreComment"
+                        placeholder="หากมีความคิดเห็นเพิ่มเติมเกี่ยวกับผลงานนี้ โปรดระบุ (ไม่บังคับ)"></textarea>
+
+                </section>
 
 
-                <div class="evaluation-save-action">
 
-                    <button
-                        type="button"
-                        id="finishScoreButton"
-                        class="evaluation-submit-button"
-                    >
-                        ✔ ส่งคะแนน
-                    </button>
+                <!-- =================================================
+     SAVE
+     ================================================= -->
 
-                </div>
-
-            </section>
+                <section class="evaluation-save">
 
 
-        </div>
+                    <div class="evaluation-save-top">
+
+
+                        <div>
+
+                            <div id="saveStatus" class="save-status">
+                                ⚪ ยังไม่ได้บันทึกคะแนน
+                            </div>
+
+
+                            <div id="lastSavedTime" class="save-time">
+                                ยังไม่มีการบันทึก
+                            </div>
+
+                        </div>
+
+
+                        <!-- สถานะ Draft -->
+                        <div id="draftStatus" class="draft-status">
+                            ยังไม่มี Draft
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="score-divider"></div>
+
+
+                    <div class="evaluation-save-action">
+
+                        <button type="button" id="finishScoreButton" class="evaluation-submit-button">
+                            ✔ ส่งคะแนน
+                        </button>
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+
+    </div>
 
 
     </main>
 
 
-</div>
+    <!-- =====================================================
+     SCORE CONFIRM MODAL
+     ===================================================== -->
+
+    <div id="scoreConfirmModal" class="score-modal" hidden>
+
+        <div class="score-modal-backdrop" id="scoreModalBackdrop"></div>
 
 
-<script src="./assets/js/config.js"></script>
+        <div class="score-modal-card">
 
-<script src="./assets/js/evaluation.js"></script>
+            <div class="score-modal-icon">
+                ✓
+            </div>
+
+
+            <h2>
+                ยืนยันส่งคะแนน
+            </h2>
+
+
+            <div class="score-modal-question">
+                กรุณาตรวจสอบข้อมูลก่อนยืนยัน
+            </div>
+
+
+            <div class="score-modal-info">
+
+                <div class="score-modal-row">
+
+                    <span>
+                        กรรมการ
+                    </span>
+
+                    <strong id="confirmJudgeName">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="score-modal-row score-modal-total">
+
+                    <span>
+                        คะแนนรวม
+                    </span>
+
+                    <strong>
+
+                        <span id="confirmTotalScore">
+                            0
+                        </span>
+
+                        <span id="confirmTotalScoreMax">
+                            / 40 คะแนน
+                        </span>
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="score-modal-warning">
+                เมื่อยืนยันแล้ว จะถือว่าเป็นคะแนนที่ส่งอย่างเป็นทางการ
+            </div>
+
+
+            <div class="score-modal-actions">
+
+                <button type="button" id="cancelScoreButton" class="score-modal-cancel">
+                    กลับไปแก้ไข
+                </button>
+
+
+                <button type="button" id="confirmScoreButton" class="score-modal-confirm">
+                    ยืนยันส่งคะแนน
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+     SCRIPT
+     ================================================= -->
+
+    <script src="./assets/js/config.js"></script>
+
+    <script src="./assets/js/evaluation.js"></script>
 
 
 </body>

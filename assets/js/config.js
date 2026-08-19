@@ -16,7 +16,7 @@ const APP_CONFIG = {
   // ==========================================
 
   API_URL:
-    "https://script.google.com/macros/s/AKfycbxXPFvLckx71BAodHY9TanTu5RO_t3WsT0rhRFarutrUVM_J7tqPxRsvYJ7pLHlWGJD/exec",
+    "https://script.google.com/macros/s/AKfycbxM65eSGEZHx91D_N2dqQAHFN-llCdjWt7tV8_zfI4Gq6n21QgbQRaqpStDjG-VAy5B_w/exec",
 
 
   // ==========================================
