@@ -698,13 +698,18 @@
   }
 
 
-  .work-card {
-    grid-template-columns:
-      42px minmax(0, 1fr) minmax(380px, 1fr);
-
+    .work-card {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
     gap: 12px;
     padding: 15px;
   }
+
+  .work-actions {
+    justify-self: center;
+    align-self: center;
+  }
+
+}
 
 
   .work-order {
