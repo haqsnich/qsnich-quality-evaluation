@@ -2595,3 +2595,28 @@
   }
 
 }
+
+/* =====================================================
+   iPad Portrait — จัดกลุ่มปุ่มให้อยู่กลางพื้นที่ของตัวเอง
+   ===================================================== */
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-actions {
+    justify-self: center !important;
+    align-self: center !important;
+
+    width: max-content !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 8px !important;
+
+    margin: 0 !important;
+  }
+
+}
