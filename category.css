@@ -2767,3 +2767,26 @@ Version : 2.0.1
 
   line-height: 1;
 }
+
+/* =====================================================
+   iPad แนวตั้ง
+   ขยายปุ่มไฟล์ให้กว้างเท่าคอม
+   ===================================================== */
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-file-button {
+    width: 130px !important;
+    min-width: 130px !important;
+    max-width: 130px !important;
+
+    min-height: 42px !important;
+
+    padding: 8px 14px !important;
+
+    text-align: center !important;
+  }
+
+}
