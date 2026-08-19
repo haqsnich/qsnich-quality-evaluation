@@ -2582,3 +2582,16 @@
   }
 
 }
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-card {
+    grid-template-columns:
+      48px
+      minmax(0, 1fr)
+      minmax(0, 1fr) !important;
+  }
+
+}
