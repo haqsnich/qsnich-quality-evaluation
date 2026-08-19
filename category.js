@@ -790,24 +790,21 @@ function createWorkCard(
         "",
         function () {
 
-            if (work.pdf_url) {
-
-                window.open(
-                    work.pdf_url,
-                    "_blank"
-                );
-
-            }
+            openWorkFileModal(
+                work,
+                "abstract"
+            );
 
         }
+
     );
 
     actionArea.appendChild(abstractButton);
 
 
     /* =================================================
-       ดูโปสเตอร์
-       ================================================= */
+   ดูโปสเตอร์
+   ================================================= */
 
     const posterCategories = [
         "CQI Poster Presentation",
@@ -822,26 +819,24 @@ function createWorkCard(
 
     if (hasPoster) {
 
-        const posterButton = createActionButton(
-            "🖼️",
-            "ดูโปสเตอร์",
-            "",
-            function () {
+        const posterButton =
+            createActionButton(
+                "🖼️",
+                "ดูโปสเตอร์",
+                "",
+                function () {
 
-                if (work.poster_url) {
-
-                    window.open(
-                        work.poster_url,
-                        "_blank"
+                    openWorkFileModal(
+                        work,
+                        "poster"
                     );
 
                 }
+            );
 
-            }
+        actionArea.appendChild(
+            posterButton
         );
-
-        actionArea.appendChild(posterButton);
-
     }
 
 
@@ -900,18 +895,8 @@ function selectWork(
         )
     );
 
-
-    console.log(
-        "เลือกผลงาน =",
-        work
-    );
-
-
-    /*
-       ตอนนี้ยังไม่เปลี่ยนหน้า
-       เดี๋ยวเราทำ Evaluation ต่อ
-    */
-
+    window.location.href =
+        "./evaluation.html";
 }
 
 
@@ -1041,6 +1026,277 @@ document.addEventListener(
 
                 window.location.href =
                     "./index.html";
+
+            }
+        );
+
+    }
+);
+
+/* =================================================
+   WORK FILE POPUP
+   ================================================= */
+
+function openWorkFileModal(
+    work,
+    type
+) {
+
+    const modal =
+        document.getElementById(
+            "workFileModal"
+        );
+
+    const title =
+        document.getElementById(
+            "workFileModalTitle"
+        );
+
+    const pdf =
+        document.getElementById(
+            "workFilePdf"
+        );
+
+    const poster =
+        document.getElementById(
+            "workFilePoster"
+        );
+
+    const empty =
+        document.getElementById(
+            "workFileModalEmpty"
+        );
+
+    const score =
+        document.getElementById(
+            "workFileScore"
+        );
+
+    const fullscreen =
+        document.getElementById(
+            "workFileFullscreen"
+        );
+
+
+    if (
+        !modal ||
+        !title ||
+        !pdf ||
+        !poster ||
+        !empty
+    ) {
+        return;
+    }
+
+
+    /* -----------------------------------------
+       Reset
+       ----------------------------------------- */
+
+    pdf.hidden = true;
+    poster.hidden = true;
+    empty.hidden = true;
+
+    pdf.src = "";
+    poster.src = "";
+
+    fullscreen.hidden = true;
+
+
+    /* -----------------------------------------
+       Title
+       ----------------------------------------- */
+
+    title.textContent =
+        type === "poster"
+            ? "ดูโปสเตอร์"
+            : "ดูบทคัดย่อ";
+
+
+    /* -----------------------------------------
+       PDF
+       ----------------------------------------- */
+
+    if (
+        type === "abstract" &&
+        work.pdf_url
+    ) {
+
+        pdf.src =
+            work.pdf_url;
+
+        pdf.hidden = false;
+
+        fullscreen.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       Poster
+       ----------------------------------------- */
+
+    else if (
+        type === "poster" &&
+        work.poster_url
+    ) {
+
+        poster.src =
+            work.poster_url;
+
+        poster.hidden = false;
+
+        fullscreen.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       No file
+       ----------------------------------------- */
+
+    else {
+
+        empty.hidden = false;
+
+    }
+
+
+    /* -----------------------------------------
+       Score
+       ----------------------------------------- */
+
+    score.onclick =
+        function () {
+
+            selectWork(
+                work
+            );
+
+        };
+
+
+    /* -----------------------------------------
+       Fullscreen
+       ----------------------------------------- */
+
+    fullscreen.onclick =
+        function () {
+
+            const target =
+                type === "abstract"
+                    ? pdf
+                    : poster;
+
+            if (
+                target.requestFullscreen
+            ) {
+
+                target.requestFullscreen();
+
+            }
+
+        };
+
+
+    modal.hidden = false;
+
+    document.body.classList.add(
+        "work-file-modal-open"
+    );
+}
+
+/* =====================================================
+   WORK FILE POPUP — CLOSE
+   ===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const modal =
+            document.getElementById(
+                "workFileModal"
+            );
+
+        const closeButton =
+            document.getElementById(
+                "workFileModalClose"
+            );
+
+        if (!modal) {
+            return;
+        }
+
+
+        function closeWorkFileModal() {
+
+            modal.hidden = true;
+
+            const pdf =
+                document.getElementById(
+                    "workFilePdf"
+                );
+
+            const poster =
+                document.getElementById(
+                    "workFilePoster"
+                );
+
+            if (pdf) {
+                pdf.src = "";
+            }
+
+            if (poster) {
+                poster.src = "";
+            }
+
+            document.body.classList.remove(
+                "work-file-modal-open"
+            );
+        }
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeWorkFileModal
+            );
+
+        }
+
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target.hasAttribute(
+                        "data-modal-close"
+                    )
+                ) {
+
+                    closeWorkFileModal();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape" &&
+                    !modal.hidden
+                ) {
+
+                    closeWorkFileModal();
+
+                }
 
             }
         );

@@ -5,10 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>
         ระบบประเมินผลงาน มหกรรมคุณภาพ ส.เด็ก
@@ -19,34 +16,18 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 
     <!-- ================= CSS ================= -->
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/base.css"
-    >
+    <link rel="stylesheet" href="./assets/css/base.css">
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/background.css"
-    >
+    <link rel="stylesheet" href="./assets/css/background.css">
 
-    <link
-        rel="stylesheet"
-        href="./assets/css/category.css"
-    >
+    <link rel="stylesheet" href="./assets/css/category.css">
 
 </head>
 
@@ -102,21 +83,14 @@
                                 กรรมการ
                             </span>
 
-                            <span
-                                id="judgeName"
-                                class="category-judge-name"
-                            >
+                            <span id="judgeName" class="category-judge-name">
                                 -
                             </span>
 
                         </div>
 
 
-                        <button
-                            type="button"
-                            id="logoutButton"
-                            class="category-logout-button"
-                        >
+                        <button type="button" id="logoutButton" class="category-logout-button">
                             ออกจากระบบ
                         </button>
 
@@ -166,10 +140,7 @@
                                     ผลงานทั้งหมด
                                 </span>
 
-                                <strong
-                                    id="workCount"
-                                    class="summary-value"
-                                >
+                                <strong id="workCount" class="summary-value">
                                     0
                                 </strong>
 
@@ -184,10 +155,7 @@
                                     ประเมินแล้ว
                                 </span>
 
-                                <strong
-                                    id="evaluatedCount"
-                                    class="summary-value"
-                                >
+                                <strong id="evaluatedCount" class="summary-value">
                                     0
                                 </strong>
 
@@ -206,16 +174,9 @@
                      LOADING
                      ====================================== -->
 
-                <section
-                    id="categoryLoading"
-                    class="category-loading"
-                >
+                <section id="categoryLoading" class="category-loading">
 
-                    <img
-                        src="./assets/images/qsnich-running.png"
-                        alt="กำลังโหลด"
-                        class="category-loading-character"
-                    >
+                    <img src="./assets/images/qsnich-running.png" alt="กำลังโหลด" class="category-loading-character">
 
                     <div class="category-loading-title">
                         กำลังโหลดข้อมูล...
@@ -232,10 +193,7 @@
                      WORK LIST
                      ====================================== -->
 
-                <section
-                    id="workList"
-                    class="work-list"
-                >
+                <section id="workList" class="work-list">
 
                     <!-- JavaScript จะสร้างรายการผลงานตรงนี้ -->
 
@@ -246,11 +204,7 @@
                      EMPTY
                      ====================================== -->
 
-                <section
-                    id="emptyState"
-                    class="empty-state"
-                    hidden
-                >
+                <section id="emptyState" class="empty-state" hidden>
 
                     <div class="empty-icon">
                         ✓
@@ -266,6 +220,69 @@
 
                 </section>
 
+
+            </div>
+
+            <!-- =====================================================
+     WORK FILE POPUP
+     ===================================================== -->
+
+            <div id="workFileModal" class="work-file-modal" hidden>
+
+                <div class="work-file-modal-backdrop" data-modal-close></div>
+
+
+                <div class="work-file-modal-dialog" role="dialog" aria-modal="true"
+                    aria-labelledby="workFileModalTitle">
+
+                    <!-- HEADER -->
+
+                    <div class="work-file-modal-header">
+
+                        <div id="workFileModalTitle" class="work-file-modal-title">
+                            ดูผลงาน
+                        </div>
+
+                        <button type="button" id="workFileModalClose" class="work-file-modal-close" aria-label="ปิด">
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="work-file-modal-content">
+
+                        <div id="workFileModalEmpty" class="work-file-modal-empty" hidden>
+                            ยังไม่มีไฟล์สำหรับผลงานนี้
+                        </div>
+
+
+                        <iframe id="workFilePdf" class="work-file-pdf" hidden title="บทคัดย่อ"></iframe>
+
+
+                        <img id="workFilePoster" class="work-file-poster" hidden alt="โปสเตอร์ผลงาน">
+
+                    </div>
+
+
+                    <!-- FOOTER -->
+
+                    <div class="work-file-modal-footer">
+
+                        <button type="button" id="workFileFullscreen" class="work-file-fullscreen">
+                            ⛶ ดูเต็มจอ
+                        </button>
+
+
+                        <button type="button" id="workFileScore" class="work-file-score">
+                            📝 ไปหน้าลงคะแนน
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 

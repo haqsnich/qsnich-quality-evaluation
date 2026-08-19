@@ -736,8 +736,6 @@
 
   }
 
-}
-
 
 @media (max-width: 560px) {
 
@@ -2586,5 +2584,292 @@
 
     margin: 0 !important;
   }
+
+}
+
+/* =====================================================
+   WORK FILE POPUP
+   ===================================================== */
+
+.work-file-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+.work-file-modal[hidden] {
+    display: none;
+}
+
+
+.work-file-modal-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background:
+        rgba(35, 45, 44, 0.48);
+
+    backdrop-filter: blur(4px);
+}
+
+
+.work-file-modal-dialog {
+    position: relative;
+    z-index: 1;
+
+    width: min(1100px, 94vw);
+    height: min(820px, 92vh);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #FFFFFF;
+
+    border:
+        1px solid
+        #DDE9E7;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px
+        rgba(40, 70, 68, 0.20);
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.work-file-modal-header {
+    flex: 0 0 auto;
+
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        10px
+        16px
+        10px
+        20px;
+
+    border-bottom:
+        1px solid
+        #E8EFEE;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-modal-title {
+    font-size: 17px;
+    font-weight: 600;
+
+    color: #2F4A48;
+}
+
+
+.work-file-modal-close {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #60706E;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.work-file-modal-close:hover {
+    background: #F2F7F6;
+    color: #2F4A48;
+}
+
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
+
+.work-file-modal-content {
+    position: relative;
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background: #F5F8F7;
+}
+
+
+.work-file-pdf {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-poster {
+    display: block;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+.work-file-modal-empty {
+    padding: 30px;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    color: #7A8785;
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.work-file-modal-footer {
+    flex: 0 0 auto;
+
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 10px 16px;
+
+    border-top:
+        1px solid
+        #E8EFEE;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-fullscreen,
+.work-file-score {
+    min-height: 42px;
+
+    padding:
+        8px
+        16px;
+
+    border-radius: 9px;
+
+    font-family: "Prompt", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.15s ease;
+}
+
+
+.work-file-fullscreen {
+    color: #3E716D;
+
+    background: #F3F9F8;
+
+    border:
+        1px solid
+        #BFD8D6;
+}
+
+
+.work-file-fullscreen:hover {
+    background: #EAF5F3;
+}
+
+
+.work-file-score {
+    color: #FFFFFF;
+
+    background: #4A9994;
+
+    border: none;
+}
+
+
+.work-file-score:hover {
+    background: #3E8C87;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .work-file-modal {
+        padding: 10px;
+    }
+
+    .work-file-modal-dialog {
+        width: 100%;
+        height: 94vh;
+
+        border-radius: 13px;
+    }
+
+    .work-file-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .work-file-fullscreen,
+    .work-file-score {
+        width: 100%;
+    }
 
 }

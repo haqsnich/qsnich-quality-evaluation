@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        ระบบประเมินผลงาน
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/background.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./assets/css/evaluation.css"
+    >
+
+</head>
+
+
+<body class="app-page">
+
+
+<div id="app">
+
+
+    <!-- =================================================
+         EVALUATION PAGE
+         ================================================= -->
+
+    <main class="evaluation-page">
+
+
+        <div class="evaluation-content">
+
+
+            <!-- HEADER -->
+
+            <header class="evaluation-header">
+
+                <button
+                    type="button"
+                    id="backButton"
+                    class="evaluation-back-button"
+                >
+                    ← กลับรายการ
+                </button>
+
+
+                <div class="evaluation-header-info">
+
+                    <div
+                        id="evaluationWorkId"
+                        class="evaluation-work-id"
+                    >
+                        -
+                    </div>
+
+                    <div
+                        id="evaluationCategory"
+                        class="evaluation-category"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="evaluation-header-space"></div>
+
+            </header>
+
+
+            <!-- WORK INFO -->
+
+            <section class="evaluation-work-info">
+
+                <h1
+                    id="evaluationWorkTitle"
+                >
+                    -
+                </h1>
+
+                <div
+                    id="evaluationDepartment"
+                    class="evaluation-department"
+                >
+                    -
+                </div>
+
+            </section>
+
+
+            <!-- CRITERIA -->
+
+            <section
+                id="criteriaContainer"
+                class="evaluation-criteria"
+            >
+
+                <div class="evaluation-loading">
+
+                    กำลังโหลดเกณฑ์การประเมิน...
+
+                </div>
+
+            </section>
+
+
+            <!-- TOTAL -->
+
+            <section class="evaluation-total">
+
+                <span>
+                    รวมคะแนน
+                </span>
+
+                <strong id="totalScore">
+                    0
+                </strong>
+
+                <span>
+                    คะแนน
+                </span>
+
+            </section>
+
+
+            <!-- COMMENT -->
+
+            <section class="evaluation-comment">
+
+                <h2>
+                    ความคิดเห็นเพิ่มเติม
+                </h2>
+
+                <textarea
+                    id="scoreComment"
+                    placeholder="กรุณาระบุความคิดเห็นเพิ่มเติม"
+                ></textarea>
+
+            </section>
+
+
+            <!-- SAVE -->
+
+            <section class="evaluation-save">
+
+                <div
+                    id="saveStatus"
+                    class="save-status"
+                >
+                    ⚪ ยังไม่ได้บันทึกคะแนน
+                </div>
+
+                <div
+                    id="lastSavedTime"
+                    class="save-time"
+                >
+                    ยังไม่มีการบันทึก
+                </div>
+
+
+                <div class="score-divider"></div>
+
+
+                <div class="evaluation-save-action">
+
+                    <button
+                        type="button"
+                        id="finishScoreButton"
+                        class="evaluation-submit-button"
+                    >
+                        ✔ ส่งคะแนน
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<script src="./assets/js/config.js"></script>
+
+<script src="./assets/js/evaluation.js"></script>
+
+
+</body>
+
+</html>
