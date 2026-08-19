@@ -2570,3 +2570,34 @@
   }
 
 }
+
+/* =====================================================
+   iPad แนวตั้ง — แบ่งพื้นที่ชื่อ / ปุ่มใหม่
+   ===================================================== */
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-card {
+    grid-template-columns:
+      42px
+      minmax(0, 1fr)
+      420px !important;
+
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .work-actions {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+}
