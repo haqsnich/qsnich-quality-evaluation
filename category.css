@@ -1,11 +1,3 @@
-/*
-========================================================
-ระบบประเมินผลงาน
-category.css
-Version : 2.0.1
-========================================================
-*/
-
 .category-page {
   min-height: 100vh;
 }
@@ -341,9 +333,7 @@ Version : 2.0.1
   display: grid;
 
   grid-template-columns:
-    48px
-    minmax(0, 1fr)
-    minmax(360px, auto);
+    48px minmax(0, 1fr) minmax(360px, auto);
 
   align-items: center;
 
@@ -482,58 +472,6 @@ Version : 2.0.1
   color: #5F6B70;
 
 }
-
-
-/* =====================================================
-   BUTTON
-   ===================================================== */
-
-.work-button {
-
-  min-width: 64px;
-
-  height: 40px;
-
-  padding: 0 16px;
-
-  border: 0;
-
-  border-radius: 11px;
-
-  background: #4A9994;
-
-  color: #FFFFFF;
-
-  font-family: "Prompt", sans-serif;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-
-}
-
-
-.work-button:hover {
-
-  background: #3E8C87;
-
-  transform: translateY(-1px);
-
-}
-
-
-.work-button:active {
-
-  transform: translateY(0);
-
-}
-
 
 /* =====================================================
    LOADING
@@ -835,17 +773,6 @@ Version : 2.0.1
     grid-template-columns: 40px minmax(0, 1fr);
 
     gap: 10px;
-
-  }
-
-
-  .work-button {
-
-    grid-column: 2;
-
-    justify-self: start;
-
-    margin-top: 4px;
 
   }
 
@@ -1418,7 +1345,7 @@ Version : 2.0.1
   border-radius: 50%;
 
   background:
-    rgba(74,153,148,0.12);
+    rgba(74, 153, 148, 0.12);
 
 }
 
@@ -2290,37 +2217,6 @@ Version : 2.0.1
 
 }
 
-
-/* -----------------------------------------------------
-   7. ปุ่มประเมิน
-   ----------------------------------------------------- */
-
-.work-button {
-
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease !important;
-
-}
-
-
-.work-button:hover {
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 4px 10px rgba(62, 140, 135, 0.22) !important;
-
-}
-
-
-.work-button:active {
-
-  transform: translateY(0);
-
-}
-
 /* =====================================================
    WORK ORDER — Badge
    ===================================================== */
@@ -2382,40 +2278,6 @@ Version : 2.0.1
 }
 
 
-/* -----------------------------------------------------
-   เมื่อกดปุ่มประเมิน
-   ----------------------------------------------------- */
-
-.work-card:has(.work-button:active) {
-
-  transform:
-    translateY(-2px) !important;
-
-  box-shadow:
-    0 8px 20px rgba(60, 80, 80, 0.10) !important;
-
-}
-
-
-/* ปุ่มยังมี Hover ได้ตามปกติ */
-
-.work-button:hover {
-
-  transform:
-    translateY(-2px);
-
-}
-
-
-/* ตอนกดปุ่ม */
-
-.work-button:active {
-
-  transform:
-    translateY(0) scale(0.97);
-
-}
-
 /* =====================================================
    WORK CARD — ล็อกสีชื่อเรื่อง
    ===================================================== */
@@ -2423,228 +2285,6 @@ Version : 2.0.1
 .work-card:hover .work-title {
 
   color: #263238 !important;
-
-}
-
-/* =====================================================
-   WORK BUTTON — ปุ่มประเมิน
-   ===================================================== */
-
-.work-button {
-
-  /* ขนาด */
-  min-width: 72px;
-  min-height: 42px;
-
-  padding: 9px 18px !important;
-
-  /* ตัวอักษร */
-  font-family: "Prompt", sans-serif !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-
-  /* สี */
-  color: #FFFFFF !important;
-  background: #4A9994 !important;
-
-  /* ขอบ */
-  border: none !important;
-  border-radius: 10px !important;
-
-  /* เงา */
-  box-shadow:
-    0 3px 8px rgba(74, 153, 148, 0.16) !important;
-
-  /* Interaction */
-  cursor: pointer;
-
-  transition:
-    background 0.18s ease,
-    transform 0.15s ease,
-    box-shadow 0.18s ease !important;
-
-}
-
-
-/* =====================================================
-   HOVER
-   ===================================================== */
-
-.work-button:hover {
-
-  background: #3E8C87 !important;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 5px 12px rgba(74, 153, 148, 0.24) !important;
-
-}
-
-
-/* =====================================================
-   CLICK
-   ===================================================== */
-
-.work-button:active {
-
-  background: #357A76 !important;
-
-  transform: translateY(1px) scale(0.97);
-
-  box-shadow:
-    0 2px 5px rgba(74, 153, 148, 0.18) !important;
-
-}
-
-
-/* =====================================================
-   FOCUS
-   ===================================================== */
-
-.work-button:focus-visible {
-
-  outline: 3px solid rgba(74, 153, 148, 0.25);
-
-  outline-offset: 3px;
-
-}
-
-/* =====================================================
-   WORK ACTIONS
-   ===================================================== */
-
-.work-actions {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  flex-wrap: nowrap;
-
-  white-space: nowrap;
-
-  margin-left: 0;
-}
-
-
-/* =====================================================
-   ปุ่มดูบทคัดย่อ / ดูโปสเตอร์
-   กรอบเท่ากัน + เนื้อหาอยู่กลาง
-   ===================================================== */
-
-.work-file-button {
-
-  width: 125px !important;
-  min-width: 125px !important;
-  max-width: 125px !important;
-
-  height: 42px !important;
-
-  padding: 0 !important;
-
-  display: inline-flex !important;
-
-  align-items: center !important;
-  justify-content: center !important;
-
-  text-align: center !important;
-
-  box-sizing: border-box !important;
-
-  font-family: "Prompt", sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-
-  white-space: nowrap;
-
-  color: #4A7774 !important;
-
-  background: #FFFFFF !important;
-
-  border: 1px solid #BFD8D6 !important;
-  border-radius: 10px !important;
-
-  cursor: pointer;
-}
-
-.work-file-button:hover {
-
-  background: #F3F9F8 !important;
-
-  border-color: #4A9994 !important;
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 4px 10px rgba(74, 153, 148, 0.10) !important;
-
-}
-
-
-/* =====================================================
-   ปุ่มลงคะแนน
-   ===================================================== */
-
-.work-button {
-
-  width: clamp(92px, 9vw, 120px);
-
-  min-height: 42px;
-
-  padding: 8px 16px !important;
-
-  font-family: "Prompt", sans-serif !important;
-
-  font-size: 15px !important;
-
-  white-space: nowrap;
-
-  font-weight: 600 !important;
-
-  color: #FFFFFF !important;
-
-  background: #4A9994 !important;
-
-  border: none !important;
-
-  border-radius: 10px !important;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 3px 8px rgba(74, 153, 148, 0.16) !important;
-
-  transition:
-    background 0.18s ease,
-    transform 0.15s ease,
-    box-shadow 0.18s ease !important;
-
-}
-
-
-.work-button:hover {
-
-  background: #3E8C87 !important;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 5px 12px rgba(74, 153, 148, 0.24) !important;
-
-}
-
-
-.work-button:active {
-
-  background: #357A76 !important;
-
-  transform:
-    translateY(1px) scale(0.97);
 
 }
 
@@ -2673,11 +2313,11 @@ Version : 2.0.1
 
 /* ค่าเริ่มต้น — คอม / iPad แนวนอน */
 .presenter-ipad-portrait {
-    display: none;
+  display: none;
 }
 
 .presenter-desktop {
-    display: inline;
+  display: inline;
 }
 
 
@@ -2687,13 +2327,13 @@ Version : 2.0.1
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
 
-    .presenter-desktop {
-        display: none;
-    }
+  .presenter-desktop {
+    display: none;
+  }
 
-    .presenter-ipad-portrait {
-        display: inline;
-    }
+  .presenter-ipad-portrait {
+    display: inline;
+  }
 
 }
 
@@ -2718,75 +2358,204 @@ Version : 2.0.1
   color: #4A9994 !important;
 }
 
-/* =====================================================
-   จัดข้อความในปุ่มดูบทคัดย่อ / ดูโปสเตอร์ให้อยู่กลาง
-   ===================================================== */
-
-.work-file-button {
-  display: inline-flex !important;
-
-  align-items: center !important;
-  justify-content: center !important;
-
-  text-align: center !important;
-}
 
 /* =====================================================
-   FILE BUTTON
-   ไอคอนไม่รบกวนตำแหน่งกึ่งกลางของข้อความ
+   WORK ACTIONS
    ===================================================== */
 
-.work-file-button {
-  position: relative !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  text-align: center !important;
-
-  padding: 0 !important;
+.work-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
 }
 
-.work-file-text {
-  display: block;
+
+/* =====================================================
+   ACTION BUTTON
+   ===================================================== */
+
+.work-action-button {
+  width: 126px;
+  min-width: 126px;
+  height: 42px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #BFD8D6;
+  border-radius: 10px;
+
+  background: #FFFFFF;
+  color: #4A7774;
+
+  font-family: "Prompt", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease;
+}
+
+
+/* =====================================================
+   ICON
+   ===================================================== */
+
+.work-action-icon {
+  position: static;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   TEXT
+   ===================================================== */
+
+.work-action-text {
+  display: inline-block;
+
+  width: auto;
+
+  flex: 0 0 auto;
 
   text-align: center;
 
   line-height: 1;
 }
 
-.work-file-icon {
-  position: absolute;
+/* =====================================================
+   ข้อความ — กลางกรอบจริง
+   ===================================================== */
 
-  left: 18px;
+.work-action-text {
+  display: block;
 
-  top: 50%;
+  width: 100%;
 
-  transform: translateY(-50%);
+  text-align: center;
 
   line-height: 1;
 }
 
+
 /* =====================================================
-   iPad แนวตั้ง
-   ขยายปุ่มไฟล์ให้กว้างเท่าคอม
+   ไอคอน — ไม่ดันข้อความ
    ===================================================== */
 
-@media (min-width: 768px)
-  and (max-width: 1024px)
-  and (orientation: portrait) {
+.work-action-text {
+  grid-column: 2;
 
-  .work-file-button {
-    width: 130px !important;
-    min-width: 130px !important;
-    max-width: 130px !important;
+  width: auto;
 
-    min-height: 42px !important;
+  text-align: center;
 
-    padding: 8px 14px !important;
+  line-height: 1;
+}
 
-    text-align: center !important;
+
+/* =====================================================
+   HOVER
+   ===================================================== */
+
+.work-action-button:not(.is-primary):hover {
+  background: #F3F9F8;
+  border-color: #4A9994;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(74, 153, 148, 0.10);
+}
+
+
+/* =====================================================
+   ลงคะแนน
+   ===================================================== */
+
+.work-action-button.is-primary {
+  border-color: #4A9994;
+
+  background: #4A9994;
+  color: #FFFFFF;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 3px 8px rgba(74, 153, 148, 0.16);
+}
+
+
+.work-action-button.is-primary:hover {
+  background: #3E8C87;
+  border-color: #3E8C87;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(74, 153, 148, 0.20);
+}
+
+
+/* =====================================================
+   ACTIVE
+   ===================================================== */
+
+.work-action-button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+
+/* =====================================================
+   FOCUS
+   ===================================================== */
+
+.work-action-button:focus-visible {
+  outline:
+    3px solid rgba(74, 153, 148, 0.25);
+
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .work-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .work-action-button {
+    width: 126px;
+    min-width: 126px;
   }
 
 }

@@ -742,75 +742,55 @@ function createWorkCard(
 
 
     /* =================================================
-       ACTIONS
-       ================================================= */
+   ACTION BUTTONS
+   ================================================= */
 
-    const actionArea =
-        document.createElement(
-            "div"
-        );
-
-    actionArea.className =
-        "work-actions";
+    const actionArea = document.createElement("div");
+    actionArea.className = "work-actions";
 
 
     /* =================================================
-       กำหนดหมวดที่มีโปสเตอร์
+       สร้างปุ่มมาตรฐาน
        ================================================= */
 
-    const posterCategories = [
+    function createActionButton(icon, text, className, onClick) {
 
-        "CQI Poster Presentation",
+        const button = document.createElement("button");
 
-        "CQI Digital Poster presentation",
+        button.type = "button";
 
-        "KM"
+        button.className =
+            "work-action-button" +
+            (className ? ` ${className}` : "");
 
-    ];
+        button.innerHTML = `
+        <span class="work-action-icon">${icon}</span>
+        <span class="work-action-text">${text}</span>
+    `;
 
-
-    const currentCategory =
-        String(
-            work.category ||
-            ""
-        ).trim();
-
-
-    const hasPoster =
-        posterCategories.includes(
-            currentCategory
-        );
-
-
-    /* =================================================
-       ปุ่มดูบทคัดย่อ
-       มีทุกหมวด
-       ================================================= */
-
-    const abstractButton =
-        document.createElement(
-            "button"
-        );
-
-    abstractButton.type =
-        "button";
-
-    abstractButton.className =
-        "work-file-button";
-
-    abstractButton.innerHTML =
-        '<span class="work-file-icon">📄</span><span class="work-file-text">ดูบทคัดย่อ</span>';
-
-
-    abstractButton.addEventListener(
-        "click",
-        function (event) {
+        button.addEventListener("click", function (event) {
 
             event.stopPropagation();
 
-            if (
-                work.pdf_url
-            ) {
+            onClick();
+
+        });
+
+        return button;
+    }
+
+
+    /* =================================================
+       ดูบทคัดย่อ
+       ================================================= */
+
+    const abstractButton = createActionButton(
+        "📄",
+        "ดูบทคัดย่อ",
+        "",
+        function () {
+
+            if (work.pdf_url) {
 
                 window.open(
                     work.pdf_url,
@@ -822,45 +802,33 @@ function createWorkCard(
         }
     );
 
-
-    actionArea.appendChild(
-        abstractButton
-    );
+    actionArea.appendChild(abstractButton);
 
 
     /* =================================================
-       ปุ่มดูโปสเตอร์
-       เฉพาะ 3 หมวด
+       ดูโปสเตอร์
        ================================================= */
 
-    if (
-        hasPoster
-    ) {
+    const posterCategories = [
+        "CQI Poster Presentation",
+        "CQI Digital Poster presentation",
+        "KM"
+    ];
 
-        const posterButton =
-            document.createElement(
-                "button"
-            );
+    const hasPoster =
+        posterCategories.includes(
+            String(work.category || "").trim()
+        );
 
-        posterButton.type =
-            "button";
+    if (hasPoster) {
 
-        posterButton.className =
-            "work-file-button";
+        const posterButton = createActionButton(
+            "🖼️",
+            "ดูโปสเตอร์",
+            "",
+            function () {
 
-        posterButton.innerHTML =
-            '<span class="work-file-icon">🖼️</span><span class="work-file-text">ดูโปสเตอร์</span>';
-
-
-        posterButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                if (
-                    work.poster_url
-                ) {
+                if (work.poster_url) {
 
                     window.open(
                         work.poster_url,
@@ -872,50 +840,27 @@ function createWorkCard(
             }
         );
 
-
-        actionArea.appendChild(
-            posterButton
-        );
+        actionArea.appendChild(posterButton);
 
     }
 
 
     /* =================================================
-       ปุ่มลงคะแนน
+       ลงคะแนน
        ================================================= */
 
-    const voteButton =
-        document.createElement(
-            "button"
-        );
+    const scoreButton = createActionButton(
+        "📝",
+        "ลงคะแนน",
+        "is-primary",
+        function () {
 
-    voteButton.type =
-        "button";
-
-    voteButton.className =
-        "work-button";
-
-    voteButton.innerHTML =
-        "📝 ลงคะแนน";
-
-
-    voteButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.stopPropagation();
-
-            selectWork(
-                work
-            );
+            selectWork(work);
 
         }
     );
 
-
-    actionArea.appendChild(
-        voteButton
-    );
+    actionArea.appendChild(scoreButton);
 
 
     /* =================================================
