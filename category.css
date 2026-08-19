@@ -2732,34 +2732,38 @@ Version : 2.0.1
 }
 
 /* =====================================================
-   FILE BUTTON — จัด icon + text ให้อยู่กลาง
+   FILE BUTTON
+   ไอคอนไม่รบกวนตำแหน่งกึ่งกลางของข้อความ
    ===================================================== */
 
 .work-file-button {
-  width: 125px !important;
-  min-width: 125px !important;
-  max-width: 125px !important;
+  position: relative !important;
 
-  height: 42px !important;
-  padding: 0 !important;
-
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 
-  gap: 5px !important;
-
-  box-sizing: border-box !important;
-
   text-align: center !important;
-}
 
-.work-file-icon {
-  flex: 0 0 auto;
-  line-height: 1;
+  padding: 0 !important;
 }
 
 .work-file-text {
-  flex: 0 0 auto;
+  display: block;
+
+  text-align: center;
+
+  line-height: 1;
+}
+
+.work-file-icon {
+  position: absolute;
+
+  left: 18px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
   line-height: 1;
 }
