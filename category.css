@@ -2730,3 +2730,36 @@ Version : 2.0.1
 
   text-align: center !important;
 }
+
+/* =====================================================
+   FILE BUTTON — จัด icon + text ให้อยู่กลาง
+   ===================================================== */
+
+.work-file-button {
+  width: 125px !important;
+  min-width: 125px !important;
+  max-width: 125px !important;
+
+  height: 42px !important;
+  padding: 0 !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  gap: 5px !important;
+
+  box-sizing: border-box !important;
+
+  text-align: center !important;
+}
+
+.work-file-icon {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.work-file-text {
+  flex: 0 0 auto;
+  line-height: 1;
+}
