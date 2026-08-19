@@ -2544,6 +2544,13 @@ Version : 2.0.1
 
   padding: 8px 14px !important;
 
+  display: inline-flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  text-align: center !important;
+
   font-family: "Prompt", sans-serif !important;
 
   font-size: 14px !important;
@@ -2562,12 +2569,13 @@ Version : 2.0.1
 
   cursor: pointer;
 
+  box-sizing: border-box !important;
+
   transition:
     background 0.18s ease,
     border-color 0.18s ease,
     transform 0.15s ease,
     box-shadow 0.18s ease !important;
-
 }
 
 
