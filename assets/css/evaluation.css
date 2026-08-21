@@ -402,54 +402,88 @@
 }
 
 /* =====================================================
-   LOADING
+   COMMON PAGE LOADING
    ===================================================== */
 
 .evaluation-loading {
 
     width: 100%;
-    box-sizing: border-box;
 
-    padding: 35px 20px;
+    min-height: 300px;
 
     display: flex;
+
     flex-direction: column;
 
     align-items: center;
+
     justify-content: center;
 
     text-align: center;
+
+    box-sizing: border-box;
+
 }
 
 
 .evaluation-loading-character {
 
     width: 90px;
-    max-width: 100%;
 
-    margin-bottom: 10px;
+    height: auto;
 
-    object-fit: contain;
+    margin-bottom: 16px;
+
+    animation:
+        evaluationLoadingBounce
+        0.8s
+        ease-in-out
+        infinite
+        alternate;
+
 }
 
 
 .evaluation-loading-title {
 
-    font-size: 17px;
+    font-size: 18px;
 
     font-weight: 600;
 
-    color: #3E8C87;
+    color:
+        #2F3542;
+
+    margin-bottom: 6px;
+
 }
 
 
 .evaluation-loading-text {
 
-    margin-top: 4px;
+    font-size: 13px;
 
-    font-size: 14px;
+    color:
+        #8A9694;
 
-    color: #777;
+}
+
+
+@keyframes evaluationLoadingBounce {
+
+    from {
+
+        transform:
+            translateY(0);
+
+    }
+
+    to {
+
+        transform:
+            translateY(-8px);
+
+    }
+
 }
 
 
@@ -920,28 +954,6 @@
 
     color:
         #9A9896;
-
-    font-size: 10px;
-
-}
-
-
-.draft-status {
-
-    flex:
-        0 0 auto;
-
-    padding:
-        5px
-        9px;
-
-    border-radius: 20px;
-
-    background:
-        #F7F8F8;
-
-    color:
-        #8A9694;
 
     font-size: 10px;
 
@@ -1660,13 +1672,6 @@
 
 
     .save-time {
-
-        font-size: 9px;
-
-    }
-
-
-    .draft-status {
 
         font-size: 9px;
 

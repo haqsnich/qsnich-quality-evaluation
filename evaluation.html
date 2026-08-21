@@ -221,13 +221,29 @@
 
 
                 <!-- =================================================
-                 CRITERIA CONTAINER
-                 ================================================= -->
+     CRITERIA LOADING
+     ================================================= -->
 
-                <div id="criteriaContainer" class="evaluation-criteria"></div>
+                <section id="criteriaLoading" class="evaluation-loading">
 
+                    <img src="./assets/images/qsnich-running.png" alt="กำลังโหลด" class="evaluation-loading-character">
+
+                    <div class="evaluation-loading-title">
+                        กำลังโหลดข้อมูลการประเมิน...
+                    </div>
+
+                    <div class="evaluation-loading-text">
+                        โปรดรอสักครู่
+                    </div>
 
                 </section>
+
+
+                <!-- =================================================
+     CRITERIA CONTAINER
+     ================================================= -->
+
+                <div id="criteriaContainer" class="evaluation-criteria" style="display: none;"></div>
 
 
 
@@ -298,18 +314,7 @@
 
                         </div>
 
-
-                        <!-- สถานะ Draft -->
-                        <div id="draftStatus" class="draft-status">
-                            ยังไม่มี Draft
-                        </div>
-
-
                     </div>
-
-
-                    <div class="score-divider"></div>
-
 
                     <div class="evaluation-save-action">
 

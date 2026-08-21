@@ -8,52 +8,52 @@ let criteria = [];
 let draftSaveTimer = null;
 
 const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbyBy3Op76Yt6JJUH__YM-cgJi8KxKHPlcgW0eg0-Zkr_qLsjbUshT1VwAAAGY5Hg6WT/exec";
+    "https://script.google.com/macros/s/AKfycbzak_-7CxO6BvJ4GW-n5O9BvpbPGME-PQXdfoFlU-VHHHcsTKUsEEEDEq06zaqmZ-3BPw/exec";
 
 
 /* =====================================================
-   START
+   เมื่อหน้าโหลด
+   หน้าประเมิน
+   โหลดข้อมูลใหม่ทุกครั้ง
+   ไม่ใช้ Works Cache
    ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        console.log(
-            "========== EVALUATION START =========="
-        );
-
-
-        /* =================================================
-           RESET CONFIRM MODAL
-           ไม่ให้ Popup แสดงตั้งแต่เปิดหน้า
-           ================================================= */
-
-        const scoreConfirmModal =
-            document.getElementById(
-                "scoreConfirmModal"
-            );
-
-        if (scoreConfirmModal) {
-
-            scoreConfirmModal.hidden =
-                true;
-
-            scoreConfirmModal.style.display =
-                "none";
-
-        }
-
-
-        /* =================================================
-           LOAD PAGE
-           ================================================= */
+        /*
+         * =============================================
+         * 1. โหลดผลงานที่เลือก
+         * =============================================
+         */
 
         loadSelectedWork();
 
+
+        /*
+         * =============================================
+         * 2. แสดงชื่อกรรมการ
+         * =============================================
+         */
+
         displayJudge();
 
+
+        /*
+         * =============================================
+         * 3. ผูกปุ่มต่าง ๆ
+         * =============================================
+         */
+
         setupEvents();
+
+
+        /*
+         * =============================================
+         * 4. โหลดเกณฑ์ + คะแนน
+         * =============================================
+         */
 
         loadCriteria();
 
@@ -86,8 +86,11 @@ function loadSelectedWork() {
         const key =
             possibleKeys[i];
 
+
         const raw =
-            sessionStorage.getItem(key);
+            sessionStorage.getItem(
+                key
+            );
 
 
         if (!raw) {
@@ -98,7 +101,9 @@ function loadSelectedWork() {
         try {
 
             const data =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
 
             if (data) {
@@ -106,10 +111,12 @@ function loadSelectedWork() {
                 selectedWork =
                     data;
 
+
                 console.log(
                     "Selected work:",
                     selectedWork
                 );
+
 
                 break;
 
@@ -133,6 +140,7 @@ function loadSelectedWork() {
         console.error(
             "ไม่พบข้อมูลผลงาน"
         );
+
 
         showEmptyWork();
 
@@ -414,13 +422,20 @@ function displayJudge() {
 
 /* =====================================================
    LOAD CRITERIA
+   โหลดเกณฑ์ + คะแนน
+   Cache ก่อน → คะแนนจริงทีหลัง
    ===================================================== */
 
-function loadCriteria() {
+async function loadCriteria() {
 
     const container =
         document.getElementById(
             "criteriaContainer"
+        );
+
+    const loading =
+        document.getElementById(
+            "criteriaLoading"
         );
 
 
@@ -430,33 +445,13 @@ function loadCriteria() {
 
 
     /*
-     * แสดง Loading
+     * =============================================
+     * 1. ลองอ่าน Criteria จาก Cache ก่อน
+     * =============================================
      */
 
-    container.innerHTML = `
-        <div class="evaluation-loading">
+    let filteredCriteria = [];
 
-            <img
-                src="./assets/images/qsnich-running.png"
-                alt="กำลังโหลด"
-                class="evaluation-loading-character"
-            >
-
-            <div class="evaluation-loading-title">
-                กำลังโหลดเกณฑ์การประเมิน...
-            </div>
-
-            <div class="evaluation-loading-text">
-                โปรดรอสักครู่
-            </div>
-
-        </div>
-    `;
-
-
-    /*
-     * ตรวจ Cache
-     */
 
     const cached =
         sessionStorage.getItem(
@@ -469,10 +464,9 @@ function loadCriteria() {
         try {
 
             const cachedData =
-                JSON.parse(cached);
-
-
-            let filtered = [];
+                JSON.parse(
+                    cached
+                );
 
 
             if (
@@ -481,9 +475,11 @@ function loadCriteria() {
                 )
             ) {
 
-                filtered =
+                filteredCriteria =
                     cachedData.filter(
-                        function (item) {
+                        function (
+                            item
+                        ) {
 
                             return (
                                 String(
@@ -500,35 +496,21 @@ function loadCriteria() {
                         }
                     );
 
-            } else if (
+            }
+            else if (
                 selectedWork &&
                 selectedWork.category
             ) {
 
-                filtered =
+                filteredCriteria =
                     cachedData[
                     selectedWork.category
                     ] || [];
 
             }
 
-
-            if (
-                filtered.length > 0
-            ) {
-
-                criteria =
-                    filtered;
-
-                renderCriteria();
-
-                loadOldScore();
-
-                return;
-
-            }
-
-        } catch (error) {
+        }
+        catch (error) {
 
             console.warn(
                 "อ่าน Criteria Cache ไม่ได้:",
@@ -541,13 +523,89 @@ function loadCriteria() {
 
 
     /*
-     * ไม่มี Cache
+     * =============================================
+     * 2. มี Cache
+     * แสดงเกณฑ์ทันที
+     * =============================================
      */
 
-    loadCriteriaFromAPI();
+    if (
+        filteredCriteria.length > 0
+    ) {
+
+        criteria =
+            filteredCriteria;
+
+
+        /*
+         * แสดงเกณฑ์ทันที
+         */
+
+        renderCriteria();
+
+
+        /*
+         * =============================================
+         * 3. โหลดคะแนนจริงจากชีท
+         *
+         * ไม่ใช้ Cache คะแนน
+         * =============================================
+         */
+
+        await loadOldScore();
+
+
+        /*
+         * =============================================
+         * 4. ทุกอย่างพร้อม
+         * =============================================
+         */
+
+        if (loading) {
+
+            loading.style.display =
+                "none";
+
+        }
+
+
+        container.style.display =
+            "";
+
+        container.style.visibility =
+            "visible";
+
+
+        return;
+
+    }
+
+
+    /*
+     * =============================================
+     * 5. ไม่มี Cache
+     * แสดงตัววิ่งแล้วโหลด GAS
+     * =============================================
+     */
+
+    if (loading) {
+
+        loading.style.display =
+            "flex";
+
+    }
+
+
+    container.style.display =
+        "none";
+
+    container.style.visibility =
+        "hidden";
+
+
+    await loadCriteriaFromAPI();
 
 }
-
 
 /* =====================================================
    LOAD CRITERIA FROM API
@@ -555,7 +613,50 @@ function loadCriteria() {
 
 async function loadCriteriaFromAPI() {
 
+    const container =
+        document.getElementById(
+            "criteriaContainer"
+        );
+
+    const loading =
+        document.getElementById(
+            "criteriaLoading"
+        );
+
+
     try {
+
+        /*
+         * =============================================
+         * แสดงตัววิ่ง
+         * ซ่อนเกณฑ์
+         * =============================================
+         */
+
+        if (loading) {
+
+            loading.style.display =
+                "flex";
+
+        }
+
+
+        if (container) {
+
+            container.style.display =
+                "none";
+
+            container.style.visibility =
+                "hidden";
+
+        }
+
+
+        /*
+         * =============================================
+         * โหลด Criteria จาก GAS
+         * =============================================
+         */
 
         const response =
             await fetch(
@@ -619,12 +720,16 @@ async function loadCriteriaFromAPI() {
 
 
         /*
+         * =============================================
          * กรองตามหมวดผลงาน
+         * =============================================
          */
 
         criteria =
             allCriteria.filter(
-                function (item) {
+                function (
+                    item
+                ) {
 
                     return (
                         String(
@@ -655,7 +760,9 @@ async function loadCriteriaFromAPI() {
 
 
         /*
+         * =============================================
          * เก็บ Cache
+         * =============================================
          */
 
         sessionStorage.setItem(
@@ -665,14 +772,52 @@ async function loadCriteriaFromAPI() {
             )
         );
 
-
         /*
-         * แสดง
+         * =============================================
+         * สร้างช่องคะแนน
+         * แต่ยังไม่แสดง
+         * =============================================
          */
 
         renderCriteria();
 
-        loadOldScore();
+
+        /*
+         * =============================================
+         * โหลดคะแนนจริง
+         *
+         * ชีทเป็นหลัก
+         * Draft เป็นรอง
+         * ไม่มีทั้งคู่ = 0
+         * =============================================
+         */
+
+        await loadOldScore();
+
+
+        /*
+         * =============================================
+         * ทุกอย่างพร้อมแล้ว
+         * =============================================
+         */
+
+        if (loading) {
+
+            loading.style.display =
+                "none";
+
+        }
+
+
+        if (container) {
+
+            container.style.display =
+                "";
+
+            container.style.visibility =
+                "visible";
+
+        }
 
 
     } catch (error) {
@@ -683,14 +828,38 @@ async function loadCriteriaFromAPI() {
         );
 
 
+        /*
+         * กรณี Error
+         * ต้องเอาตัววิ่งออก
+         * เพื่อไม่ให้ค้างตลอดไป
+         */
+
+        if (loading) {
+
+            loading.style.display =
+                "none";
+
+        }
+
+
+        if (container) {
+
+            container.style.display =
+                "";
+
+            container.style.visibility =
+                "visible";
+
+        }
+
+
         showEvaluationError(
-            "ไม่สามารถโหลดเกณฑ์การประเมินได้"
+            "ไม่สามารถโหลดข้อมูลการประเมินได้"
         );
 
     }
 
 }
-
 
 /* =====================================================
    RENDER CRITERIA
@@ -807,10 +976,6 @@ function renderCriteria() {
 
 
     bindScoreInputs();
-
-
-    loadScoreDraft();
-
 
     updateTotalScore();
 
@@ -1234,7 +1399,8 @@ function saveScoreDraft() {
 
 
         updateDraftStatus(
-            "บันทึกอัตโนมัติแล้ว"
+            "บันทึกแบบร่างแล้ว",
+            draft.savedAt
         );
 
 
@@ -1350,7 +1516,7 @@ function loadScoreDraft() {
     if (!raw) {
 
         updateDraftStatus(
-            "ยังไม่มี Draft"
+            "ยังไม่มีการส่งคะแนน"
         );
 
         return false;
@@ -1490,7 +1656,8 @@ function loadScoreDraft() {
 
 
     updateDraftStatus(
-        "โหลดคะแนน Draft เดิมแล้ว"
+        "บันทึกแบบร่างแล้ว",
+        draft.savedAt
     );
 
 
@@ -1501,22 +1668,72 @@ function loadScoreDraft() {
 
 /* =====================================================
    DRAFT STATUS
+   แสดงสถานะรวมด้านซ้าย
    ===================================================== */
 
 function updateDraftStatus(
-    message
+    message,
+    savedAt
 ) {
 
-    const element =
+    const saveStatus =
         document.getElementById(
-            "draftStatus"
+            "saveStatus"
+        );
+
+    const lastSavedTime =
+        document.getElementById(
+            "lastSavedTime"
         );
 
 
-    if (element) {
+    if (!saveStatus) {
+        return;
+    }
 
-        element.textContent =
-            message;
+
+    /* ---------------------------------------------
+       แสดงสถานะ Draft
+       --------------------------------------------- */
+
+    saveStatus.textContent =
+        "🟡 " +
+        message;
+
+
+    saveStatus.dataset.serverScore =
+        "false";
+
+
+    /* ---------------------------------------------
+       แสดงเวลาบันทึก Draft
+       --------------------------------------------- */
+
+    if (
+        lastSavedTime &&
+        savedAt
+    ) {
+
+        const date =
+            new Date(
+                savedAt
+            );
+
+
+        lastSavedTime.textContent =
+            "บันทึกแบบร่างล่าสุด : " +
+            date.toLocaleString(
+                "th-TH",
+                {
+                    dateStyle: "short",
+                    timeStyle: "short"
+                }
+            );
+
+    } else if (lastSavedTime) {
+
+        lastSavedTime.textContent =
+            "เมื่อกรอกคะแนนในช่อง คะแนนจะถูกบันทึกเป็นแบบร่างโดยอัตโนมัติ";
 
     }
 
@@ -1556,6 +1773,7 @@ async function loadOldScore() {
         selectedWork.work_id ||
         "";
 
+
     console.log(
         "OLD SCORE REQUEST:",
         {
@@ -1569,13 +1787,23 @@ async function loadOldScore() {
         !judgeId ||
         !workId
     ) {
+        console.warn(
+            "OLD SCORE: ไม่มี judgeId หรือ workId"
+        );
 
         return;
-
     }
 
 
     try {
+
+        /*
+         * สร้าง URL
+         *
+         * เพิ่ม timestamp เพื่อป้องกัน
+         * Browser / Safari / iPad cache
+         * เอาผล getScoreForEdit เดิมมาใช้
+         */
 
         const url =
             GAS_URL +
@@ -1587,16 +1815,37 @@ async function loadOldScore() {
             "&work_id=" +
             encodeURIComponent(
                 workId
-            );
+            ) +
+            "&_t=" +
+            Date.now();
+
+
+        console.log(
+            "OLD SCORE URL =",
+            url
+        );
 
 
         const response =
             await fetch(
-                url
+                url,
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
         if (!response.ok) {
+
+            console.warn(
+                "OLD SCORE HTTP ERROR =",
+                response.status
+            );
+
             return;
         }
 
@@ -1611,15 +1860,22 @@ async function loadOldScore() {
         );
 
 
-        let score = null;
+        let score =
+            null;
 
+
+        /*
+         * รองรับ response
+         * หลายรูปแบบ
+         */
 
         if (
             result &&
             result.success === false
         ) {
 
-            score = null;
+            score =
+                null;
 
         } else if (
             result &&
@@ -1653,10 +1909,20 @@ async function loadOldScore() {
 
         /*
          * ไม่มีคะแนนเก่า
-         * อย่าแสดงว่า "มีคะแนน"
          */
 
         if (!score) {
+
+            console.log(
+                "OLD SCORE: ไม่พบคะแนนเก่า → โหลด Draft"
+            );
+
+            loadScoreDraft();
+
+            updateTotalScore();
+
+            updateCriteriaProgress();
+
             return;
         }
 
@@ -1666,7 +1932,8 @@ async function loadOldScore() {
 
 
         /*
-         * ใส่คะแนน
+         * ใส่คะแนนเก่ากลับเข้า
+         * ช่องประเมิน
          */
 
         criteria.forEach(
@@ -1699,24 +1966,30 @@ async function loadOldScore() {
                     value !== null &&
                     value !== ""
                 ) {
+
                     input.value =
                         value;
+
 
                     hasServerScore =
                         true;
 
+
                     console.log(
                         "มีคะแนนเก่า:",
-                        "c" + (index + 1),
+                        "c" +
+                        (index + 1),
                         value
                     );
+
                 }
+
             }
         );
 
 
         /*
-         * ความคิดเห็น
+         * ความคิดเห็นเดิม
          */
 
         const comment =
@@ -1737,23 +2010,35 @@ async function loadOldScore() {
         }
 
 
+        /*
+         * ถ้าไม่มีคะแนนจริง
+         * ไม่ต้องเปลี่ยนสถานะ
+         */
+
         if (
             !hasServerScore
         ) {
 
-            return;
+            console.log(
+                "OLD SCORE: ไม่พบ c1-c8"
+            );
 
+            return;
         }
 
 
+        /*
+         * คำนวณคะแนนรวมใหม่
+         */
+
         updateTotalScore();
+
 
         updateCriteriaProgress();
 
 
         /*
-         * สำคัญ:
-         * แสดงสถานะเฉพาะผลงานนี้
+         * แสดงสถานะ
          */
 
         const saveStatus =
@@ -1761,18 +2046,26 @@ async function loadOldScore() {
                 "saveStatus"
             );
 
+
         if (saveStatus) {
 
             saveStatus.dataset.serverScore =
                 "true";
 
+
             saveStatus.textContent =
                 "🟢 ประเมินแล้ว";
+
 
             saveStatus.style.display =
                 "block";
 
         }
+
+
+        /*
+         * แสดงเวลาที่บันทึก
+         */
 
         const lastSavedTime =
             document.getElementById(
@@ -1785,12 +2078,22 @@ async function loadOldScore() {
             score.updated_at
         ) {
 
+            const date =
+                new Date(
+                    score.updated_at
+                );
+
             lastSavedTime.textContent =
                 "บันทึกล่าสุด : " +
-                score.updated_at;
+                date.toLocaleString(
+                    "th-TH",
+                    {
+                        dateStyle: "short",
+                        timeStyle: "short"
+                    }
+                );
 
         }
-
 
     } catch (error) {
 
@@ -2368,10 +2671,12 @@ async function saveConfirmedScore(
 
         /*
          * กลับหน้าเลือกผลงาน
+         * บังคับให้ Category โหลดข้อมูลใหม่
          */
 
         window.location.href =
-            "./category.html";
+            "./category.html?refresh=" +
+            Date.now();
 
 
     } catch (error) {
@@ -2568,19 +2873,23 @@ function showEvaluationError(
 
 
     container.innerHTML = `
-
         <div class="evaluation-error">
+
+            <img
+                class="error-mascot"
+                src="./assets/images/qsnich-sad.png"
+                alt="ไม่สามารถโหลดเกณฑ์ได้"
+            >
 
             <strong>
                 ${escapeHtml(message)}
             </strong>
 
             <div>
-                กรุณาลองใหม่อีกครั้ง
+                กรุณากด refresh หน้านี้ หรือเข้าสู่ระบบใหม่อีกครั้ง
             </div>
 
         </div>
-
     `;
 
 }

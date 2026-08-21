@@ -474,66 +474,6 @@
 }
 
 /* =====================================================
-   LOADING
-   ===================================================== */
-
-.category-loading {
-
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 35px 20px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-}
-
-
-.category-loading-character {
-
-  width: 90px;
-
-  max-width: 100%;
-
-  margin-bottom: 10px;
-
-  object-fit: contain;
-
-}
-
-
-.category-loading-title {
-
-  font-size: 17px;
-
-  font-weight: 600;
-
-  color: #3E8C87;
-
-}
-
-
-.category-loading-text {
-
-  margin-top: 4px;
-
-  font-size: 14px;
-
-  color: #777;
-
-}
-
-
-/* =====================================================
    EMPTY
    ===================================================== */
 
@@ -599,50 +539,56 @@
 }
 
 
+.category-error {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        18px
+        24px;
+
+    margin:
+        24px
+        0;
+
+    border:
+        1px solid
+        #FFD1D1;
+
+    border-radius:
+        14px;
+
+    background:
+        #FFF7F7;
+
+    color:
+        #D9363E;
+}
+
 /* =====================================================
-   ERROR
+   ERROR MASCOT
    ===================================================== */
 
-.category-error {
+.error-mascot {
+    display: block;
 
-  width: 100%;
+    width: 150px;
+    max-width: 45vw;
+    height: auto;
 
-  box-sizing: border-box;
+    margin:
+        0 auto 12px;
 
-  padding: 25px;
-
-  border-radius: 14px;
-
-  background: #FFF5F5;
-
-  border: 1px solid #F3D0D0;
-
-  text-align: center;
-
+    object-fit: contain;
 }
-
-
-.category-error-title {
-
-  font-size: 18px;
-
-  font-weight: 600;
-
-  color: #C94A4A;
-
-}
-
-
-.category-error-message {
-
-  margin-top: 6px;
-
-  font-size: 14px;
-
-  color: #777;
-
-}
-
 
 /* =====================================================
    RESPONSIVE
@@ -1570,130 +1516,8 @@
 
 }
 
-
-.runner-animation {
-
-  width: 110px;
-
-  height: 110px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-}
-
-
-.runner-svg {
-
-  width: 90px;
-
-  height: 90px;
-
-  overflow: visible;
-
-  fill: none;
-
-  stroke: #4A9994;
-
-  stroke-width: 5;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
-
-  animation:
-    runnerBounce 0.45s ease-in-out infinite alternate;
-
-}
-
-
-/* แขน */
-
-.runner-arm {
-
-  transform-origin: 60px 34px;
-
-  animation:
-    armRun 0.45s ease-in-out infinite alternate;
-
-}
-
-
-/* ขา */
-
-.runner-leg {
-
-  transform-origin: 55px 54px;
-
-  animation:
-    legRun 0.45s ease-in-out infinite alternate;
-
-}
-
-
-/* ตัวเด้ง */
-
-@keyframes runnerBounce {
-
-  from {
-
-    transform:
-      translateY(2px);
-
-  }
-
-  to {
-
-    transform:
-      translateY(-5px);
-
-  }
-
-}
-
-
-/* แขนวิ่ง */
-
-@keyframes armRun {
-
-  from {
-
-    transform:
-      rotate(-18deg);
-
-  }
-
-  to {
-
-    transform:
-      rotate(18deg);
-
-  }
-
-}
-
-
-/* ขาวิ่ง */
-
-@keyframes legRun {
-
-  from {
-
-    transform:
-      rotate(-20deg);
-
-  }
-
-  to {
-
-    transform:
-      rotate(20deg);
-
-  }
-
+#categoryLoading.cache-hidden {
+    display: none !important;
 }
 
 
@@ -1977,10 +1801,9 @@
   grid-template-columns: 1fr !important;
   row-gap: 8px !important;
   width: 100%;
-  margin-top: -10px !important;
+  margin-top: 8px !important;
   padding-top: 0 !important;
 }
-
 
 /* หัวหมวด เช่น CQI Oral Presentation */
 
@@ -2870,6 +2693,140 @@
     .work-file-fullscreen,
     .work-file-score {
         width: 100%;
+    }
+
+}
+
+/* =====================================================
+   HIDE LOADING COMPLETELY WHEN CACHE IS READY
+   ===================================================== */
+
+#categoryLoading[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   แก้ไขคะแนน
+   ===================================================== */
+
+.work-action-button.is-warning {
+  border-color: #E6B84A;
+  background: #F4C95D;
+  color: #5C4A16;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 3px 8px rgba(230, 184, 74, 0.20);
+}
+
+
+.work-action-button.is-warning:hover {
+  background: #EABD4F;
+  border-color: #D9AA35;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(230, 184, 74, 0.25);
+}
+
+/* =====================================================
+   WORK FILE POPUP — SMOOTH OPEN
+   ===================================================== */
+
+.work-file-modal:not([hidden]) {
+
+    animation:
+        workFileBackdropIn
+        0.28s
+        ease-out
+        both;
+
+}
+
+
+.work-file-modal:not([hidden])
+.work-file-modal-dialog {
+
+    animation:
+        workFileDialogIn
+        0.38s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* -----------------------------------------------------
+   พื้นหลัง
+   ----------------------------------------------------- */
+
+@keyframes workFileBackdropIn {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* -----------------------------------------------------
+   กล่อง Popup
+   ----------------------------------------------------- */
+
+@keyframes workFileDialogIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(14px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* -----------------------------------------------------
+   ลด Animation หากผู้ใช้ตั้งค่า Reduce Motion
+   ----------------------------------------------------- */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .work-file-modal:not([hidden]),
+    .work-file-modal:not([hidden])
+    .work-file-modal-dialog {
+
+        animation: none;
+
     }
 
 }

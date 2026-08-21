@@ -12,23 +12,37 @@ Version : 2.0.1
    ===================================================== */
 
 const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbxM65eSGEZHx91D_N2dqQAHFN-llCdjWt7tV8_zfI4Gq6n21QgbQRaqpStDjG-VAy5B_w/exec";
+    "https://script.google.com/macros/s/AKfycbzak_-7CxO6BvJ4GW-n5O9BvpbPGME-PQXdfoFlU-VHHHcsTKUsEEEDEq06zaqmZ-3BPw/exec";
 
 
 /* =====================================================
    เมื่อหน้าโหลด
+   โหลดข้อมูลใหม่ทุกครั้ง
    ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+        /*
+         * แสดงตัววิ่งทุกครั้ง
+         */
+
         showCategoryLoading();
+
+
+        /*
+         * โหลดข้อมูลใหม่จาก GAS
+         */
 
         loadCategoryData();
 
     }
 );
+
+/* =====================================================
+   CATEGORY LOADING
+   ===================================================== */
 
 function showCategoryLoading() {
 
@@ -41,9 +55,15 @@ function showCategoryLoading() {
         return;
     }
 
-    loading.hidden = false;
+    loading.hidden =
+        false;
+
+    loading.classList.remove(
+        "hide"
+    );
 
 }
+
 
 function hideCategoryLoading() {
 
@@ -52,17 +72,72 @@ function hideCategoryLoading() {
             "categoryLoading"
         );
 
+
     if (!loading) {
         return;
     }
 
-    loading.classList.add("hide");
+
+    loading.classList.add(
+        "hide"
+    );
+
+
+    /*
+     * รอให้ตัววิ่งเริ่มหายก่อน
+     * แล้วค่อยให้เนื้อหาเลื่อนขึ้น
+     */
+
+    const workList =
+        document.getElementById(
+            "workList"
+        );
+
+
+    if (!workList) {
+        return;
+    }
+
+
+    /*
+     * เอา animation เดิมออกก่อน
+     * กันกรณีเรียกฟังก์ชันซ้ำ
+     */
+
+    workList.classList.remove(
+        "content-enter"
+    );
+
+
+    /*
+     * บังคับให้ Browser วาดรอบใหม่
+     * ก่อนเริ่ม Animation
+     */
+
+    void workList.offsetWidth;
+
+
+    /*
+     * รอให้ตัววิ่งเริ่มยุบ
+     * แล้วค่อยปล่อย Content ขึ้นมา
+     */
+
+    setTimeout(
+        function () {
+
+            workList.classList.add(
+                "content-enter"
+            );
+
+        },
+        600
+    );
 
 }
 
-
 /* =====================================================
    โหลดข้อมูล Category
+   โหลดข้อมูลใหม่ทุกครั้ง
    ===================================================== */
 
 async function loadCategoryData() {
@@ -74,7 +149,9 @@ async function loadCategoryData() {
            ----------------------------------------------- */
 
         const storedJudge =
-            sessionStorage.getItem("judge");
+            sessionStorage.getItem(
+                "judge"
+            );
 
 
         if (!storedJudge) {
@@ -87,7 +164,9 @@ async function loadCategoryData() {
 
 
         const loginData =
-            JSON.parse(storedJudge);
+            JSON.parse(
+                storedJudge
+            );
 
 
         if (
@@ -116,13 +195,21 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           3. โหลดผลงานจาก GAS โดยตรง
+           3. โหลดผลงานจาก GAS
            ----------------------------------------------- */
 
         const response =
             await fetch(
                 GAS_URL +
-                "?action=works"
+                "?action=works&_t=" +
+                Date.now(),
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
@@ -156,7 +243,7 @@ async function loadCategoryData() {
 
             throw new Error(
                 result &&
-                    result.message
+                result.message
                     ? result.message
                     : "ไม่สามารถโหลดผลงานได้"
             );
@@ -168,11 +255,14 @@ async function loadCategoryData() {
            5. ดึง Array ผลงาน
            ----------------------------------------------- */
 
-        let allWorks = [];
+        let allWorks =
+            [];
 
 
         if (
-            Array.isArray(result)
+            Array.isArray(
+                result
+            )
         ) {
 
             allWorks =
@@ -180,7 +270,9 @@ async function loadCategoryData() {
 
         }
         else if (
-            Array.isArray(result.works)
+            Array.isArray(
+                result.works
+            )
         ) {
 
             allWorks =
@@ -188,7 +280,9 @@ async function loadCategoryData() {
 
         }
         else if (
-            Array.isArray(result.data)
+            Array.isArray(
+                result.data
+            )
         ) {
 
             allWorks =
@@ -209,11 +303,10 @@ async function loadCategoryData() {
 
         const works =
             allWorks.filter(
-                function (work) {
 
-                    /* -----------------------------------------
-                       ตรวจ active
-                       ----------------------------------------- */
+                function (
+                    work
+                ) {
 
                     const active =
                         String(
@@ -234,25 +327,28 @@ async function loadCategoryData() {
                     }
 
 
-                    /* -----------------------------------------
-                       ตรวจ judge_ids
-                       ----------------------------------------- */
-
                     const judgeIds =
                         String(
-                            work.judge_ids || ""
+                            work.judge_ids ||
+                            ""
                         )
                             .split(",")
                             .map(
-                                function (id) {
+
+                                function (
+                                    id
+                                ) {
 
                                     return String(
                                         id
                                     ).trim();
 
                                 }
+
                             )
-                            .filter(Boolean);
+                            .filter(
+                                Boolean
+                            );
 
 
                     return judgeIds.includes(
@@ -260,6 +356,7 @@ async function loadCategoryData() {
                     );
 
                 }
+
             );
 
 
@@ -268,23 +365,40 @@ async function loadCategoryData() {
            ----------------------------------------------- */
 
         works.sort(
-            function (a, b) {
+
+            function (
+                a,
+                b
+            ) {
 
                 return (
                     Number(
-                        a.order || 0
+                        a.order ||
+                        0
                     ) -
                     Number(
-                        b.order || 0
+                        b.order ||
+                        0
                     )
                 );
 
             }
+
         );
 
 
         /* -----------------------------------------------
-           8. แสดงจำนวน
+           8. แสดงผลงานทันที
+           ไม่รอเช็กคะแนน
+           ----------------------------------------------- */
+
+        displayWorks(
+            works
+        );
+
+
+        /* -----------------------------------------------
+           9. แสดงจำนวนผลงาน
            ----------------------------------------------- */
 
         displayWorkCount(
@@ -293,18 +407,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           9. แสดงผลงาน
-           ----------------------------------------------- */
-
-        displayWorks(
-            works
-        );
-
-        hideCategoryLoading();
-
-
-        /* -----------------------------------------------
-           10. เก็บไว้ใช้หน้าต่อไป
+           10. เก็บ Works เบื้องต้น
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -315,13 +418,22 @@ async function loadCategoryData() {
         );
 
 
+        sessionStorage.setItem(
+            "worksCacheJudgeId",
+            String(
+                judge.id
+            ).trim()
+        );
+
+
         /* -----------------------------------------------
-           11. เก็บข้อมูล Login แบบอัปเดต
+           11. เก็บข้อมูล Login
            ----------------------------------------------- */
 
         const updatedSession = {
 
-            success: true,
+            success:
+                true,
 
             judge:
                 judge,
@@ -347,6 +459,62 @@ async function loadCategoryData() {
         );
 
 
+        /* -----------------------------------------------
+           12. ตัววิ่งหายทันที
+           หลังผลงานพร้อมแสดง
+           ----------------------------------------------- */
+
+        hideCategoryLoading();
+
+
+        /* -----------------------------------------------
+           13. เช็กคะแนนเบื้องหลัง
+           ไม่บล็อกการแสดงหน้า
+           ----------------------------------------------- */
+
+        refreshScoreButtons(
+            works
+        )
+        .then(
+
+            function () {
+
+                /*
+                 * เก็บสถานะล่าสุด
+                 */
+
+                sessionStorage.setItem(
+                    "works",
+                    JSON.stringify(
+                        works
+                    )
+                );
+
+                /*
+                 * อัปเดตจำนวน
+                 */
+
+                displayEvaluatedCount();
+
+            }
+
+        )
+        .catch(
+
+            function (
+                error
+            ) {
+
+                console.warn(
+                    "อัปเดตสถานะคะแนนเบื้องหลังไม่ได้:",
+                    error
+                );
+
+            }
+
+        );
+
+
         console.log(
             "กรรมการ =",
             judge.name
@@ -360,12 +528,17 @@ async function loadCategoryData() {
 
 
     }
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             "Category Error =",
             error
         );
+
+
+        hideCategoryLoading();
 
 
         showCategoryError(
@@ -432,6 +605,105 @@ function displayWorkCount(
 
 }
 
+/* =====================================================
+   แสดงจำนวนผลงานที่ประเมินแล้ว
+   ใช้สถานะคะแนนจริงจาก Work
+   ===================================================== */
+
+function displayEvaluatedCount() {
+
+    const element =
+        document.getElementById(
+            "evaluatedCount"
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    let works =
+        [];
+
+
+    try {
+
+        const raw =
+            sessionStorage.getItem(
+                "works"
+            );
+
+
+        if (raw) {
+
+            works =
+                JSON.parse(
+                    raw
+                );
+
+        }
+
+    }
+    catch (
+    error
+    ) {
+
+        console.warn(
+            "อ่าน Works ไม่ได้:",
+            error
+        );
+
+        works =
+            [];
+
+    }
+
+
+    if (
+        !Array.isArray(
+            works
+        )
+    ) {
+
+        works =
+            [];
+
+    }
+
+
+    let evaluatedCount =
+        0;
+
+
+    works.forEach(
+
+        function (
+            work
+        ) {
+
+            if (
+                work &&
+                work.hasSubmitted === true
+            ) {
+
+                evaluatedCount++;
+
+            }
+
+        }
+
+    );
+
+
+    element.textContent =
+        String(
+            evaluatedCount
+        );
+
+}
 
 /* =====================================================
    แสดงรายการผลงาน
@@ -676,17 +948,23 @@ function createWorkCard(
         "work-presenter";
 
     const presenterText =
-        String(work.presenter || "");
+        String(
+            work.presenter ||
+            ""
+        );
 
     presenter.innerHTML = `
-    <span class="presenter-desktop">
-        ${presenterText}
-    </span>
+        <span class="presenter-desktop">
+            ${presenterText}
+        </span>
 
-    <span class="presenter-ipad-portrait">
-        ${presenterText.replace(/,\s*/g, "<br>")}
-    </span>
-`;
+        <span class="presenter-ipad-portrait">
+            ${presenterText.replace(
+        /,\s*/g,
+        "<br>"
+    )}
+        </span>
+    `;
 
 
     /* -----------------------------------------------
@@ -742,41 +1020,70 @@ function createWorkCard(
 
 
     /* =================================================
-   ACTION BUTTONS
-   ================================================= */
+       ACTION BUTTONS
+       ================================================= */
 
-    const actionArea = document.createElement("div");
-    actionArea.className = "work-actions";
+    const actionArea =
+        document.createElement(
+            "div"
+        );
+
+    actionArea.className =
+        "work-actions";
 
 
     /* =================================================
        สร้างปุ่มมาตรฐาน
        ================================================= */
 
-    function createActionButton(icon, text, className, onClick) {
+    function createActionButton(
+        icon,
+        text,
+        className,
+        onClick
+    ) {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement(
+                "button"
+            );
 
-        button.type = "button";
+        button.type =
+            "button";
 
         button.className =
             "work-action-button" +
-            (className ? ` ${className}` : "");
+            (
+                className
+                    ? ` ${className}`
+                    : ""
+            );
 
         button.innerHTML = `
-        <span class="work-action-icon">${icon}</span>
-        <span class="work-action-text">${text}</span>
-    `;
+            <span class="work-action-icon">
+                ${icon}
+            </span>
 
-        button.addEventListener("click", function (event) {
+            <span class="work-action-text">
+                ${text}
+            </span>
+        `;
 
-            event.stopPropagation();
+        button.addEventListener(
+            "click",
+            function (
+                event
+            ) {
 
-            onClick();
+                event.stopPropagation();
 
-        });
+                onClick();
+
+            }
+        );
 
         return button;
+
     }
 
 
@@ -784,27 +1091,30 @@ function createWorkCard(
        ดูบทคัดย่อ
        ================================================= */
 
-    const abstractButton = createActionButton(
-        "📄",
-        "ดูบทคัดย่อ",
-        "",
-        function () {
+    const abstractButton =
+        createActionButton(
+            "📄",
+            "ดูบทคัดย่อ",
+            "",
+            function () {
 
-            openWorkFileModal(
-                work,
-                "abstract"
-            );
+                openWorkFileModal(
+                    work,
+                    "abstract"
+                );
 
-        }
+            }
+        );
 
+
+    actionArea.appendChild(
+        abstractButton
     );
-
-    actionArea.appendChild(abstractButton);
 
 
     /* =================================================
-   ดูโปสเตอร์
-   ================================================= */
+       ดูโปสเตอร์
+       ================================================= */
 
     const posterCategories = [
         "CQI Poster Presentation",
@@ -812,12 +1122,19 @@ function createWorkCard(
         "KM"
     ];
 
+
     const hasPoster =
         posterCategories.includes(
-            String(work.category || "").trim()
+            String(
+                work.category ||
+                ""
+            ).trim()
         );
 
-    if (hasPoster) {
+
+    if (
+        hasPoster
+    ) {
 
         const posterButton =
             createActionButton(
@@ -834,28 +1151,60 @@ function createWorkCard(
                 }
             );
 
+
         actionArea.appendChild(
             posterButton
         );
+
     }
 
 
     /* =================================================
-       ลงคะแนน
+       ลงคะแนน / แก้ไขคะแนน
        ================================================= */
 
-    const scoreButton = createActionButton(
-        "📝",
-        "ลงคะแนน",
-        "is-primary",
-        function () {
+    /*
+     * ใช้สถานะที่ refreshScoreButtons()
+     * ตรวจจากคะแนนจริงในชีทแล้ว
+     *
+     * ไม่อ่าน localStorage
+     */
 
-            selectWork(work);
+    const hasSubmitted =
+        work.hasSubmitted === true;
 
-        }
+
+    /*
+     * สร้างปุ่ม
+     */
+
+    const scoreButton =
+        createActionButton(
+            hasSubmitted
+                ? "✏️"
+                : "📝",
+
+            hasSubmitted
+                ? "แก้ไขคะแนน"
+                : "ลงคะแนน",
+
+            hasSubmitted
+                ? "is-warning"
+                : "is-primary",
+
+            function () {
+
+                selectWork(
+                    work
+                );
+
+            }
+        );
+
+
+    actionArea.appendChild(
+        scoreButton
     );
-
-    actionArea.appendChild(scoreButton);
 
 
     /* =================================================
@@ -934,9 +1283,7 @@ function showCategoryError(
 
 
     if (!workList) {
-
         return;
-
     }
 
 
@@ -948,16 +1295,37 @@ function showCategoryError(
             "div"
         );
 
-
     error.className =
         "category-error";
 
+
+    /* -----------------------------------------------
+       รูปเศร้า
+       ----------------------------------------------- */
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+    image.className =
+        "error-mascot";
+
+    image.src =
+        "./assets/images/qsnich-sad.png";
+
+    image.alt =
+        "ไม่สามารถโหลดข้อมูลได้";
+
+
+    /* -----------------------------------------------
+       หัวข้อ
+       ----------------------------------------------- */
 
     const title =
         document.createElement(
             "div"
         );
-
 
     title.className =
         "category-error-title";
@@ -966,23 +1334,33 @@ function showCategoryError(
         "ไม่สามารถโหลดข้อมูลได้";
 
 
+    /* -----------------------------------------------
+       ข้อความ
+       ----------------------------------------------- */
+
     const text =
         document.createElement(
             "div"
         );
 
-
     text.className =
         "category-error-message";
 
-
     text.textContent =
-        "กรุณากด “ออกจากระบบ” ที่มุมขวาบน แล้วเข้าสู่ระบบใหม่อีกครั้ง";
+        "กรุณากด refresh หน้านี้ หรือเข้าสู่ระบบใหม่อีกครั้ง";
+
+
+    /* -----------------------------------------------
+       รวม
+       ----------------------------------------------- */
+
+    error.appendChild(
+        image
+    );
 
     error.appendChild(
         title
     );
-
 
     error.appendChild(
         text
@@ -1018,30 +1396,66 @@ document.addEventListener(
             "click",
             function () {
 
-                /* -----------------------------------------
-                   ล้างข้อมูลกรรมการทั้งหมด
-                   ----------------------------------------- */
+                /*
+                 * =========================================
+                 * ล้างข้อมูลกรรมการ
+                 * =========================================
+                 */
 
                 sessionStorage.removeItem(
                     "judge"
                 );
 
+
+                /*
+                 * =========================================
+                 * ล้าง Works Cache
+                 *
+                 * สำคัญมาก
+                 *
+                 * เพื่อให้ Login ใหม่ต้องโหลดใหม่
+                 * =========================================
+                 */
+
                 sessionStorage.removeItem(
                     "works"
                 );
 
+
                 sessionStorage.removeItem(
-                    "criteria"
+                    "worksCacheJudgeId"
                 );
+
+
+                /*
+                 * =========================================
+                 * ล้างผลงานที่เลือกค้างไว้
+                 * =========================================
+                 */
 
                 sessionStorage.removeItem(
                     "selectedWork"
                 );
 
 
-                /* -----------------------------------------
-                   กลับหน้า Login
-                   ----------------------------------------- */
+                /*
+                 * =========================================
+                 * ล้าง Criteria Cache
+                 *
+                 * ป้องกันข้อมูลจาก Login รอบก่อน
+                 * =========================================
+                 */
+
+                sessionStorage.removeItem(
+                    "criteria"
+                );
+
+
+                /*
+                 * =========================================
+                 * กลับหน้า Login
+                 * =========================================
+                 */
 
                 window.location.href =
                     "./index.html";
@@ -1322,3 +1736,297 @@ document.addEventListener(
 
     }
 );
+
+/* =====================================================
+   เช็กสถานะคะแนนจริงจากชีท
+   ใช้สำหรับอัปเดตปุ่ม + จำนวนประเมินแล้ว
+   ===================================================== */
+
+async function refreshScoreButtons(
+    works
+) {
+
+    if (
+        !Array.isArray(
+            works
+        )
+    ) {
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       หา ID กรรมการ
+       ----------------------------------------------- */
+
+    let currentJudgeId =
+        "";
+
+
+    try {
+
+        const raw =
+            sessionStorage.getItem(
+                "judge"
+            );
+
+
+        if (raw) {
+
+            const data =
+                JSON.parse(
+                    raw
+                );
+
+
+            const judge =
+                data &&
+                    data.judge
+                    ? data.judge
+                    : data;
+
+
+            currentJudgeId =
+                String(
+                    judge.id ||
+                    judge.judge_id ||
+                    judge.code ||
+                    ""
+                ).trim();
+
+        }
+
+    }
+    catch (
+    error
+    ) {
+
+        console.warn(
+            "อ่านข้อมูลกรรมการไม่ได้:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (!currentJudgeId) {
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       เช็กคะแนนของทุกผลงาน
+       ----------------------------------------------- */
+
+    await Promise.all(
+
+        works.map(
+
+            async function (
+                work
+            ) {
+
+                const workId =
+                    String(
+                        work.id ||
+                        work.work_id ||
+                        ""
+                    ).trim();
+
+
+                if (!workId) {
+
+                    work.hasSubmitted =
+                        false;
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const url =
+                        GAS_URL +
+                        "?action=getScoreForEdit" +
+                        "&judge=" +
+                        encodeURIComponent(
+                            currentJudgeId
+                        ) +
+                        "&work_id=" +
+                        encodeURIComponent(
+                            workId
+                        ) +
+                        "&_t=" +
+                        Date.now();
+
+
+                    const response =
+                        await fetch(
+                            url,
+                            {
+                                method:
+                                    "GET",
+
+                                cache:
+                                    "no-store"
+                            }
+                        );
+
+
+                    if (
+                        !response.ok
+                    ) {
+
+                        work.hasSubmitted =
+                            false;
+
+                        return;
+
+                    }
+
+
+                    const result =
+                        await response.json();
+
+
+                    console.log(
+                        "SCORE CHECK",
+                        workId,
+                        result
+                    );
+
+
+                    /* -----------------------------------------
+                       ตรวจว่ามีคะแนนจริงหรือไม่
+                       ----------------------------------------- */
+
+                    let score =
+                        null;
+
+
+                    if (
+                        result &&
+                        result.success === false
+                    ) {
+
+                        score =
+                            null;
+
+                    }
+                    else if (
+                        result &&
+                        result.data
+                    ) {
+
+                        score =
+                            result.data;
+
+                    }
+                    else if (
+                        result &&
+                        result.score
+                    ) {
+
+                        score =
+                            result.score;
+
+                    }
+                    else if (
+                        result &&
+                        (
+                            result.c1 !== undefined ||
+                            result.c2 !== undefined
+                        )
+                    ) {
+
+                        score =
+                            result;
+
+                    }
+
+
+                    let hasRealScore =
+                        false;
+
+
+                    if (
+                        score &&
+                        typeof score ===
+                        "object"
+                    ) {
+
+                        hasRealScore =
+                            Object.keys(
+                                score
+                            ).some(
+
+                                function (
+                                    key
+                                ) {
+
+                                    return /^c\d+$/i.test(
+                                        key
+                                    );
+
+                                }
+
+                            );
+
+                    }
+
+
+                    /*
+                     * เก็บสถานะจริงไว้ใน Work
+                     */
+
+                    work.hasSubmitted =
+                        hasRealScore;
+
+
+                    console.log(
+                        "WORK STATUS =",
+                        workId,
+                        work.hasSubmitted
+                    );
+
+                }
+                catch (
+                error
+                ) {
+
+                    console.warn(
+                        "ตรวจคะแนนไม่ได้:",
+                        workId,
+                        error
+                    );
+
+
+                    work.hasSubmitted =
+                        false;
+
+                }
+
+            }
+
+        )
+
+    );
+
+
+    /* -----------------------------------------------
+       เก็บ Works ที่อัปเดตแล้ว
+       ----------------------------------------------- */
+
+    sessionStorage.setItem(
+        "works",
+        JSON.stringify(
+            works
+        )
+    );
+
+}
