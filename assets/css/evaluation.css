@@ -3440,3 +3440,52 @@ and (
     }
 
 }
+
+/* =====================================================
+   iPad — WORK SUMMARY
+   ซ่อนหมวด + ขยายผู้นำเสนอ/หน่วยงาน
+   ===================================================== */
+
+@media (min-width: 700px)
+and (max-width: 1100px) {
+
+    /* ซ่อนหมวดผลงาน */
+
+    .evaluation-category {
+        display: none !important;
+    }
+
+
+    /* ขยับชื่อเรื่องขึ้นแทนพื้นที่หมวด */
+
+    .evaluation-work-title {
+        margin-top: 0 !important;
+    }
+
+
+    /* คำว่า ผู้นำเสนอ / หน่วยงาน */
+
+    .evaluation-meta-label {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* ชื่อผู้นำเสนอ */
+
+    .evaluation-presenter {
+        font-size: 16px !important;
+        line-height: 1.55 !important;
+        font-weight: 500 !important;
+    }
+
+
+    /* หน่วยงาน */
+
+    .evaluation-department {
+        font-size: 16px !important;
+        line-height: 1.55 !important;
+        font-weight: 500 !important;
+    }
+
+}
