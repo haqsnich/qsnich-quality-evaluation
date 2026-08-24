@@ -1561,7 +1561,7 @@
 
 .category-loading-character {
 
-  width: 180px;
+  width: 150px;
 
   height: auto;
 
@@ -2827,6 +2827,584 @@
 
         animation: none;
 
+    }
+
+}
+
+/* =====================================================
+   PAGE TRANSITION — ไปหน้าลงคะแนน
+   ===================================================== */
+
+body {
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+}
+
+
+body.page-leaving {
+
+    opacity: 0;
+
+    transform:
+        translateY(-8px);
+
+    pointer-events: none;
+
+}
+
+/* =====================================================
+   SCORE SCALE GUIDE
+   ระดับคะแนน 5 - 1
+   ===================================================== */
+
+.evaluation-scale-guide {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin:
+        12px 0 20px;
+
+}
+
+
+/* =====================================================
+   แต่ละระดับคะแนน
+   ===================================================== */
+
+.evaluation-scale-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 62px;
+
+    padding:
+        8px 6px;
+
+    border:
+        1px solid #dcebed;
+
+    border-radius:
+        12px;
+
+    background:
+        #ffffff;
+
+    box-sizing:
+        border-box;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+
+}
+
+
+/* =====================================================
+   เลขคะแนน
+   ===================================================== */
+
+.evaluation-scale-item strong {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 28px;
+
+    height: 28px;
+
+    margin-bottom:
+        4px;
+
+    border-radius:
+        50%;
+
+    background:
+        #e7f5f5;
+
+    color:
+        #287f82;
+
+    font-size:
+        15px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+}
+
+
+/* =====================================================
+   คำอธิบาย
+   ===================================================== */
+
+.evaluation-scale-item span {
+
+    color:
+        #5f6b73;
+
+    font-size:
+        13px;
+
+    font-weight:
+        500;
+
+    line-height:
+        1.3;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =====================================================
+   Hover เบา ๆ
+   ===================================================== */
+
+.evaluation-scale-item:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #b9dfe1;
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            43,
+            127,
+            130,
+            0.08
+        );
+
+}
+
+
+/* =====================================================
+   Responsive
+   ===================================================== */
+
+@media (
+    max-width: 700px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            6px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            58px;
+
+        padding:
+            7px 4px;
+
+    }
+
+
+    .evaluation-scale-item strong {
+
+        width:
+            26px;
+
+        height:
+            26px;
+
+        font-size:
+            14px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            11px;
+
+    }
+
+}
+
+
+@media (
+    max-width: 480px
+) {
+
+    .evaluation-scale-guide {
+
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        gap:
+            4px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            54px;
+
+        border-radius:
+            10px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            10px;
+
+    }
+
+}
+
+/* =====================================================
+   CATEGORY — iPAD PORTRAIT FINAL
+   768 - 1024px แนวตั้งเท่านั้น
+   ===================================================== */
+
+@media (min-width: 768px)
+and (max-width: 1024px)
+and (orientation: portrait) {
+
+    /* =================================================
+       PAGE
+       ================================================= */
+
+    .category-content {
+        width: calc(100% - 40px) !important;
+        max-width: none !important;
+        padding-bottom: 45px;
+    }
+
+
+    /* =================================================
+       HEADER
+       ================================================= */
+
+    .category-header {
+        min-height: 78px !important;
+
+        padding:
+            13px
+            20px !important;
+
+        gap: 18px !important;
+
+        margin-bottom: 28px !important;
+    }
+
+
+    .category-system-name {
+        font-size: 20px !important;
+    }
+
+
+    .category-event-name {
+        font-size: 14px !important;
+    }
+
+
+    .category-event-year {
+        font-size: 13px !important;
+    }
+
+
+    /* =================================================
+       กรรมการ
+       ================================================= */
+
+    .category-header-right {
+        gap: 10px !important;
+    }
+
+
+    .category-judge {
+        min-width: 180px !important;
+
+        padding:
+            9px
+            14px !important;
+    }
+
+
+    .category-judge-label {
+        font-size: 12px !important;
+    }
+
+
+    .category-judge-name {
+        font-size: 15px !important;
+    }
+
+
+    .category-logout-button {
+        min-width: auto !important;
+        min-height: 42px !important;
+
+        padding:
+            9px
+            14px !important;
+
+        font-size: 14px !important;
+    }
+
+
+    /* =================================================
+       หัวข้อรายการ + Summary
+       ================================================= */
+
+    .works-header {
+        align-items: center !important;
+        gap: 16px !important;
+        margin-bottom: 10px !important;
+    }
+
+
+    .works-header-text h1 {
+        font-size: 26px !important;
+    }
+
+
+    .works-header-text p {
+        font-size: 14px !important;
+    }
+
+
+    .summary-cards {
+        gap: 8px !important;
+    }
+
+
+    .summary-card {
+        width: 92px !important;
+        min-width: 92px !important;
+        height: 62px !important;
+
+        padding:
+            6px
+            7px !important;
+    }
+
+
+    .summary-label {
+        font-size: 12px !important;
+    }
+
+
+    .summary-value {
+        font-size: 21px !important;
+    }
+
+
+    /* =================================================
+       หัวหมวด
+       ================================================= */
+
+    #workList > .work-category-group-title {
+        margin-top: 8px !important;
+        margin-bottom: 2px !important;
+
+        font-size: 18px !important;
+    }
+
+
+    /* =================================================
+       WORK CARD
+
+       เปลี่ยนจาก:
+       เลข | รายละเอียด | ปุ่ม
+
+       เป็น:
+       เลข | รายละเอียด
+            | ปุ่ม 3 ปุ่มด้านล่าง
+       ================================================= */
+
+    .work-card {
+        display: grid !important;
+
+        grid-template-columns:
+            48px
+            minmax(0, 1fr) !important;
+
+        grid-template-rows:
+            auto
+            auto;
+
+        column-gap: 14px !important;
+        row-gap: 14px !important;
+
+        min-height: 0 !important;
+
+        padding:
+            17px
+            18px !important;
+
+        border-radius: 17px !important;
+    }
+
+
+    /* =================================================
+       เลขลำดับ
+       ================================================= */
+
+    .work-order,
+    .work-number {
+        grid-column: 1;
+        grid-row: 1;
+
+        align-self: flex-start;
+
+        width: 44px !important;
+        height: 44px !important;
+
+        font-size: 16px !important;
+    }
+
+
+    /* =================================================
+       เนื้อหาผลงาน
+       ================================================= */
+
+    .work-content,
+    .work-info {
+        grid-column: 2;
+        grid-row: 1;
+
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .work-title {
+        font-size: 17px !important;
+
+        line-height: 1.55 !important;
+
+        word-break: normal;
+        overflow-wrap: anywhere;
+    }
+
+
+    .work-presenter {
+        margin-top: 6px !important;
+
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    .work-department {
+        margin-top: 2px !important;
+
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* =================================================
+       ACTIONS
+
+       ย้ายลงล่างเต็มแถว
+       ================================================= */
+
+    .work-actions {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+
+        width: 100% !important;
+
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 9px !important;
+
+        margin: 0 !important;
+
+        justify-self: stretch !important;
+        align-self: center !important;
+    }
+
+
+    /* =================================================
+       ปุ่ม
+
+       ไม่ใช้ 150px เดิมแล้ว
+       ให้แบ่งพื้นที่เท่ากัน 3 ช่อง
+       ================================================= */
+
+    .work-action-button {
+        width: 100% !important;
+        min-width: 0 !important;
+
+        height: 44px !important;
+
+        padding:
+            0
+            10px !important;
+
+        font-size: 13px !important;
+
+        border-radius: 10px !important;
+    }
+
+
+    .work-action-icon {
+        font-size: 15px;
+    }
+
+
+    .work-action-text {
+        font-size: 13px;
+    }
+
+
+    /* =================================================
+       ระยะห่างรายการ
+       ================================================= */
+
+    #workList {
+        row-gap: 10px !important;
+    }
+
+
+    .work-list {
+        gap: 10px !important;
     }
 
 }

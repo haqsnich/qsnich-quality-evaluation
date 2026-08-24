@@ -27,7 +27,15 @@
 
     <link rel="stylesheet" href="./assets/css/background.css">
 
-    <link rel="stylesheet" href="./assets/css/category.css">
+    <script>
+        const DEV_VERSION = Date.now();
+
+        document.write(
+            '<link rel="stylesheet" href="assets/css/category.css?v=' +
+            DEV_VERSION +
+            '">'
+        );
+    </script>
 
 </head>
 
@@ -297,7 +305,13 @@
 
     <script src="./assets/js/config.js"></script>
 
-    <script src="./assets/js/category.js"></script>
+    <script>
+        document.write(
+            '<script src="assets/js/category.js?v=' +
+            DEV_VERSION +
+            '"><\/script>'
+        );
+    </script>
 
 
 </body>

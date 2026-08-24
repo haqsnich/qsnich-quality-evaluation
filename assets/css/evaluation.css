@@ -2495,3 +2495,948 @@ and (
     }
 
 }
+
+/* =====================================================
+   SCORE SCALE GUIDE
+   ระดับคะแนน 5 - 1
+   ===================================================== */
+
+.evaluation-scale-guide {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin:
+        12px 0 20px;
+
+    padding:
+        12px;
+
+    box-sizing:
+        border-box;
+
+    border-radius:
+        14px;
+
+    background:
+        #f6f8fb;
+
+}
+
+
+/* =====================================================
+   แต่ละช่อง
+   ทุกช่องกว้างเท่ากัน
+   ===================================================== */
+
+.evaluation-scale-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 72px;
+
+    padding:
+        8px 6px;
+
+    box-sizing:
+        border-box;
+
+    border:
+        1px solid transparent;
+
+    border-radius:
+        12px;
+
+    background:
+        #ffffff;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+}
+
+
+/* =====================================================
+   เลขคะแนน
+   ===================================================== */
+
+.evaluation-scale-item strong {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 32px;
+
+    height: 32px;
+
+    margin-bottom:
+        5px;
+
+    border-radius:
+        50%;
+
+    font-size:
+        15px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+}
+
+
+/* =====================================================
+   คำอธิบาย
+   ===================================================== */
+
+.evaluation-scale-item span {
+
+    display: block;
+
+    width: 100%;
+
+    color:
+        #4f5d68;
+
+    font-size:
+        13px;
+
+    font-weight:
+        500;
+
+    line-height:
+        1.3;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =====================================================
+   SCORE 5 — ดีเยี่ยม
+   เขียว
+   ===================================================== */
+
+.evaluation-scale-item:nth-child(1) {
+
+    border-color:
+        #b9dfc8;
+
+    background:
+        #f4fbf6;
+
+}
+
+
+.evaluation-scale-item:nth-child(1) strong {
+
+    background:
+        #d8f0df;
+
+    color:
+        #25824a;
+
+}
+
+
+/* =====================================================
+   SCORE 4 — ดีมาก
+   ฟ้า
+   ===================================================== */
+
+.evaluation-scale-item:nth-child(2) {
+
+    border-color:
+        #b9dbe9;
+
+    background:
+        #f3f9fc;
+
+}
+
+
+.evaluation-scale-item:nth-child(2) strong {
+
+    background:
+        #d8edf6;
+
+    color:
+        #267596;
+
+}
+
+
+/* =====================================================
+   SCORE 3 — ดี
+   ฟ้าอมเขียว / Teal
+   ===================================================== */
+
+.evaluation-scale-item:nth-child(3) {
+
+    border-color:
+        #b9dfdf;
+
+    background:
+        #f3fbfb;
+
+}
+
+
+.evaluation-scale-item:nth-child(3) strong {
+
+    background:
+        #d9eeee;
+
+    color:
+        #287f82;
+
+}
+
+
+/* =====================================================
+   SCORE 2 — พอใช้
+   เหลือง / ส้มอ่อน
+   ===================================================== */
+
+.evaluation-scale-item:nth-child(4) {
+
+    border-color:
+        #ead9a8;
+
+    background:
+        #fffaf0;
+
+}
+
+
+.evaluation-scale-item:nth-child(4) strong {
+
+    background:
+        #f8e9b9;
+
+    color:
+        #a87516;
+
+}
+
+
+/* =====================================================
+   SCORE 1 — ควรปรับปรุง
+   ชมพู / แดงอ่อน
+   ===================================================== */
+
+.evaluation-scale-item:nth-child(5) {
+
+    border-color:
+        #e8c0c0;
+
+    background:
+        #fff7f7;
+
+}
+
+
+.evaluation-scale-item:nth-child(5) strong {
+
+    background:
+        #f4dada;
+
+    color:
+        #b54d4d;
+
+}
+
+
+/* =====================================================
+   Hover
+   ===================================================== */
+
+.evaluation-scale-item:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            50,
+            80,
+            90,
+            0.08
+        );
+
+}
+
+
+/* =====================================================
+   iPad แนวนอน
+   768px ขึ้นไป
+   ===================================================== */
+
+@media (
+    min-width: 768px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            12px;
+
+        padding:
+            14px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            76px;
+
+    }
+
+
+    .evaluation-scale-item strong {
+
+        width:
+            34px;
+
+        height:
+            34px;
+
+        font-size:
+            16px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            14px;
+
+    }
+
+}
+
+
+/* =====================================================
+   iPad แนวตั้ง
+   768 x 1024
+   ให้ 5 ช่องยังอยู่บรรทัดเดียว
+   ===================================================== */
+
+@media (
+    min-width: 700px
+) and (
+    max-width: 900px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            8px;
+
+        padding:
+            12px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            72px;
+
+        padding:
+            8px 4px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            13px;
+
+    }
+
+}
+
+
+/* =====================================================
+   Tablet / มือถือ
+   ===================================================== */
+
+@media (
+    max-width: 699px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            6px;
+
+        padding:
+            9px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            64px;
+
+        padding:
+            7px 3px;
+
+        border-radius:
+            10px;
+
+    }
+
+
+    .evaluation-scale-item strong {
+
+        width:
+            29px;
+
+        height:
+            29px;
+
+        margin-bottom:
+            4px;
+
+        font-size:
+            14px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            11px;
+
+    }
+
+}
+
+
+/* =====================================================
+   มือถือจอแคบมาก
+   ===================================================== */
+
+@media (
+    max-width: 480px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            4px;
+
+        padding:
+            7px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            58px;
+
+        padding:
+            5px 2px;
+
+        border-radius:
+            9px;
+
+    }
+
+
+    .evaluation-scale-item strong {
+
+        width:
+            26px;
+
+        height:
+            26px;
+
+        font-size:
+            13px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            9px;
+
+    }
+
+}
+
+/* =====================================================
+   EVALUATION PAGE — SMOOTH ENTER
+   ===================================================== */
+
+/* -----------------------------------------------------
+   หน้าโดยรวม
+   ----------------------------------------------------- */
+
+.evaluation-main {
+
+    animation:
+        evaluationPageIn
+        0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* -----------------------------------------------------
+   ข้อมูลผลงาน
+   ----------------------------------------------------- */
+
+.evaluation-work-summary {
+
+    animation:
+        evaluationSummaryIn
+        0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+    animation-delay:
+        0.05s;
+
+}
+
+
+/* -----------------------------------------------------
+   หัวข้อเกณฑ์ + สเกลคะแนน
+   ----------------------------------------------------- */
+
+.evaluation-section {
+
+    animation:
+        evaluationSectionIn
+        0.45s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+    animation-delay:
+        0.10s;
+
+}
+
+
+/* -----------------------------------------------------
+   Card เกณฑ์
+   ----------------------------------------------------- */
+
+.evaluation-criterion {
+
+    animation:
+        evaluationCriterionIn
+        0.42s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* -----------------------------------------------------
+   ให้ Card ทยอยขึ้นแบบเบามาก
+   ----------------------------------------------------- */
+
+.evaluation-criterion:nth-child(1) {
+    animation-delay: 0.12s;
+}
+
+.evaluation-criterion:nth-child(2) {
+    animation-delay: 0.16s;
+}
+
+.evaluation-criterion:nth-child(3) {
+    animation-delay: 0.20s;
+}
+
+.evaluation-criterion:nth-child(4) {
+    animation-delay: 0.24s;
+}
+
+.evaluation-criterion:nth-child(5) {
+    animation-delay: 0.28s;
+}
+
+.evaluation-criterion:nth-child(6) {
+    animation-delay: 0.32s;
+}
+
+.evaluation-criterion:nth-child(7) {
+    animation-delay: 0.36s;
+}
+
+.evaluation-criterion:nth-child(8) {
+    animation-delay: 0.40s;
+}
+
+
+/* =====================================================
+   KEYFRAMES
+   ===================================================== */
+
+@keyframes evaluationPageIn {
+
+    from {
+
+        opacity:
+            0;
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+@keyframes evaluationSummaryIn {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(8px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes evaluationSectionIn {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(8px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+@keyframes evaluationCriterionIn {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(10px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* =====================================================
+   ลด Animation สำหรับผู้ใช้ที่ตั้ง Reduce Motion
+   ===================================================== */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .evaluation-main,
+    .evaluation-work-summary,
+    .evaluation-section,
+    .evaluation-criterion {
+
+        animation:
+            none;
+
+    }
+
+}
+
+/* =====================================================
+   SCORE CONFIRM MODAL — BIGGER
+   ===================================================== */
+
+.score-modal-card {
+    width: min(560px, calc(100vw - 40px));
+    padding: 34px 36px 30px;
+    border-radius: 24px;
+}
+
+
+/* ไอคอนติ๊ก */
+
+.score-modal-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 30px;
+    margin: 0 auto 16px;
+}
+
+
+/* หัวข้อ */
+
+.score-modal-card h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+
+/* ข้อความใต้หัวข้อ */
+
+.score-modal-question {
+    font-size: 15px;
+    margin-bottom: 22px;
+}
+
+
+/* กล่องข้อมูล */
+
+.score-modal-info {
+    padding: 8px 18px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+
+/* แต่ละแถว */
+
+.score-modal-row {
+    min-height: 58px;
+    font-size: 15px;
+    gap: 20px;
+}
+
+
+/* ชื่อกรรมการ */
+
+.score-modal-row strong {
+    font-size: 16px;
+}
+
+
+/* คะแนนรวม */
+
+.score-modal-total strong {
+    font-size: 25px;
+}
+
+
+/* ข้อความเตือน */
+
+.score-modal-warning {
+    margin: 18px 0 22px;
+
+    color: #D94F5C !important;
+
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.7;
+
+    text-align: center;
+}
+
+.score-modal-warning div {
+    display: block;
+}
+
+
+/* ปุ่ม */
+
+.score-modal-actions {
+    gap: 12px;
+}
+
+.score-modal-actions button {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   iPad Portrait
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 900px) {
+
+    .score-modal-card {
+        width: min(600px, calc(100vw - 64px));
+        padding: 38px 40px 34px;
+    }
+
+    .score-modal-card h2 {
+        font-size: 26px;
+    }
+
+    .score-modal-question {
+        font-size: 16px;
+    }
+
+    .score-modal-row {
+        min-height: 62px;
+        font-size: 16px;
+    }
+
+    .score-modal-row strong {
+        font-size: 17px;
+    }
+
+    .score-modal-total strong {
+        font-size: 27px;
+    }
+
+}
+
+
+/* =====================================================
+   iPad Landscape
+   ===================================================== */
+
+@media (min-width: 901px) and (max-width: 1200px) {
+
+    .score-modal-card {
+        width: 620px;
+        padding: 38px 42px 34px;
+    }
+
+}
+
+/* =====================================================
+   EVALUATION PAGE — LEAVE
+   ตอนกดย้อนกลับไปหน้าเลือกผลงาน
+   ===================================================== */
+
+.evaluation-main.evaluation-page-leave {
+    pointer-events: none;
+
+    animation:
+        evaluationPageLeave
+        0.32s
+        cubic-bezier(
+            0.4,
+            0,
+            0.6,
+            1
+        )
+        both !important;
+}
+
+
+@keyframes evaluationPageLeave {
+
+    from {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+    to {
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+}

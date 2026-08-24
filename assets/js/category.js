@@ -51,16 +51,51 @@ function showCategoryLoading() {
             "categoryLoading"
         );
 
-    if (!loading) {
-        return;
+
+    if (loading) {
+
+        loading.hidden =
+            false;
+
+
+        loading.classList.remove(
+            "hide"
+        );
+
     }
 
-    loading.hidden =
-        false;
 
-    loading.classList.remove(
-        "hide"
-    );
+    /* -----------------------------------------------
+       ระหว่างโหลด
+       ห้ามแสดงจำนวนจากรอบก่อน
+       ----------------------------------------------- */
+
+    const workCount =
+        document.getElementById(
+            "workCount"
+        );
+
+
+    const evaluatedCount =
+        document.getElementById(
+            "evaluatedCount"
+        );
+
+
+    if (workCount) {
+
+        workCount.textContent =
+            "...";
+
+    }
+
+
+    if (evaluatedCount) {
+
+        evaluatedCount.textContent =
+            "...";
+
+    }
 
 }
 
@@ -138,6 +173,7 @@ function hideCategoryLoading() {
 /* =====================================================
    โหลดข้อมูล Category
    โหลดข้อมูลใหม่ทุกครั้ง
+   รอข้อมูลคะแนนให้พร้อมก่อนแสดงหน้า
    ===================================================== */
 
 async function loadCategoryData() {
@@ -186,7 +222,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           2. แสดงชื่อกรรมการทันที
+           2. แสดงชื่อกรรมการ
            ----------------------------------------------- */
 
         displayJudge(
@@ -292,14 +328,30 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           6. กรองผลงานตามกรรมการ
+           6. หา ID กรรมการ
            ----------------------------------------------- */
 
         const judgeId =
             String(
-                judge.id
+                judge.id ||
+                judge.judge_id ||
+                judge.code ||
+                ""
             ).trim();
 
+
+        if (!judgeId) {
+
+            throw new Error(
+                "ไม่พบรหัสกรรมการ"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           7. กรองผลงานตามกรรมการ
+           ----------------------------------------------- */
 
         const works =
             allWorks.filter(
@@ -307,6 +359,13 @@ async function loadCategoryData() {
                 function (
                     work
                 ) {
+
+                    if (!work) {
+
+                        return false;
+
+                    }
+
 
                     const active =
                         String(
@@ -330,11 +389,12 @@ async function loadCategoryData() {
                     const judgeIds =
                         String(
                             work.judge_ids ||
+                            work.judgeIds ||
+                            work.judges ||
                             ""
                         )
                             .split(",")
                             .map(
-
                                 function (
                                     id
                                 ) {
@@ -344,7 +404,6 @@ async function loadCategoryData() {
                                     ).trim();
 
                                 }
-
                             )
                             .filter(
                                 Boolean
@@ -361,7 +420,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           7. เรียงตาม order
+           8. เรียงตาม order
            ----------------------------------------------- */
 
         works.sort(
@@ -388,26 +447,21 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           8. แสดงผลงานทันที
-           ไม่รอเช็กคะแนน
+           9. ตรวจคะแนนจริงจากชีท
+
+           สำคัญ:
+           รอตรงนี้ให้เสร็จก่อน
+           ยังไม่แสดงรายการ
+           ยังไม่ซ่อนตัววิ่ง
            ----------------------------------------------- */
 
-        displayWorks(
+        await refreshScoreButtons(
             works
         );
 
 
         /* -----------------------------------------------
-           9. แสดงจำนวนผลงาน
-           ----------------------------------------------- */
-
-        displayWorkCount(
-            works.length
-        );
-
-
-        /* -----------------------------------------------
-           10. เก็บ Works เบื้องต้น
+           10. เก็บ Works หลังมีสถานะคะแนนแล้ว
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -420,9 +474,7 @@ async function loadCategoryData() {
 
         sessionStorage.setItem(
             "worksCacheJudgeId",
-            String(
-                judge.id
-            ).trim()
+            judgeId
         );
 
 
@@ -460,59 +512,28 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           12. ตัววิ่งหายทันที
-           หลังผลงานพร้อมแสดง
+           12. แสดงทุกอย่างพร้อมกัน
            ----------------------------------------------- */
 
-        hideCategoryLoading();
+        displayWorks(
+            works
+        );
+
+
+        displayWorkCount(
+            works.length
+        );
+
+
+        displayEvaluatedCount();
 
 
         /* -----------------------------------------------
-           13. เช็กคะแนนเบื้องหลัง
-           ไม่บล็อกการแสดงหน้า
+           13. ข้อมูลทุกอย่างพร้อมแล้ว
+           ค่อยซ่อนตัววิ่ง
            ----------------------------------------------- */
 
-        refreshScoreButtons(
-            works
-        )
-        .then(
-
-            function () {
-
-                /*
-                 * เก็บสถานะล่าสุด
-                 */
-
-                sessionStorage.setItem(
-                    "works",
-                    JSON.stringify(
-                        works
-                    )
-                );
-
-                /*
-                 * อัปเดตจำนวน
-                 */
-
-                displayEvaluatedCount();
-
-            }
-
-        )
-        .catch(
-
-            function (
-                error
-            ) {
-
-                console.warn(
-                    "อัปเดตสถานะคะแนนเบื้องหลังไม่ได้:",
-                    error
-                );
-
-            }
-
-        );
+        hideCategoryLoading();
 
 
         console.log(
@@ -526,6 +547,10 @@ async function loadCategoryData() {
             works.length
         );
 
+
+        console.log(
+            "CATEGORY READY"
+        );
 
     }
     catch (
@@ -1160,38 +1185,16 @@ function createWorkCard(
 
 
     /* =================================================
-       ลงคะแนน / แก้ไขคะแนน
-       ================================================= */
-
-    /*
-     * ใช้สถานะที่ refreshScoreButtons()
-     * ตรวจจากคะแนนจริงในชีทแล้ว
-     *
-     * ไม่อ่าน localStorage
-     */
-
-    const hasSubmitted =
-        work.hasSubmitted === true;
-
-
-    /*
-     * สร้างปุ่ม
-     */
+   ลงคะแนน
+   ใช้ปุ่มรูปแบบเดียวตลอด
+   ไม่เปลี่ยนเป็น "แก้ไขคะแนน"
+   ================================================= */
 
     const scoreButton =
         createActionButton(
-            hasSubmitted
-                ? "✏️"
-                : "📝",
-
-            hasSubmitted
-                ? "แก้ไขคะแนน"
-                : "ลงคะแนน",
-
-            hasSubmitted
-                ? "is-warning"
-                : "is-primary",
-
+            "📝",
+            "ลงคะแนน",
+            "is-primary",
             function () {
 
                 selectWork(
@@ -1231,6 +1234,7 @@ function createWorkCard(
 
 /* =====================================================
    เลือกผลงาน
+   ไปหน้าลงคะแนนแบบ Smooth
    ===================================================== */
 
 function selectWork(
@@ -1248,6 +1252,10 @@ function selectWork(
     }
 
 
+    /*
+     * เก็บผลงานที่เลือก
+     */
+
     sessionStorage.setItem(
         "selectedWork",
         JSON.stringify(
@@ -1262,8 +1270,31 @@ function selectWork(
     );
 
 
-    window.location.href =
-        "./evaluation.html";
+    /*
+     * -----------------------------------------------
+     * Animation ก่อนเปลี่ยนหน้า
+     * -----------------------------------------------
+     */
+
+    document.body.classList.add(
+        "page-leaving"
+    );
+
+
+    /*
+     * รอ Animation เล่นก่อน
+     * แล้วค่อยเปลี่ยนหน้า
+     */
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "./evaluation.html";
+
+        },
+        280
+    );
 
 }
 
@@ -1737,9 +1768,36 @@ document.addEventListener(
     }
 );
 
+
+/* -----------------------------------------------
+   12. แสดงจำนวนที่ประเมินแล้ว
+   ----------------------------------------------- */
+
+displayEvaluatedCount();
+
+
+/* -----------------------------------------------
+   13. ทุกอย่างพร้อมแล้ว
+   ซ่อนตัววิ่ง
+   ----------------------------------------------- */
+
+hideCategoryLoading();
+
+
+console.log(
+    "กรรมการ =",
+    judge.name
+);
+
+
+console.log(
+    "ผลงานที่ได้รับมอบหมาย =",
+    works.length
+);
+
 /* =====================================================
-   เช็กสถานะคะแนนจริงจากชีท
-   ใช้สำหรับอัปเดตปุ่ม + จำนวนประเมินแล้ว
+   REFRESH SCORE STATUS
+   ตรวจคะแนนจริงจาก Google Sheet
    ===================================================== */
 
 async function refreshScoreButtons(
@@ -1751,50 +1809,59 @@ async function refreshScoreButtons(
             works
         )
     ) {
+
         return;
+
     }
 
 
     /* -----------------------------------------------
-       หา ID กรรมการ
+       อ่านกรรมการปัจจุบัน
        ----------------------------------------------- */
 
-    let currentJudgeId =
+    const raw =
+        sessionStorage.getItem(
+            "judge"
+        );
+
+
+    if (!raw) {
+
+        console.warn(
+            "REFRESH SCORE: ไม่พบข้อมูลกรรมการ"
+        );
+
+        return;
+
+    }
+
+
+    let judgeId =
         "";
 
 
     try {
 
-        const raw =
-            sessionStorage.getItem(
-                "judge"
+        const data =
+            JSON.parse(
+                raw
             );
 
 
-        if (raw) {
-
-            const data =
-                JSON.parse(
-                    raw
-                );
-
-
-            const judge =
-                data &&
-                    data.judge
-                    ? data.judge
-                    : data;
+        const judge =
+            data &&
+                data.judge
+                ? data.judge
+                : data;
 
 
-            currentJudgeId =
-                String(
-                    judge.id ||
-                    judge.judge_id ||
-                    judge.code ||
-                    ""
-                ).trim();
-
-        }
+        judgeId =
+            String(
+                judge.id ||
+                judge.judge_id ||
+                judge.code ||
+                ""
+            ).trim();
 
     }
     catch (
@@ -1802,7 +1869,7 @@ async function refreshScoreButtons(
     ) {
 
         console.warn(
-            "อ่านข้อมูลกรรมการไม่ได้:",
+            "REFRESH SCORE: อ่านข้อมูลกรรมการไม่ได้",
             error
         );
 
@@ -1811,7 +1878,11 @@ async function refreshScoreButtons(
     }
 
 
-    if (!currentJudgeId) {
+    if (!judgeId) {
+
+        console.warn(
+            "REFRESH SCORE: ไม่พบรหัสกรรมการ"
+        );
 
         return;
 
@@ -1819,7 +1890,7 @@ async function refreshScoreButtons(
 
 
     /* -----------------------------------------------
-       เช็กคะแนนของทุกผลงาน
+       ตรวจคะแนนทุกผลงาน
        ----------------------------------------------- */
 
     await Promise.all(
@@ -1850,24 +1921,20 @@ async function refreshScoreButtons(
 
                 try {
 
-                    const url =
-                        GAS_URL +
-                        "?action=getScoreForEdit" +
-                        "&judge=" +
-                        encodeURIComponent(
-                            currentJudgeId
-                        ) +
-                        "&work_id=" +
-                        encodeURIComponent(
-                            workId
-                        ) +
-                        "&_t=" +
-                        Date.now();
-
-
                     const response =
                         await fetch(
-                            url,
+                            GAS_URL +
+                            "?action=getScoreForEdit" +
+                            "&judge=" +
+                            encodeURIComponent(
+                                judgeId
+                            ) +
+                            "&work_id=" +
+                            encodeURIComponent(
+                                workId
+                            ) +
+                            "&_t=" +
+                            Date.now(),
                             {
                                 method:
                                     "GET",
@@ -1878,9 +1945,7 @@ async function refreshScoreButtons(
                         );
 
 
-                    if (
-                        !response.ok
-                    ) {
+                    if (!response.ok) {
 
                         work.hasSubmitted =
                             false;
@@ -1893,17 +1958,6 @@ async function refreshScoreButtons(
                     const result =
                         await response.json();
 
-
-                    console.log(
-                        "SCORE CHECK",
-                        workId,
-                        result
-                    );
-
-
-                    /* -----------------------------------------
-                       ตรวจว่ามีคะแนนจริงหรือไม่
-                       ----------------------------------------- */
 
                     let score =
                         null;
@@ -1940,7 +1994,13 @@ async function refreshScoreButtons(
                         result &&
                         (
                             result.c1 !== undefined ||
-                            result.c2 !== undefined
+                            result.c2 !== undefined ||
+                            result.c3 !== undefined ||
+                            result.c4 !== undefined ||
+                            result.c5 !== undefined ||
+                            result.c6 !== undefined ||
+                            result.c7 !== undefined ||
+                            result.c8 !== undefined
                         )
                     ) {
 
@@ -1949,6 +2009,10 @@ async function refreshScoreButtons(
 
                     }
 
+
+                    /* -----------------------------------
+                       ต้องมีคะแนนจริงอย่างน้อย 1 ช่อง
+                       ----------------------------------- */
 
                     let hasRealScore =
                         false;
@@ -1960,39 +2024,39 @@ async function refreshScoreButtons(
                         "object"
                     ) {
 
-                        hasRealScore =
-                            Object.keys(
-                                score
-                            ).some(
+                        for (
+                            let i = 1;
+                            i <= 8;
+                            i++
+                        ) {
 
-                                function (
-                                    key
-                                ) {
+                            const value =
+                                score[
+                                "c" +
+                                i
+                                ];
 
-                                    return /^c\d+$/i.test(
-                                        key
-                                    );
 
-                                }
+                            if (
+                                value !== undefined &&
+                                value !== null &&
+                                value !== ""
+                            ) {
 
-                            );
+                                hasRealScore =
+                                    true;
+
+                                break;
+
+                            }
+
+                        }
 
                     }
 
 
-                    /*
-                     * เก็บสถานะจริงไว้ใน Work
-                     */
-
                     work.hasSubmitted =
                         hasRealScore;
-
-
-                    console.log(
-                        "WORK STATUS =",
-                        workId,
-                        work.hasSubmitted
-                    );
 
                 }
                 catch (
@@ -2019,7 +2083,7 @@ async function refreshScoreButtons(
 
 
     /* -----------------------------------------------
-       เก็บ Works ที่อัปเดตแล้ว
+       เก็บสถานะล่าสุด
        ----------------------------------------------- */
 
     sessionStorage.setItem(
