@@ -279,7 +279,7 @@ async function loadCategoryData() {
 
             throw new Error(
                 result &&
-                result.message
+                    result.message
                     ? result.message
                     : "ไม่สามารถโหลดผลงานได้"
             );
@@ -554,7 +554,7 @@ async function loadCategoryData() {
 
     }
     catch (
-        error
+    error
     ) {
 
         console.error(
@@ -1578,27 +1578,60 @@ function openWorkFileModal(
 
 
     /* -----------------------------------------
-       PDF
-       ----------------------------------------- */
+   PDF
+   ----------------------------------------- */
 
     if (
         type === "abstract" &&
         work.pdf_url
     ) {
 
+        const pdfUrl =
+            String(
+                work.pdf_url
+            ).trim();
+
+
+        let previewUrl =
+            pdfUrl;
+
+
+        const driveMatch =
+            pdfUrl.match(
+                /\/file\/d\/([^/]+)/
+            );
+
+
+        if (
+            driveMatch &&
+            driveMatch[1]
+        ) {
+
+            previewUrl =
+                "https://drive.google.com/file/d/" +
+                driveMatch[1] +
+                "/preview";
+
+        }
+
+
         pdf.src =
-            work.pdf_url;
+            previewUrl;
 
-        pdf.hidden = false;
 
-        fullscreen.hidden = false;
+        pdf.hidden =
+            false;
+
+
+        fullscreen.hidden =
+            false;
 
     }
 
 
     /* -----------------------------------------
-       Poster
-       ----------------------------------------- */
+   Poster
+   ----------------------------------------- */
 
     else if (
         type === "poster" &&
@@ -1608,9 +1641,13 @@ function openWorkFileModal(
         poster.src =
             work.poster_url;
 
-        poster.hidden = false;
 
-        fullscreen.hidden = false;
+        poster.hidden =
+            false;
+
+
+        fullscreen.hidden =
+            false;
 
     }
 

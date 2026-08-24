@@ -3533,3 +3533,9 @@ and (orientation: portrait) {
     }
 
 }
+
+.work-file-poster[hidden],
+.work-file-pdf[hidden],
+.work-file-modal-empty[hidden] {
+    display: none !important;
+}
