@@ -3092,8 +3092,11 @@ body.page-leaving {
 }
 
 /* =====================================================
-   CATEGORY — iPAD PORTRAIT FINAL
+   CATEGORY — iPAD PORTRAIT FINAL V2
    768 - 1024px แนวตั้งเท่านั้น
+
+   Layout:
+   เลข | รายละเอียดผลงาน | ปุ่มแนวตั้ง
    ===================================================== */
 
 @media (min-width: 768px)
@@ -3184,12 +3187,14 @@ and (orientation: portrait) {
 
 
     /* =================================================
-       หัวข้อรายการ + Summary
+       หัวรายการ + Summary
        ================================================= */
 
     .works-header {
         align-items: center !important;
+
         gap: 16px !important;
+
         margin-bottom: 10px !important;
     }
 
@@ -3236,7 +3241,7 @@ and (orientation: portrait) {
 
     #workList > .work-category-group-title {
         margin-top: 8px !important;
-        margin-bottom: 2px !important;
+        margin-bottom: 3px !important;
 
         font-size: 18px !important;
     }
@@ -3245,12 +3250,10 @@ and (orientation: portrait) {
     /* =================================================
        WORK CARD
 
-       เปลี่ยนจาก:
-       เลข | รายละเอียด | ปุ่ม
+       เลข | รายละเอียดผลงาน | Actions
 
-       เป็น:
-       เลข | รายละเอียด
-            | ปุ่ม 3 ปุ่มด้านล่าง
+       ให้รายละเอียดกินพื้นที่หลัก
+       Actions อยู่ขวาแนวตั้ง
        ================================================= */
 
     .work-card {
@@ -3258,14 +3261,16 @@ and (orientation: portrait) {
 
         grid-template-columns:
             48px
-            minmax(0, 1fr) !important;
+            minmax(0, 1fr)
+            154px !important;
 
         grid-template-rows:
-            auto
-            auto;
+            auto !important;
 
-        column-gap: 14px !important;
-        row-gap: 14px !important;
+        align-items: center !important;
+
+        column-gap: 15px !important;
+        row-gap: 0 !important;
 
         min-height: 0 !important;
 
@@ -3278,15 +3283,15 @@ and (orientation: portrait) {
 
 
     /* =================================================
-       เลขลำดับ
+       เลขผลงาน
        ================================================= */
 
     .work-order,
     .work-number {
-        grid-column: 1;
-        grid-row: 1;
+        grid-column: 1 !important;
+        grid-row: 1 !important;
 
-        align-self: flex-start;
+        align-self: center !important;
 
         width: 44px !important;
         height: 44px !important;
@@ -3296,26 +3301,48 @@ and (orientation: portrait) {
 
 
     /* =================================================
-       เนื้อหาผลงาน
+       รายละเอียด
        ================================================= */
 
     .work-content,
     .work-info {
-        grid-column: 2;
-        grid-row: 1;
+        grid-column: 2 !important;
+        grid-row: 1 !important;
 
-        width: 100%;
-        min-width: 0;
+        width: 100% !important;
+        min-width: 0 !important;
+
+        align-self: center !important;
     }
 
 
+    /* ชื่อผลงาน */
+
     .work-title {
+        width: 100% !important;
+
         font-size: 17px !important;
+        line-height: 1.5 !important;
 
-        line-height: 1.55 !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
 
-        word-break: normal;
-        overflow-wrap: anywhere;
+
+    /* =================================================
+       ผู้นำเสนอ
+
+       iPad แนวตั้งกลับมาใช้รูปแบบเดียวกับ Desktop
+       ไม่แยกชื่อคนละบรรทัด
+       ================================================= */
+
+    .presenter-desktop {
+        display: inline !important;
+    }
+
+
+    .presenter-ipad-portrait {
+        display: none !important;
     }
 
 
@@ -3324,8 +3351,12 @@ and (orientation: portrait) {
 
         font-size: 15px !important;
         line-height: 1.5 !important;
+
+        white-space: normal !important;
     }
 
+
+    /* หน่วยงาน */
 
     .work-department {
         margin-top: 2px !important;
@@ -3336,43 +3367,39 @@ and (orientation: portrait) {
 
 
     /* =================================================
-       ACTIONS
-
-       ย้ายลงล่างเต็มแถว
+       ACTIONS — ขวาแนวตั้ง
        ================================================= */
 
     .work-actions {
-        grid-column: 1 / -1 !important;
-        grid-row: 2 !important;
+        grid-column: 3 !important;
+        grid-row: 1 !important;
 
-        width: 100% !important;
+        width: 154px !important;
 
-        display: grid !important;
+        display: flex !important;
+        flex-direction: column !important;
 
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+        align-items: stretch !important;
+        justify-content: center !important;
 
-        gap: 9px !important;
+        gap: 8px !important;
 
         margin: 0 !important;
 
-        justify-self: stretch !important;
+        justify-self: end !important;
         align-self: center !important;
     }
 
 
     /* =================================================
        ปุ่ม
-
-       ไม่ใช้ 150px เดิมแล้ว
-       ให้แบ่งพื้นที่เท่ากัน 3 ช่อง
        ================================================= */
 
     .work-action-button {
-        width: 100% !important;
-        min-width: 0 !important;
+        width: 154px !important;
+        min-width: 154px !important;
 
-        height: 44px !important;
+        height: 42px !important;
 
         padding:
             0
@@ -3385,17 +3412,27 @@ and (orientation: portrait) {
 
 
     .work-action-icon {
-        font-size: 15px;
+        font-size: 15px !important;
     }
 
 
     .work-action-text {
-        font-size: 13px;
+        font-size: 13px !important;
     }
 
 
     /* =================================================
-       ระยะห่างรายการ
+       ถ้ามีเพียง 2 ปุ่ม
+       ก็ยังอยู่กึ่งกลางแนวตั้ง
+       ================================================= */
+
+    .work-actions:has(.work-action-button:nth-child(2):last-child) {
+        justify-content: center !important;
+    }
+
+
+    /* =================================================
+       ระยะห่างแต่ละรายการ
        ================================================= */
 
     #workList {
@@ -3405,6 +3442,102 @@ and (orientation: portrait) {
 
     .work-list {
         gap: 10px !important;
+    }
+
+}
+
+/* =====================================================
+   FORCE iPAD PORTRAIT LAYOUT
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-card {
+        display: grid !important;
+
+        grid-template-columns:
+            48px
+            minmax(0, 1fr)
+            160px !important;
+
+        grid-template-rows:
+            auto !important;
+
+        align-items: center !important;
+
+        column-gap: 16px !important;
+        row-gap: 0 !important;
+    }
+
+
+    .work-order {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        align-self: center !important;
+    }
+
+
+    .work-content {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+
+    .work-actions {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+
+        width: 160px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        align-items: stretch !important;
+        justify-content: center !important;
+
+        gap: 8px !important;
+
+        margin: 0 !important;
+
+        flex-wrap: nowrap !important;
+
+        justify-self: end !important;
+        align-self: center !important;
+    }
+
+
+    .work-action-button {
+        width: 160px !important;
+        min-width: 160px !important;
+        max-width: 160px !important;
+
+        height: 42px !important;
+
+        flex:
+            0 0 42px !important;
+    }
+
+
+    /* ชื่อผู้นำเสนอแบบปกติ มี comma */
+
+    .presenter-desktop {
+        display: inline !important;
+    }
+
+    .presenter-ipad-portrait {
+        display: none !important;
+    }
+
+}
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-card {
+        background: red !important;
     }
 
 }
