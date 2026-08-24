@@ -1638,8 +1638,42 @@ function openWorkFileModal(
         work.poster_url
     ) {
 
+        const posterUrl =
+            String(
+                work.poster_url
+            ).trim();
+
+
+        let imageUrl =
+            posterUrl;
+
+
+        /*
+         * Google Drive
+         * แปลงลิงก์แชร์เป็นลิงก์รูปโดยตรง
+         */
+
+        const driveMatch =
+            posterUrl.match(
+                /\/file\/d\/([^/]+)/
+            );
+
+
+        if (
+            driveMatch &&
+            driveMatch[1]
+        ) {
+
+            imageUrl =
+                "https://drive.google.com/thumbnail?id=" +
+                driveMatch[1] +
+                "&sz=w2000";
+
+        }
+
+
         poster.src =
-            work.poster_url;
+            imageUrl;
 
 
         poster.hidden =
