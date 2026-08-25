@@ -3020,6 +3020,49 @@ function setupWorkFileModalZoomLock(
 
 }
 
+function hideWorkFileEmpty(
+    empty
+) {
+
+    if (!empty) {
+        return;
+    }
+
+
+    empty.hidden =
+        true;
+
+
+    empty.style.display =
+        "none";
+
+}
+
+
+function showWorkFileEmpty(
+    empty,
+    message
+) {
+
+    if (!empty) {
+        return;
+    }
+
+
+    empty.textContent =
+        message ||
+        "ยังไม่มีไฟล์สำหรับผลงานนี้";
+
+
+    empty.hidden =
+        false;
+
+
+    empty.style.display =
+        "flex";
+
+}
+
 async function openWorkFileModal(
     work,
     type
@@ -3172,8 +3215,9 @@ async function openWorkFileModal(
         true;
 
 
-    empty.hidden =
-        true;
+    hideWorkFileEmpty(
+        empty
+    );
 
 
     loading.hidden =
@@ -3313,7 +3357,7 @@ async function openWorkFileModal(
 
             }
             catch (
-                error
+            error
             ) {
 
                 console.error(
