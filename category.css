@@ -3534,10 +3534,504 @@ and (orientation: portrait) {
 
 }
 
+.work-file-poster[hidden],
+.work-file-pdf[hidden],
+.work-file-modal-empty[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   WORK FILE LOADING
+   ===================================================== */
+
+.work-file-loading {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    background: #F5F8F7;
+
+    z-index: 5;
+}
+
+
+.work-file-loading[hidden] {
+    display: none !important;
+}
+
+
+.work-file-spinner {
+    width: 42px;
+    height: 42px;
+
+    border: 4px solid #D9E9E7;
+    border-top-color: #4A9994;
+
+    border-radius: 50%;
+
+    animation:
+        workFileSpinnerRotate
+        0.75s
+        linear
+        infinite;
+}
+
+
+.work-file-loading-text {
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #52716F;
+}
+
+
+@keyframes workFileSpinnerRotate {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* =====================================================
+   POSTER FULLSCREEN + ZOOM
+   ===================================================== */
+
+/* ตอนเข้า fullscreen */
+
+.work-file-poster:fullscreen {
+    max-width: none !important;
+    max-height: none !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    object-fit: contain;
+
+    cursor: grab;
+}
+
+
+.work-file-poster:fullscreen:active {
+    cursor: grabbing;
+}
+
+/* =====================================================
+   WORK FILE VIEWER — CENTER FIX
+   ===================================================== */
+
+.work-file-modal-content {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* PDF ต้องกินพื้นที่ viewer เต็ม */
+
+.work-file-pdf:not([hidden]) {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    flex: 1 1 100% !important;
+
+    border: 0 !important;
+}
+
+
+/* Poster อยู่กึ่งกลาง */
+
+.work-file-poster:not([hidden]) {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    margin: auto !important;
+
+    object-fit: contain !important;
+
+    flex: 0 0 auto !important;
+}
+
+
+/* ของที่ hidden ต้องไม่กินพื้นที่เด็ดขาด */
+
+.work-file-pdf[hidden],
+.work-file-poster[hidden],
+.work-file-modal-empty[hidden],
+.work-file-loading[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   iPad — FILE PREVIEW FIX
+   ===================================================== */
+
 @media (min-width: 700px) and (max-width: 1100px) {
 
-    .work-card {
-        background: red !important;
+    .work-file-modal-dialog {
+        width: 96vw !important;
+        height: 92vh !important;
+    }
+
+
+    .work-file-modal-content {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* บทคัดย่อ */
+
+    .work-file-pdf:not([hidden]) {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        flex: 1 1 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* โปสเตอร์ */
+
+    .work-file-poster:not([hidden]) {
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 96% !important;
+        max-height: 96% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        flex: 0 0 auto !important;
+    }
+
+
+    /* ตัวที่ซ่อนห้ามกินพื้นที่ */
+
+    .work-file-pdf[hidden],
+    .work-file-poster[hidden],
+    .work-file-modal-empty[hidden],
+    .work-file-loading[hidden] {
+        display: none !important;
+    }
+
+}
+/* =====================================================
+   iPad — FULLSCREEN IN SAME PAGE
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        padding: 0 !important;
+
+        z-index: 99999 !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+
+        margin: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        flex: 1 1 auto !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+    }
+
+
+    /* PDF เต็มพื้นที่ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-pdf:not([hidden]) {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Poster กลางหน้าจอ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster:not([hidden]) {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+    }
+
+}
+
+/* =====================================================
+   POSTER ZOOM + PAN
+   ===================================================== */
+
+.work-file-poster {
+    touch-action: none !important;
+
+    transform-origin: 0 0 !important;
+
+    will-change: transform;
+
+    user-select: none !important;
+
+    -webkit-user-select: none !important;
+
+    -webkit-user-drag: none;
+}
+
+
+/* ตอน iPad Fullscreen จำลอง
+   ไม่ให้ container เลื่อนแทนรูป */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-modal-content {
+
+    overflow: hidden !important;
+
+}
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-poster:not([hidden]) {
+
+    position: relative !important;
+
+    touch-action: none !important;
+
+    pointer-events: auto !important;
+
+    cursor: grab;
+
+    max-width: none !important;
+    max-height: none !important;
+}
+
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-poster:not([hidden]):active {
+
+    cursor: grabbing;
+}
+
+/* =====================================================
+   iPad PDF CANVAS VIEWER
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #E9EEED;
+
+    touch-action: none !important;
+}
+
+
+/* กลุ่มหน้าทั้งหมด */
+
+.work-file-pdf-pages {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    transform-origin: 0 0;
+
+    will-change: transform;
+}
+
+
+/* แต่ละหน้า */
+
+.work-file-pdf-page {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.10);
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* hidden ต้องหายจริง */
+
+.work-file-pdf-viewer[hidden] {
+    display: none !important;
+}
+
+
+/* iPad Fullscreen */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-viewer {
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow: hidden !important;
+}
+
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-pages {
+
+    touch-action: none !important;
+}
+
+/* =====================================================
+   iPad — POSTER FULL VIEW
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        padding: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        background: #111 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        transform-origin: center center !important;
+
+        touch-action: none !important;
     }
 
 }

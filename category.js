@@ -12,23 +12,37 @@ Version : 2.0.1
    ===================================================== */
 
 const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbyBy3Op76Yt6JJUH__YM-cgJi8KxKHPlcgW0eg0-Zkr_qLsjbUshT1VwAAAGY5Hg6WT/exec";
+    "https://script.google.com/macros/s/AKfycbzak_-7CxO6BvJ4GW-n5O9BvpbPGME-PQXdfoFlU-VHHHcsTKUsEEEDEq06zaqmZ-3BPw/exec";
 
 
 /* =====================================================
    เมื่อหน้าโหลด
+   โหลดข้อมูลใหม่ทุกครั้ง
    ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+        /*
+         * แสดงตัววิ่งทุกครั้ง
+         */
+
         showCategoryLoading();
+
+
+        /*
+         * โหลดข้อมูลใหม่จาก GAS
+         */
 
         loadCategoryData();
 
     }
 );
+
+/* =====================================================
+   CATEGORY LOADING
+   ===================================================== */
 
 function showCategoryLoading() {
 
@@ -37,13 +51,54 @@ function showCategoryLoading() {
             "categoryLoading"
         );
 
-    if (!loading) {
-        return;
+
+    if (loading) {
+
+        loading.hidden =
+            false;
+
+
+        loading.classList.remove(
+            "hide"
+        );
+
     }
 
-    loading.hidden = false;
+
+    /* -----------------------------------------------
+       ระหว่างโหลด
+       ห้ามแสดงจำนวนจากรอบก่อน
+       ----------------------------------------------- */
+
+    const workCount =
+        document.getElementById(
+            "workCount"
+        );
+
+
+    const evaluatedCount =
+        document.getElementById(
+            "evaluatedCount"
+        );
+
+
+    if (workCount) {
+
+        workCount.textContent =
+            "...";
+
+    }
+
+
+    if (evaluatedCount) {
+
+        evaluatedCount.textContent =
+            "...";
+
+    }
 
 }
+
 
 function hideCategoryLoading() {
 
@@ -52,17 +107,73 @@ function hideCategoryLoading() {
             "categoryLoading"
         );
 
+
     if (!loading) {
         return;
     }
 
-    loading.classList.add("hide");
+
+    loading.classList.add(
+        "hide"
+    );
+
+
+    /*
+     * รอให้ตัววิ่งเริ่มหายก่อน
+     * แล้วค่อยให้เนื้อหาเลื่อนขึ้น
+     */
+
+    const workList =
+        document.getElementById(
+            "workList"
+        );
+
+
+    if (!workList) {
+        return;
+    }
+
+
+    /*
+     * เอา animation เดิมออกก่อน
+     * กันกรณีเรียกฟังก์ชันซ้ำ
+     */
+
+    workList.classList.remove(
+        "content-enter"
+    );
+
+
+    /*
+     * บังคับให้ Browser วาดรอบใหม่
+     * ก่อนเริ่ม Animation
+     */
+
+    void workList.offsetWidth;
+
+
+    /*
+     * รอให้ตัววิ่งเริ่มยุบ
+     * แล้วค่อยปล่อย Content ขึ้นมา
+     */
+
+    setTimeout(
+        function () {
+
+            workList.classList.add(
+                "content-enter"
+            );
+
+        },
+        600
+    );
 
 }
 
-
 /* =====================================================
    โหลดข้อมูล Category
+   โหลดข้อมูลใหม่ทุกครั้ง
+   รอข้อมูลคะแนนให้พร้อมก่อนแสดงหน้า
    ===================================================== */
 
 async function loadCategoryData() {
@@ -74,7 +185,9 @@ async function loadCategoryData() {
            ----------------------------------------------- */
 
         const storedJudge =
-            sessionStorage.getItem("judge");
+            sessionStorage.getItem(
+                "judge"
+            );
 
 
         if (!storedJudge) {
@@ -87,7 +200,9 @@ async function loadCategoryData() {
 
 
         const loginData =
-            JSON.parse(storedJudge);
+            JSON.parse(
+                storedJudge
+            );
 
 
         if (
@@ -107,7 +222,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           2. แสดงชื่อกรรมการทันที
+           2. แสดงชื่อกรรมการ
            ----------------------------------------------- */
 
         displayJudge(
@@ -116,13 +231,21 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           3. โหลดผลงานจาก GAS โดยตรง
+           3. โหลดผลงานจาก GAS
            ----------------------------------------------- */
 
         const response =
             await fetch(
                 GAS_URL +
-                "?action=works"
+                "?action=works&_t=" +
+                Date.now(),
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store"
+                }
             );
 
 
@@ -168,11 +291,14 @@ async function loadCategoryData() {
            5. ดึง Array ผลงาน
            ----------------------------------------------- */
 
-        let allWorks = [];
+        let allWorks =
+            [];
 
 
         if (
-            Array.isArray(result)
+            Array.isArray(
+                result
+            )
         ) {
 
             allWorks =
@@ -180,7 +306,9 @@ async function loadCategoryData() {
 
         }
         else if (
-            Array.isArray(result.works)
+            Array.isArray(
+                result.works
+            )
         ) {
 
             allWorks =
@@ -188,7 +316,9 @@ async function loadCategoryData() {
 
         }
         else if (
-            Array.isArray(result.data)
+            Array.isArray(
+                result.data
+            )
         ) {
 
             allWorks =
@@ -198,22 +328,44 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           6. กรองผลงานตามกรรมการ
+           6. หา ID กรรมการ
            ----------------------------------------------- */
 
         const judgeId =
             String(
-                judge.id
+                judge.id ||
+                judge.judge_id ||
+                judge.code ||
+                ""
             ).trim();
 
 
+        if (!judgeId) {
+
+            throw new Error(
+                "ไม่พบรหัสกรรมการ"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           7. กรองผลงานตามกรรมการ
+           ----------------------------------------------- */
+
         const works =
             allWorks.filter(
-                function (work) {
 
-                    /* -----------------------------------------
-                       ตรวจ active
-                       ----------------------------------------- */
+                function (
+                    work
+                ) {
+
+                    if (!work) {
+
+                        return false;
+
+                    }
+
 
                     const active =
                         String(
@@ -234,17 +386,18 @@ async function loadCategoryData() {
                     }
 
 
-                    /* -----------------------------------------
-                       ตรวจ judge_ids
-                       ----------------------------------------- */
-
                     const judgeIds =
                         String(
-                            work.judge_ids || ""
+                            work.judge_ids ||
+                            work.judgeIds ||
+                            work.judges ||
+                            ""
                         )
                             .split(",")
                             .map(
-                                function (id) {
+                                function (
+                                    id
+                                ) {
 
                                     return String(
                                         id
@@ -252,7 +405,9 @@ async function loadCategoryData() {
 
                                 }
                             )
-                            .filter(Boolean);
+                            .filter(
+                                Boolean
+                            );
 
 
                     return judgeIds.includes(
@@ -260,51 +415,53 @@ async function loadCategoryData() {
                     );
 
                 }
+
             );
 
 
         /* -----------------------------------------------
-           7. เรียงตาม order
+           8. เรียงตาม order
            ----------------------------------------------- */
 
         works.sort(
-            function (a, b) {
+
+            function (
+                a,
+                b
+            ) {
 
                 return (
                     Number(
-                        a.order || 0
+                        a.order ||
+                        0
                     ) -
                     Number(
-                        b.order || 0
+                        b.order ||
+                        0
                     )
                 );
 
             }
+
         );
 
 
         /* -----------------------------------------------
-           8. แสดงจำนวน
+           9. ตรวจคะแนนจริงจากชีท
+
+           สำคัญ:
+           รอตรงนี้ให้เสร็จก่อน
+           ยังไม่แสดงรายการ
+           ยังไม่ซ่อนตัววิ่ง
            ----------------------------------------------- */
 
-        displayWorkCount(
-            works.length
-        );
-
-
-        /* -----------------------------------------------
-           9. แสดงผลงาน
-           ----------------------------------------------- */
-
-        displayWorks(
+        await refreshScoreButtons(
             works
         );
 
-        hideCategoryLoading();
-
 
         /* -----------------------------------------------
-           10. เก็บไว้ใช้หน้าต่อไป
+           10. เก็บ Works หลังมีสถานะคะแนนแล้ว
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -315,13 +472,20 @@ async function loadCategoryData() {
         );
 
 
+        sessionStorage.setItem(
+            "worksCacheJudgeId",
+            judgeId
+        );
+
+
         /* -----------------------------------------------
-           11. เก็บข้อมูล Login แบบอัปเดต
+           11. เก็บข้อมูล Login
            ----------------------------------------------- */
 
         const updatedSession = {
 
-            success: true,
+            success:
+                true,
 
             judge:
                 judge,
@@ -347,6 +511,31 @@ async function loadCategoryData() {
         );
 
 
+        /* -----------------------------------------------
+           12. แสดงทุกอย่างพร้อมกัน
+           ----------------------------------------------- */
+
+        displayWorks(
+            works
+        );
+
+
+        displayWorkCount(
+            works.length
+        );
+
+
+        displayEvaluatedCount();
+
+
+        /* -----------------------------------------------
+           13. ข้อมูลทุกอย่างพร้อมแล้ว
+           ค่อยซ่อนตัววิ่ง
+           ----------------------------------------------- */
+
+        hideCategoryLoading();
+
+
         console.log(
             "กรรมการ =",
             judge.name
@@ -359,13 +548,22 @@ async function loadCategoryData() {
         );
 
 
+        console.log(
+            "CATEGORY READY"
+        );
+
     }
-    catch (error) {
+    catch (
+    error
+    ) {
 
         console.error(
             "Category Error =",
             error
         );
+
+
+        hideCategoryLoading();
 
 
         showCategoryError(
@@ -432,6 +630,105 @@ function displayWorkCount(
 
 }
 
+/* =====================================================
+   แสดงจำนวนผลงานที่ประเมินแล้ว
+   ใช้สถานะคะแนนจริงจาก Work
+   ===================================================== */
+
+function displayEvaluatedCount() {
+
+    const element =
+        document.getElementById(
+            "evaluatedCount"
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    let works =
+        [];
+
+
+    try {
+
+        const raw =
+            sessionStorage.getItem(
+                "works"
+            );
+
+
+        if (raw) {
+
+            works =
+                JSON.parse(
+                    raw
+                );
+
+        }
+
+    }
+    catch (
+    error
+    ) {
+
+        console.warn(
+            "อ่าน Works ไม่ได้:",
+            error
+        );
+
+        works =
+            [];
+
+    }
+
+
+    if (
+        !Array.isArray(
+            works
+        )
+    ) {
+
+        works =
+            [];
+
+    }
+
+
+    let evaluatedCount =
+        0;
+
+
+    works.forEach(
+
+        function (
+            work
+        ) {
+
+            if (
+                work &&
+                work.hasSubmitted === true
+            ) {
+
+                evaluatedCount++;
+
+            }
+
+        }
+
+    );
+
+
+    element.textContent =
+        String(
+            evaluatedCount
+        );
+
+}
 
 /* =====================================================
    แสดงรายการผลงาน
@@ -676,17 +973,23 @@ function createWorkCard(
         "work-presenter";
 
     const presenterText =
-        String(work.presenter || "");
+        String(
+            work.presenter ||
+            ""
+        );
 
     presenter.innerHTML = `
-    <span class="presenter-desktop">
-        ${presenterText}
-    </span>
+        <span class="presenter-desktop">
+            ${presenterText}
+        </span>
 
-    <span class="presenter-ipad-portrait">
-        ${presenterText.replace(/,\s*/g, "<br>")}
-    </span>
-`;
+        <span class="presenter-ipad-portrait">
+            ${presenterText.replace(
+        /,\s*/g,
+        "<br>"
+    )}
+        </span>
+    `;
 
 
     /* -----------------------------------------------
@@ -742,41 +1045,70 @@ function createWorkCard(
 
 
     /* =================================================
-   ACTION BUTTONS
-   ================================================= */
+       ACTION BUTTONS
+       ================================================= */
 
-    const actionArea = document.createElement("div");
-    actionArea.className = "work-actions";
+    const actionArea =
+        document.createElement(
+            "div"
+        );
+
+    actionArea.className =
+        "work-actions";
 
 
     /* =================================================
        สร้างปุ่มมาตรฐาน
        ================================================= */
 
-    function createActionButton(icon, text, className, onClick) {
+    function createActionButton(
+        icon,
+        text,
+        className,
+        onClick
+    ) {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement(
+                "button"
+            );
 
-        button.type = "button";
+        button.type =
+            "button";
 
         button.className =
             "work-action-button" +
-            (className ? ` ${className}` : "");
+            (
+                className
+                    ? ` ${className}`
+                    : ""
+            );
 
         button.innerHTML = `
-        <span class="work-action-icon">${icon}</span>
-        <span class="work-action-text">${text}</span>
-    `;
+            <span class="work-action-icon">
+                ${icon}
+            </span>
 
-        button.addEventListener("click", function (event) {
+            <span class="work-action-text">
+                ${text}
+            </span>
+        `;
 
-            event.stopPropagation();
+        button.addEventListener(
+            "click",
+            function (
+                event
+            ) {
 
-            onClick();
+                event.stopPropagation();
 
-        });
+                onClick();
+
+            }
+        );
 
         return button;
+
     }
 
 
@@ -784,27 +1116,30 @@ function createWorkCard(
        ดูบทคัดย่อ
        ================================================= */
 
-    const abstractButton = createActionButton(
-        "📄",
-        "ดูบทคัดย่อ",
-        "",
-        function () {
+    const abstractButton =
+        createActionButton(
+            "📄",
+            "ดูบทคัดย่อ",
+            "",
+            function () {
 
-            openWorkFileModal(
-                work,
-                "abstract"
-            );
+                openWorkFileModal(
+                    work,
+                    "abstract"
+                );
 
-        }
+            }
+        );
 
+
+    actionArea.appendChild(
+        abstractButton
     );
-
-    actionArea.appendChild(abstractButton);
 
 
     /* =================================================
-   ดูโปสเตอร์
-   ================================================= */
+       ดูโปสเตอร์
+       ================================================= */
 
     const posterCategories = [
         "CQI Poster Presentation",
@@ -812,12 +1147,19 @@ function createWorkCard(
         "KM"
     ];
 
+
     const hasPoster =
         posterCategories.includes(
-            String(work.category || "").trim()
+            String(
+                work.category ||
+                ""
+            ).trim()
         );
 
-    if (hasPoster) {
+
+    if (
+        hasPoster
+    ) {
 
         const posterButton =
             createActionButton(
@@ -834,28 +1176,38 @@ function createWorkCard(
                 }
             );
 
+
         actionArea.appendChild(
             posterButton
         );
+
     }
 
 
     /* =================================================
-       ลงคะแนน
-       ================================================= */
+   ลงคะแนน
+   ใช้ปุ่มรูปแบบเดียวตลอด
+   ไม่เปลี่ยนเป็น "แก้ไขคะแนน"
+   ================================================= */
 
-    const scoreButton = createActionButton(
-        "📝",
-        "ลงคะแนน",
-        "is-primary",
-        function () {
+    const scoreButton =
+        createActionButton(
+            "📝",
+            "ลงคะแนน",
+            "is-primary",
+            function () {
 
-            selectWork(work);
+                selectWork(
+                    work
+                );
 
-        }
+            }
+        );
+
+
+    actionArea.appendChild(
+        scoreButton
     );
-
-    actionArea.appendChild(scoreButton);
 
 
     /* =================================================
@@ -882,11 +1234,27 @@ function createWorkCard(
 
 /* =====================================================
    เลือกผลงาน
+   ไปหน้าลงคะแนนแบบ Smooth
    ===================================================== */
 
 function selectWork(
     work
 ) {
+
+    if (!work) {
+
+        console.error(
+            "ไม่พบข้อมูลผลงาน"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * เก็บผลงานที่เลือก
+     */
 
     sessionStorage.setItem(
         "selectedWork",
@@ -895,8 +1263,39 @@ function selectWork(
         )
     );
 
-    window.location.href =
-        "./evaluation.html";
+
+    console.log(
+        "เลือกผลงาน =",
+        work
+    );
+
+
+    /*
+     * -----------------------------------------------
+     * Animation ก่อนเปลี่ยนหน้า
+     * -----------------------------------------------
+     */
+
+    document.body.classList.add(
+        "page-leaving"
+    );
+
+
+    /*
+     * รอ Animation เล่นก่อน
+     * แล้วค่อยเปลี่ยนหน้า
+     */
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "./evaluation.html";
+
+        },
+        280
+    );
+
 }
 
 
@@ -915,9 +1314,7 @@ function showCategoryError(
 
 
     if (!workList) {
-
         return;
-
     }
 
 
@@ -929,16 +1326,37 @@ function showCategoryError(
             "div"
         );
 
-
     error.className =
         "category-error";
 
+
+    /* -----------------------------------------------
+       รูปเศร้า
+       ----------------------------------------------- */
+
+    const image =
+        document.createElement(
+            "img"
+        );
+
+    image.className =
+        "error-mascot";
+
+    image.src =
+        "./assets/images/qsnich-sad.png";
+
+    image.alt =
+        "ไม่สามารถโหลดข้อมูลได้";
+
+
+    /* -----------------------------------------------
+       หัวข้อ
+       ----------------------------------------------- */
 
     const title =
         document.createElement(
             "div"
         );
-
 
     title.className =
         "category-error-title";
@@ -947,23 +1365,33 @@ function showCategoryError(
         "ไม่สามารถโหลดข้อมูลได้";
 
 
+    /* -----------------------------------------------
+       ข้อความ
+       ----------------------------------------------- */
+
     const text =
         document.createElement(
             "div"
         );
 
-
     text.className =
         "category-error-message";
 
-
     text.textContent =
-        "กรุณากด “ออกจากระบบ” ที่มุมขวาบน แล้วเข้าสู่ระบบใหม่อีกครั้ง";
+        "กรุณากด refresh หน้านี้ หรือเข้าสู่ระบบใหม่อีกครั้ง";
+
+
+    /* -----------------------------------------------
+       รวม
+       ----------------------------------------------- */
+
+    error.appendChild(
+        image
+    );
 
     error.appendChild(
         title
     );
-
 
     error.appendChild(
         text
@@ -999,30 +1427,66 @@ document.addEventListener(
             "click",
             function () {
 
-                /* -----------------------------------------
-                   ล้างข้อมูลกรรมการทั้งหมด
-                   ----------------------------------------- */
+                /*
+                 * =========================================
+                 * ล้างข้อมูลกรรมการ
+                 * =========================================
+                 */
 
                 sessionStorage.removeItem(
                     "judge"
                 );
 
+
+                /*
+                 * =========================================
+                 * ล้าง Works Cache
+                 *
+                 * สำคัญมาก
+                 *
+                 * เพื่อให้ Login ใหม่ต้องโหลดใหม่
+                 * =========================================
+                 */
+
                 sessionStorage.removeItem(
                     "works"
                 );
 
+
                 sessionStorage.removeItem(
-                    "criteria"
+                    "worksCacheJudgeId"
                 );
+
+
+                /*
+                 * =========================================
+                 * ล้างผลงานที่เลือกค้างไว้
+                 * =========================================
+                 */
 
                 sessionStorage.removeItem(
                     "selectedWork"
                 );
 
 
-                /* -----------------------------------------
-                   กลับหน้า Login
-                   ----------------------------------------- */
+                /*
+                 * =========================================
+                 * ล้าง Criteria Cache
+                 *
+                 * ป้องกันข้อมูลจาก Login รอบก่อน
+                 * =========================================
+                 */
+
+                sessionStorage.removeItem(
+                    "criteria"
+                );
+
+
+                /*
+                 * =========================================
+                 * กลับหน้า Login
+                 * =========================================
+                 */
 
                 window.location.href =
                     "./index.html";
@@ -1033,9 +1497,1388 @@ document.addEventListener(
     }
 );
 
-/* =================================================
-   WORK FILE POPUP
-   ================================================= */
+/* =====================================================
+   PRELOAD WORK FILES
+   โหลดไฟล์รอเบื้องหลัง
+   ===================================================== */
+
+function preloadWorkFiles(
+    works
+) {
+
+    if (
+        !Array.isArray(works) ||
+        works.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * รอให้หน้า Category แสดงเสร็จก่อน
+     * ไม่แย่งเน็ตตอนกำลังโหลดรายชื่อ/คะแนน
+     */
+
+    setTimeout(
+        function () {
+
+            works.forEach(
+                function (
+                    work
+                ) {
+
+                    /* =========================================
+                       PRELOAD POSTER
+                       ========================================= */
+
+                    if (
+                        work.poster_url
+                    ) {
+
+                        const posterUrl =
+                            String(
+                                work.poster_url
+                            ).trim();
+
+
+                        const driveMatch =
+                            posterUrl.match(
+                                /\/file\/d\/([^/]+)/
+                            );
+
+
+                        let imageUrl =
+                            posterUrl;
+
+
+                        if (
+                            driveMatch &&
+                            driveMatch[1]
+                        ) {
+
+                            imageUrl =
+                                "https://drive.google.com/thumbnail?id=" +
+                                driveMatch[1] +
+                                "&sz=w2000";
+
+                        }
+
+
+                        const image =
+                            new Image();
+
+
+                        image.src =
+                            imageUrl;
+
+                    }
+
+
+                    /* =========================================
+                       PRELOAD PDF
+                       ========================================= */
+
+                    if (
+                        work.pdf_url
+                    ) {
+
+                        const pdfUrl =
+                            String(
+                                work.pdf_url
+                            ).trim();
+
+
+                        const driveMatch =
+                            pdfUrl.match(
+                                /\/file\/d\/([^/]+)/
+                            );
+
+
+                        let previewUrl =
+                            pdfUrl;
+
+
+                        if (
+                            driveMatch &&
+                            driveMatch[1]
+                        ) {
+
+                            previewUrl =
+                                "https://drive.google.com/file/d/" +
+                                driveMatch[1] +
+                                "/preview";
+
+                        }
+
+
+                        const link =
+                            document.createElement(
+                                "link"
+                            );
+
+
+                        link.rel =
+                            "prefetch";
+
+
+                        link.href =
+                            previewUrl;
+
+
+                        document.head.appendChild(
+                            link
+                        );
+
+                    }
+
+                }
+            );
+
+        },
+        1200
+    );
+
+}
+
+/* =====================================================
+   POSTER ZOOM + PAN
+   iPad pinch zoom + drag
+   Desktop mouse wheel zoom
+   ===================================================== */
+
+let posterScale = 1;
+
+let posterTranslateX = 0;
+let posterTranslateY = 0;
+
+let posterPinchDistance = 0;
+let posterPinchMidX = 0;
+let posterPinchMidY = 0;
+
+let posterDragX = 0;
+let posterDragY = 0;
+
+
+/* -----------------------------------------
+   Apply Transform
+   ----------------------------------------- */
+
+function applyPosterTransform(
+    poster
+) {
+
+    if (!poster) {
+        return;
+    }
+
+    poster.style.transform =
+        "translate3d(" +
+        posterTranslateX +
+        "px, " +
+        posterTranslateY +
+        "px, 0) scale(" +
+        posterScale +
+        ")";
+
+}
+
+
+/* -----------------------------------------
+   Reset
+   ----------------------------------------- */
+
+function resetPosterZoom(
+    poster
+) {
+
+    posterScale = 1;
+
+    posterTranslateX = 0;
+    posterTranslateY = 0;
+
+    posterPinchDistance = 0;
+    posterPinchMidX = 0;
+    posterPinchMidY = 0;
+
+    posterDragX = 0;
+    posterDragY = 0;
+
+
+    if (poster) {
+
+        poster.style.transform =
+            "translate3d(0, 0, 0) scale(1)";
+
+    }
+
+}
+
+
+/* -----------------------------------------
+   ระยะระหว่าง 2 นิ้ว
+   ----------------------------------------- */
+
+function getTouchDistance(
+    touches
+) {
+
+    if (
+        !touches ||
+        touches.length < 2
+    ) {
+        return 0;
+    }
+
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+
+    return Math.hypot(
+        dx,
+        dy
+    );
+
+}
+
+
+/* -----------------------------------------
+   จุดกึ่งกลางระหว่าง 2 นิ้ว
+   ----------------------------------------- */
+
+function getTouchMidpoint(
+    touches
+) {
+
+    return {
+
+        x:
+            (
+                touches[0].clientX +
+                touches[1].clientX
+            ) / 2,
+
+        y:
+            (
+                touches[0].clientY +
+                touches[1].clientY
+            ) / 2
+
+    };
+
+}
+
+
+function zoomPosterAtPoint(
+    poster,
+    newScale,
+    pointX,
+    pointY
+) {
+
+    if (!poster) {
+        return;
+    }
+
+
+    newScale =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                newScale
+            )
+        );
+
+
+    /* =========================================
+       ถ้ากลับมา 1x
+       คืนรูปเข้ากลาง
+       ========================================= */
+
+    if (
+        newScale <= 1
+    ) {
+
+        posterScale = 1;
+
+        posterTranslateX = 0;
+        posterTranslateY = 0;
+
+
+        applyPosterTransform(
+            poster
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+     * rect ณ ตอนนี้
+     * รวม scale + translate ปัจจุบันแล้ว
+     */
+
+    const rect =
+        poster.getBoundingClientRect();
+
+
+    /*
+     * ตำแหน่งเดิมของรูปก่อน translate
+     */
+
+    const baseLeft =
+        rect.left -
+        posterTranslateX;
+
+
+    const baseTop =
+        rect.top -
+        posterTranslateY;
+
+
+    /*
+     * หาว่าจุดที่นิ้วแตะ
+     * อยู่ตรงตำแหน่งไหนของรูปจริง
+     */
+
+    const imageX =
+        (
+            pointX -
+            rect.left
+        ) /
+        posterScale;
+
+
+    const imageY =
+        (
+            pointY -
+            rect.top
+        ) /
+        posterScale;
+
+
+    /*
+     * คำนวณ translate ใหม่
+     * เพื่อให้จุดเดิมของรูป
+     * ยังคงอยู่ใต้นิ้วหลังซูม
+     */
+
+    posterTranslateX =
+        pointX -
+        baseLeft -
+        (
+            imageX *
+            newScale
+        );
+
+
+    posterTranslateY =
+        pointY -
+        baseTop -
+        (
+            imageY *
+            newScale
+        );
+
+
+    posterScale =
+        newScale;
+
+
+    applyPosterTransform(
+        poster
+    );
+
+}
+
+
+/* =====================================================
+   SETUP POSTER ZOOM EVENTS
+   ===================================================== */
+
+function setupPosterZoom(
+    poster,
+    modal
+) {
+
+    if (
+        !poster ||
+        !modal ||
+        poster.dataset.zoomReady
+    ) {
+        return;
+    }
+
+
+    poster.dataset.zoomReady =
+        "true";
+
+
+    /* =================================================
+       เช็กว่าตอนนี้อนุญาตให้ Zoom หรือไม่
+
+       Desktop:
+       - ต้องอยู่ใน Fullscreen จริง
+
+       iPad:
+       - ใช้ Full View ของ Modal
+       ================================================= */
+
+    function canZoom() {
+
+        return (
+            document.fullscreenElement === poster ||
+            modal.classList.contains(
+                "is-ipad-fullscreen"
+            )
+        );
+
+    }
+
+
+    /* =================================================
+       DESKTOP — MOUSE WHEEL ZOOM
+       ================================================= */
+
+    poster.addEventListener(
+        "wheel",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+
+            const factor =
+                event.deltaY < 0
+                    ? 1.15
+                    : 0.87;
+
+
+            zoomPosterAtPoint(
+                poster,
+                posterScale * factor,
+                event.clientX,
+                event.clientY
+            );
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       iPAD — TOUCH START
+       ================================================= */
+
+    poster.addEventListener(
+        "touchstart",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+                return;
+            }
+
+
+            /* -----------------------------------------
+               2 นิ้ว
+               เริ่ม Pinch Zoom
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                posterPinchDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                posterPinchMidX =
+                    midpoint.x;
+
+
+                posterPinchMidY =
+                    midpoint.y;
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               1 นิ้ว
+               เตรียมลากเมื่อ Zoom แล้ว
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                event.preventDefault();
+
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       iPAD — TOUCH MOVE
+       ================================================= */
+
+    poster.addEventListener(
+        "touchmove",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+                return;
+            }
+
+
+            /* -----------------------------------------
+               2 นิ้ว
+               Pinch Zoom
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                const newDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                if (
+                    !posterPinchDistance
+                ) {
+
+                    posterPinchDistance =
+                        newDistance;
+
+
+                    return;
+
+                }
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                const ratio =
+                    newDistance /
+                    posterPinchDistance;
+
+
+                zoomPosterAtPoint(
+                    poster,
+                    posterScale * ratio,
+                    midpoint.x,
+                    midpoint.y
+                );
+
+
+                posterPinchDistance =
+                    newDistance;
+
+
+                posterPinchMidX =
+                    midpoint.x;
+
+
+                posterPinchMidY =
+                    midpoint.y;
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               1 นิ้ว
+               ลากดูส่วนต่าง ๆ ของโปสเตอร์
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                event.preventDefault();
+
+
+                const touch =
+                    event.touches[0];
+
+
+                posterTranslateX +=
+                    touch.clientX -
+                    posterDragX;
+
+
+                posterTranslateY +=
+                    touch.clientY -
+                    posterDragY;
+
+
+                posterDragX =
+                    touch.clientX;
+
+
+                posterDragY =
+                    touch.clientY;
+
+
+                applyPosterTransform(
+                    poster
+                );
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       iPAD — TOUCH END
+       ================================================= */
+
+    poster.addEventListener(
+        "touchend",
+        function (
+            event
+        ) {
+
+            /*
+             * จบ Pinch รอบนี้
+             */
+
+            posterPinchDistance =
+                0;
+
+
+            /*
+             * ถ้ายังเหลือนิ้วหนึ่งนิ้วบนจอ
+             * เตรียมให้ลากต่อได้ทันที
+             */
+
+            if (
+                event.touches.length === 1
+            ) {
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+            else {
+
+                posterDragX =
+                    0;
+
+
+                posterDragY =
+                    0;
+
+            }
+
+
+            /*
+             * ถ้าหุบกลับถึง 1x
+             * บังคับให้โปสเตอร์กลับกลางจอ
+             */
+
+            if (
+                posterScale <= 1
+            ) {
+
+                resetPosterZoom(
+                    poster
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/* =====================================================
+   iPad PDF CANVAS VIEWER
+   Render ทุกหน้า
+   ===================================================== */
+
+async function renderPdfForIPad(
+    pdfUrl
+) {
+
+    const viewer =
+        document.getElementById(
+            "workFilePdfViewer"
+        );
+
+
+    const pages =
+        document.getElementById(
+            "workFilePdfPages"
+        );
+
+
+    if (
+        !viewer ||
+        !pages ||
+        !window.pdfjsLib
+    ) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        /*
+         * ล้าง PDF งานก่อน
+         */
+
+        pages.innerHTML =
+            "";
+
+
+        /*
+         * โหลด PDF
+         */
+
+        const loadingTask =
+            window.pdfjsLib.getDocument(
+                pdfUrl
+            );
+
+
+        const pdfDocument =
+            await loadingTask.promise;
+
+
+        /*
+         * Render ทุกหน้า
+         */
+
+        for (
+            let pageNumber = 1;
+            pageNumber <= pdfDocument.numPages;
+            pageNumber++
+        ) {
+
+            const page =
+                await pdfDocument.getPage(
+                    pageNumber
+                );
+
+
+            const viewport =
+                page.getViewport({
+                    scale: 2
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.className =
+                "work-file-pdf-page";
+
+
+            canvas.width =
+                Math.floor(
+                    viewport.width
+                );
+
+
+            canvas.height =
+                Math.floor(
+                    viewport.height
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+            pages.appendChild(
+                canvas
+            );
+
+
+            await page.render({
+
+                canvasContext:
+                    context,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+        }
+
+
+        viewer.hidden =
+            false;
+
+
+        return true;
+
+    }
+    catch (
+    error
+    ) {
+
+        console.error(
+            "PDF Canvas Error:",
+            error
+        );
+
+
+        pages.innerHTML =
+            "";
+
+
+        return false;
+
+    }
+
+}
+
+/* =====================================================
+   PDF ZOOM + PAN
+   iPad pinch zoom + drag
+   ===================================================== */
+
+let pdfScale = 1;
+
+let pdfTranslateX = 0;
+let pdfTranslateY = 0;
+
+let pdfPinchDistance = 0;
+let pdfPinchMidX = 0;
+let pdfPinchMidY = 0;
+
+let pdfDragX = 0;
+let pdfDragY = 0;
+
+
+/* -----------------------------------------
+   Apply Transform
+   ----------------------------------------- */
+
+function applyPdfTransform(
+    pages
+) {
+
+    if (!pages) {
+        return;
+    }
+
+
+    pages.style.transform =
+        "translate3d(" +
+        pdfTranslateX +
+        "px, " +
+        pdfTranslateY +
+        "px, 0) scale(" +
+        pdfScale +
+        ")";
+
+}
+
+
+/* -----------------------------------------
+   Reset
+   ----------------------------------------- */
+
+function resetPdfZoom(
+    pages
+) {
+
+    pdfScale = 1;
+
+    pdfTranslateX = 0;
+    pdfTranslateY = 0;
+
+    pdfPinchDistance = 0;
+    pdfPinchMidX = 0;
+    pdfPinchMidY = 0;
+
+    pdfDragX = 0;
+    pdfDragY = 0;
+
+
+    if (pages) {
+
+        pages.style.transform =
+            "translate3d(0, 0, 0) scale(1)";
+
+    }
+
+}
+
+
+/* -----------------------------------------
+   ซูมตรงตำแหน่งนิ้ว
+   ----------------------------------------- */
+
+function zoomPdfAtPoint(
+    pages,
+    newScale,
+    pointX,
+    pointY
+) {
+
+    if (!pages) {
+        return;
+    }
+
+
+    newScale =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                newScale
+            )
+        );
+
+
+    if (
+        newScale <= 1
+    ) {
+
+        pdfScale = 1;
+
+        pdfTranslateX = 0;
+        pdfTranslateY = 0;
+
+
+        applyPdfTransform(
+            pages
+        );
+
+
+        return;
+
+    }
+
+
+    const rect =
+        pages.getBoundingClientRect();
+
+
+    const imageX =
+        (
+            pointX -
+            rect.left
+        ) /
+        pdfScale;
+
+
+    const imageY =
+        (
+            pointY -
+            rect.top
+        ) /
+        pdfScale;
+
+
+    const baseLeft =
+        rect.left -
+        pdfTranslateX;
+
+
+    const baseTop =
+        rect.top -
+        pdfTranslateY;
+
+
+    pdfTranslateX =
+        pointX -
+        baseLeft -
+        (
+            imageX *
+            newScale
+        );
+
+
+    pdfTranslateY =
+        pointY -
+        baseTop -
+        (
+            imageY *
+            newScale
+        );
+
+
+    pdfScale =
+        newScale;
+
+
+    applyPdfTransform(
+        pages
+    );
+
+}
+
+
+/* =====================================================
+   SETUP PDF ZOOM EVENTS
+   ===================================================== */
+
+function setupPdfZoom(
+    viewer,
+    pages,
+    modal
+) {
+
+    if (
+        !viewer ||
+        !pages ||
+        !modal ||
+        viewer.dataset.zoomReady
+    ) {
+
+        return;
+
+    }
+
+
+    viewer.dataset.zoomReady =
+        "true";
+
+
+    function canZoom() {
+
+        return modal.classList.contains(
+            "is-ipad-fullscreen"
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Touch Start
+       ----------------------------------------- */
+
+    viewer.addEventListener(
+        "touchstart",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+
+                return;
+
+            }
+
+
+            /* 2 นิ้ว = Pinch */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                pdfPinchDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                pdfPinchMidX =
+                    midpoint.x;
+
+
+                pdfPinchMidY =
+                    midpoint.y;
+
+
+                return;
+
+            }
+
+
+            /* 1 นิ้ว = Drag */
+
+            if (
+                event.touches.length === 1 &&
+                pdfScale > 1
+            ) {
+
+                event.preventDefault();
+
+
+                pdfDragX =
+                    event.touches[0].clientX;
+
+
+                pdfDragY =
+                    event.touches[0].clientY;
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       Touch Move
+       ----------------------------------------- */
+
+    viewer.addEventListener(
+        "touchmove",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+
+                return;
+
+            }
+
+
+            /* 2 นิ้ว = Zoom */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                const newDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                if (
+                    !pdfPinchDistance
+                ) {
+
+                    pdfPinchDistance =
+                        newDistance;
+
+                    return;
+
+                }
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                const ratio =
+                    newDistance /
+                    pdfPinchDistance;
+
+
+                zoomPdfAtPoint(
+                    pages,
+                    pdfScale * ratio,
+                    midpoint.x,
+                    midpoint.y
+                );
+
+
+                pdfPinchDistance =
+                    newDistance;
+
+
+                pdfPinchMidX =
+                    midpoint.x;
+
+
+                pdfPinchMidY =
+                    midpoint.y;
+
+
+                return;
+
+            }
+
+
+            /* 1 นิ้ว = Drag */
+
+            if (
+                event.touches.length === 1 &&
+                pdfScale > 1
+            ) {
+
+                event.preventDefault();
+
+
+                const touch =
+                    event.touches[0];
+
+
+                pdfTranslateX +=
+                    touch.clientX -
+                    pdfDragX;
+
+
+                pdfTranslateY +=
+                    touch.clientY -
+                    pdfDragY;
+
+
+                pdfDragX =
+                    touch.clientX;
+
+
+                pdfDragY =
+                    touch.clientY;
+
+
+                applyPdfTransform(
+                    pages
+                );
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       Touch End
+       ----------------------------------------- */
+
+    viewer.addEventListener(
+        "touchend",
+        function (
+            event
+        ) {
+
+            pdfPinchDistance = 0;
+
+
+            if (
+                event.touches.length === 1
+            ) {
+
+                pdfDragX =
+                    event.touches[0].clientX;
+
+
+                pdfDragY =
+                    event.touches[0].clientY;
+
+            }
+            else {
+
+                pdfDragX = 0;
+                pdfDragY = 0;
+
+            }
+
+        }
+    );
+
+}
 
 function openWorkFileModal(
     work,
@@ -1067,6 +2910,11 @@ function openWorkFileModal(
             "workFileModalEmpty"
         );
 
+    const loading =
+        document.getElementById(
+            "workFileLoading"
+        );
+
     const score =
         document.getElementById(
             "workFileScore"
@@ -1077,35 +2925,104 @@ function openWorkFileModal(
             "workFileFullscreen"
         );
 
+    const pdfViewer =
+        document.getElementById(
+            "workFilePdfViewer"
+        );
+
 
     if (
         !modal ||
         !title ||
         !pdf ||
         !poster ||
-        !empty
+        !empty ||
+        !loading ||
+        !score ||
+        !fullscreen
     ) {
+
         return;
+
     }
 
 
-    /* -----------------------------------------
-       Reset
-       ----------------------------------------- */
+    /* =================================================
+       ตรวจว่าเป็น iPad
+       ================================================= */
 
-    pdf.hidden = true;
-    poster.hidden = true;
-    empty.hidden = true;
-
-    pdf.src = "";
-    poster.src = "";
-
-    fullscreen.hidden = true;
+    const isIPad =
+        /iPad|Macintosh/.test(
+            navigator.userAgent
+        ) &&
+        navigator.maxTouchPoints > 1;
 
 
-    /* -----------------------------------------
-       Title
-       ----------------------------------------- */
+    /* =================================================
+       เตรียม Poster Zoom
+       ================================================= */
+
+    setupPosterZoom(
+        poster,
+        modal
+    );
+
+
+    /* =================================================
+       RESET
+       ================================================= */
+
+    resetPosterZoom(
+        poster
+    );
+
+
+    modal.classList.remove(
+        "is-ipad-fullscreen"
+    );
+
+
+    pdf.hidden =
+        true;
+
+
+    poster.hidden =
+        true;
+
+
+    empty.hidden =
+        true;
+
+
+    if (
+        pdfViewer
+    ) {
+
+        pdfViewer.hidden =
+            true;
+
+    }
+
+
+    loading.hidden =
+        false;
+
+
+    pdf.src =
+        "";
+
+
+    poster.src =
+        "";
+
+
+    fullscreen.hidden =
+        true;
+
+
+    /* =================================================
+       TITLE
+       ================================================= */
 
     title.textContent =
         type === "poster"
@@ -1113,58 +3030,184 @@ function openWorkFileModal(
             : "ดูบทคัดย่อ";
 
 
-    /* -----------------------------------------
-       PDF
-       ----------------------------------------- */
+    /* =================================================
+       ABSTRACT / PDF
+       ใช้ Google Drive iframe
+       ทั้ง Desktop และ iPad
+       ================================================= */
 
     if (
         type === "abstract" &&
         work.pdf_url
     ) {
 
+        const pdfUrl =
+            String(
+                work.pdf_url
+            ).trim();
+
+
+        let previewUrl =
+            pdfUrl;
+
+
+        const driveMatch =
+            pdfUrl.match(
+                /\/file\/d\/([^/]+)/
+            );
+
+
+        if (
+            driveMatch &&
+            driveMatch[1]
+        ) {
+
+            previewUrl =
+                "https://drive.google.com/file/d/" +
+                driveMatch[1] +
+                "/preview";
+
+        }
+
+
+        /*
+         * แสดง iframe ก่อนกำหนด src
+         * ให้ iPad คำนวณขนาดได้ถูก
+         */
+
+        pdf.hidden =
+            false;
+
+
+        pdf.onload =
+            function () {
+
+                loading.hidden =
+                    true;
+
+            };
+
+
+        pdf.onerror =
+            function () {
+
+                loading.hidden =
+                    true;
+
+
+                empty.hidden =
+                    false;
+
+            };
+
+
         pdf.src =
-            work.pdf_url;
+            previewUrl;
 
-        pdf.hidden = false;
 
-        fullscreen.hidden = false;
+        fullscreen.hidden =
+            false;
 
     }
 
 
-    /* -----------------------------------------
-       Poster
-       ----------------------------------------- */
+    /* =================================================
+       POSTER
+       ================================================= */
 
     else if (
         type === "poster" &&
         work.poster_url
     ) {
 
+        const posterUrl =
+            String(
+                work.poster_url
+            ).trim();
+
+
+        let imageUrl =
+            posterUrl;
+
+
+        const driveMatch =
+            posterUrl.match(
+                /\/file\/d\/([^/]+)/
+            );
+
+
+        if (
+            driveMatch &&
+            driveMatch[1]
+        ) {
+
+            imageUrl =
+                "https://drive.google.com/thumbnail?id=" +
+                driveMatch[1] +
+                "&sz=w2000";
+
+        }
+
+
+        poster.onload =
+            function () {
+
+                loading.hidden =
+                    true;
+
+
+                poster.hidden =
+                    false;
+
+            };
+
+
+        poster.onerror =
+            function () {
+
+                loading.hidden =
+                    true;
+
+
+                empty.hidden =
+                    false;
+
+            };
+
+
         poster.src =
-            work.poster_url;
+            imageUrl;
 
-        poster.hidden = false;
 
-        fullscreen.hidden = false;
+        fullscreen.hidden =
+            false;
 
     }
 
 
-    /* -----------------------------------------
-       No file
-       ----------------------------------------- */
+    /* =================================================
+       ไม่มีไฟล์
+       ================================================= */
 
     else {
 
-        empty.hidden = false;
+        loading.hidden =
+            true;
+
+
+        empty.hidden =
+            false;
+
+
+        fullscreen.hidden =
+            true;
 
     }
 
 
-    /* -----------------------------------------
-       Score
-       ----------------------------------------- */
+    /* =================================================
+       ปุ่มลงคะแนน
+       ================================================= */
 
     score.onclick =
         function () {
@@ -1176,19 +3219,90 @@ function openWorkFileModal(
         };
 
 
-    /* -----------------------------------------
-       Fullscreen
-       ----------------------------------------- */
+    /* =================================================
+       ปุ่ม FULLSCREEN
+       ================================================= */
 
     fullscreen.onclick =
         function () {
+
+            /* -----------------------------------------
+               iPad
+               Fullscreen ภายในหน้าเดิม
+
+               กดแล้วปุ่ม Fullscreen หาย
+               ออกจากโหมดด้วย X เท่านั้น
+               ----------------------------------------- */
+
+            if (
+                isIPad
+            ) {
+
+                /* =========================================
+                   บทคัดย่อ
+                   เปิด PDF ใน Safari เหมือนเดิม
+                   ========================================= */
+
+                if (
+                    type === "abstract"
+                ) {
+
+                    window.open(
+                        pdf.src,
+                        "_blank"
+                    );
+
+
+                    return;
+
+                }
+
+
+                /* =========================================
+                   โปสเตอร์
+                   ใช้ Full View ภายในเว็บ
+                   เพื่อให้เริ่มจากภาพรวม 100%
+                   ========================================= */
+
+                resetPosterZoom(
+                    poster
+                );
+
+
+                modal.classList.add(
+                    "is-ipad-fullscreen"
+                );
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               Desktop
+               Fullscreen จริง
+               ----------------------------------------- */
 
             const target =
                 type === "abstract"
                     ? pdf
                     : poster;
 
+
             if (
+                type === "poster"
+            ) {
+
+                resetPosterZoom(
+                    poster
+                );
+
+            }
+
+
+            if (
+                target &&
                 target.requestFullscreen
             ) {
 
@@ -1199,11 +3313,18 @@ function openWorkFileModal(
         };
 
 
-    modal.hidden = false;
+    /* =================================================
+       เปิด POPUP
+       ================================================= */
+
+    modal.hidden =
+        false;
+
 
     document.body.classList.add(
         "work-file-modal-open"
     );
+
 }
 
 /* =====================================================
@@ -1233,6 +3354,10 @@ document.addEventListener(
 
             modal.hidden = true;
 
+            modal.classList.remove(
+                "is-ipad-fullscreen"
+            );
+
             const pdf =
                 document.getElementById(
                     "workFilePdf"
@@ -1242,6 +3367,46 @@ document.addEventListener(
                 document.getElementById(
                     "workFilePoster"
                 );
+
+            resetPosterZoom(
+                poster
+            );
+
+            const pdfViewer =
+                document.getElementById(
+                    "workFilePdfViewer"
+                );
+
+
+            const pdfPages =
+                document.getElementById(
+                    "workFilePdfPages"
+                );
+
+
+            resetPdfZoom(
+                pdfPages
+            );
+
+
+            if (
+                pdfViewer
+            ) {
+
+                pdfViewer.hidden =
+                    true;
+
+            }
+
+
+            if (
+                pdfPages
+            ) {
+
+                pdfPages.innerHTML =
+                    "";
+
+            }
 
             if (pdf) {
                 pdf.src = "";
@@ -1300,6 +3465,375 @@ document.addEventListener(
 
             }
         );
+
+    }
+);
+
+
+/* -----------------------------------------------
+   12. แสดงจำนวนที่ประเมินแล้ว
+   ----------------------------------------------- */
+
+displayEvaluatedCount();
+
+
+/* -----------------------------------------------
+   13. ทุกอย่างพร้อมแล้ว
+   ซ่อนตัววิ่ง
+   ----------------------------------------------- */
+
+hideCategoryLoading();
+
+preloadWorkFiles(
+    works
+);
+
+
+console.log(
+    "กรรมการ =",
+    judge.name
+);
+
+
+console.log(
+    "ผลงานที่ได้รับมอบหมาย =",
+    works.length
+);
+
+/* =====================================================
+   REFRESH SCORE STATUS
+   ตรวจคะแนนจริงจาก Google Sheet
+   ===================================================== */
+
+async function refreshScoreButtons(
+    works
+) {
+
+    if (
+        !Array.isArray(
+            works
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       อ่านกรรมการปัจจุบัน
+       ----------------------------------------------- */
+
+    const raw =
+        sessionStorage.getItem(
+            "judge"
+        );
+
+
+    if (!raw) {
+
+        console.warn(
+            "REFRESH SCORE: ไม่พบข้อมูลกรรมการ"
+        );
+
+        return;
+
+    }
+
+
+    let judgeId =
+        "";
+
+
+    try {
+
+        const data =
+            JSON.parse(
+                raw
+            );
+
+
+        const judge =
+            data &&
+                data.judge
+                ? data.judge
+                : data;
+
+
+        judgeId =
+            String(
+                judge.id ||
+                judge.judge_id ||
+                judge.code ||
+                ""
+            ).trim();
+
+    }
+    catch (
+    error
+    ) {
+
+        console.warn(
+            "REFRESH SCORE: อ่านข้อมูลกรรมการไม่ได้",
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (!judgeId) {
+
+        console.warn(
+            "REFRESH SCORE: ไม่พบรหัสกรรมการ"
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       ตรวจคะแนนทุกผลงาน
+       ----------------------------------------------- */
+
+    await Promise.all(
+
+        works.map(
+
+            async function (
+                work
+            ) {
+
+                const workId =
+                    String(
+                        work.id ||
+                        work.work_id ||
+                        ""
+                    ).trim();
+
+
+                if (!workId) {
+
+                    work.hasSubmitted =
+                        false;
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            GAS_URL +
+                            "?action=getScoreForEdit" +
+                            "&judge=" +
+                            encodeURIComponent(
+                                judgeId
+                            ) +
+                            "&work_id=" +
+                            encodeURIComponent(
+                                workId
+                            ) +
+                            "&_t=" +
+                            Date.now(),
+                            {
+                                method:
+                                    "GET",
+
+                                cache:
+                                    "no-store"
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        work.hasSubmitted =
+                            false;
+
+                        return;
+
+                    }
+
+
+                    const result =
+                        await response.json();
+
+
+                    let score =
+                        null;
+
+
+                    if (
+                        result &&
+                        result.success === false
+                    ) {
+
+                        score =
+                            null;
+
+                    }
+                    else if (
+                        result &&
+                        result.data
+                    ) {
+
+                        score =
+                            result.data;
+
+                    }
+                    else if (
+                        result &&
+                        result.score
+                    ) {
+
+                        score =
+                            result.score;
+
+                    }
+                    else if (
+                        result &&
+                        (
+                            result.c1 !== undefined ||
+                            result.c2 !== undefined ||
+                            result.c3 !== undefined ||
+                            result.c4 !== undefined ||
+                            result.c5 !== undefined ||
+                            result.c6 !== undefined ||
+                            result.c7 !== undefined ||
+                            result.c8 !== undefined
+                        )
+                    ) {
+
+                        score =
+                            result;
+
+                    }
+
+
+                    /* -----------------------------------
+                       ต้องมีคะแนนจริงอย่างน้อย 1 ช่อง
+                       ----------------------------------- */
+
+                    let hasRealScore =
+                        false;
+
+
+                    if (
+                        score &&
+                        typeof score ===
+                        "object"
+                    ) {
+
+                        for (
+                            let i = 1;
+                            i <= 8;
+                            i++
+                        ) {
+
+                            const value =
+                                score[
+                                "c" +
+                                i
+                                ];
+
+
+                            if (
+                                value !== undefined &&
+                                value !== null &&
+                                value !== ""
+                            ) {
+
+                                hasRealScore =
+                                    true;
+
+                                break;
+
+                            }
+
+                        }
+
+                    }
+
+
+                    work.hasSubmitted =
+                        hasRealScore;
+
+                }
+                catch (
+                error
+                ) {
+
+                    console.warn(
+                        "ตรวจคะแนนไม่ได้:",
+                        workId,
+                        error
+                    );
+
+
+                    work.hasSubmitted =
+                        false;
+
+                }
+
+            }
+
+        )
+
+    );
+
+
+    /* -----------------------------------------------
+       เก็บสถานะล่าสุด
+       ----------------------------------------------- */
+
+    sessionStorage.setItem(
+        "works",
+        JSON.stringify(
+            works
+        )
+    );
+
+}
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+        const poster =
+            document.getElementById(
+                "workFilePoster"
+            );
+
+
+        if (
+            !document.fullscreenElement
+        ) {
+
+            resetPosterZoom(
+                poster
+            );
+
+            const fullscreen =
+                document.getElementById(
+                    "workFileFullscreen"
+                );
+
+
+            if (
+                fullscreen
+            ) {
+
+                fullscreen.textContent =
+                    "⛶ ดูเต็มจอ";
+
+            }
+
+        }
 
     }
 );
