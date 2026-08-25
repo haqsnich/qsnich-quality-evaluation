@@ -2873,11 +2873,6 @@ function openWorkFileModal(
             "workFilePdfViewer"
         );
 
-    const pdfPages =
-        document.getElementById(
-            "workFilePdfPages"
-        );
-
 
     if (
         !modal ||
@@ -2889,23 +2884,29 @@ function openWorkFileModal(
         !score ||
         !fullscreen
     ) {
+
         return;
+
     }
 
 
     /* =================================================
-       เตรียม Zoom
+       ตรวจว่าเป็น iPad
+       ================================================= */
+
+    const isIPad =
+        /iPad|Macintosh/.test(
+            navigator.userAgent
+        ) &&
+        navigator.maxTouchPoints > 1;
+
+
+    /* =================================================
+       เตรียม Poster Zoom
        ================================================= */
 
     setupPosterZoom(
         poster,
-        modal
-    );
-
-
-    setupPdfZoom(
-        pdfViewer,
-        pdfPages,
         modal
     );
 
@@ -2919,40 +2920,47 @@ function openWorkFileModal(
     );
 
 
-    resetPdfZoom(
-        pdfPages
-    );
-
-
     modal.classList.remove(
         "is-ipad-fullscreen"
     );
 
 
-    pdf.hidden = true;
-    poster.hidden = true;
-    empty.hidden = true;
+    pdf.hidden =
+        true;
+
+
+    poster.hidden =
+        true;
+
+
+    empty.hidden =
+        true;
+
 
     if (
         pdfViewer
     ) {
-        pdfViewer.hidden = true;
+
+        pdfViewer.hidden =
+            true;
+
     }
 
 
-    if (
-        pdfPages
-    ) {
-        pdfPages.innerHTML = "";
-    }
+    loading.hidden =
+        false;
 
 
-    loading.hidden = false;
+    pdf.src =
+        "";
 
-    pdf.src = "";
-    poster.src = "";
 
-    fullscreen.hidden = false;
+    poster.src =
+        "";
+
+
+    fullscreen.hidden =
+        true;
 
 
     /* =================================================
@@ -2966,19 +2974,9 @@ function openWorkFileModal(
 
 
     /* =================================================
-       ตรวจว่าเป็น iPad หรือไม่
-       ประกาศครั้งเดียว ใช้ทั้งฟังก์ชัน
-       ================================================= */
-
-    const isIPad =
-        /iPad|Macintosh/.test(
-            navigator.userAgent
-        ) &&
-        navigator.maxTouchPoints > 1;
-
-
-    /* =================================================
        ABSTRACT / PDF
+       ใช้ Google Drive iframe
+       ทั้ง Desktop และ iPad
        ================================================= */
 
     if (
@@ -3002,121 +3000,52 @@ function openWorkFileModal(
             );
 
 
-        /* -----------------------------------------
-           Google Drive URL
-           ----------------------------------------- */
-
         if (
             driveMatch &&
             driveMatch[1]
         ) {
 
-            if (
-                isIPad
-            ) {
-
-                /*
-                 * iPad ใช้ PDF โดยตรง
-                 * เพื่อส่งให้ PDF.js
-                 */
-
-                previewUrl =
-                    "https://drive.google.com/uc?export=view&id=" +
-                    driveMatch[1];
-
-            }
-            else {
-
-                /*
-                 * Desktop ใช้ Google Preview เดิม
-                 */
-
-                previewUrl =
-                    "https://drive.google.com/file/d/" +
-                    driveMatch[1] +
-                    "/preview";
-
-            }
+            previewUrl =
+                "https://drive.google.com/file/d/" +
+                driveMatch[1] +
+                "/preview";
 
         }
 
 
-        /* -----------------------------------------
-           iPad — Canvas Viewer
-           ----------------------------------------- */
+        /*
+         * แสดง iframe ก่อนกำหนด src
+         * ให้ iPad คำนวณขนาดได้ถูก
+         */
 
-        if (
-            isIPad
-        ) {
-
-            pdf.hidden = true;
+        pdf.hidden =
+            false;
 
 
-            if (
-                pdfViewer
-            ) {
-                pdfViewer.hidden = true;
-            }
+        pdf.onload =
+            function () {
+
+                loading.hidden =
+                    true;
+
+            };
 
 
-            renderPdfForIPad(
-                previewUrl
-            ).then(
-                function (
-                    success
-                ) {
+        pdf.onerror =
+            function () {
 
-                    loading.hidden =
-                        true;
+                loading.hidden =
+                    true;
 
 
-                    /*
-                     * ถ้า PDF.js โหลดไม่ได้
-                     * fallback ไป iframe
-                     */
+                empty.hidden =
+                    false;
 
-                    if (
-                        !success
-                    ) {
-
-                        pdf.hidden =
-                            false;
+            };
 
 
-                        pdf.src =
-                            previewUrl;
-
-                    }
-
-                }
-            );
-
-        }
-
-
-        /* -----------------------------------------
-           Desktop — iframe เดิม
-           ----------------------------------------- */
-
-        else {
-
-            pdf.hidden =
-                false;
-
-
-            pdf.onload =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-                };
-
-
-            pdf.src =
-                previewUrl;
-
-        }
+        pdf.src =
+            previewUrl;
 
 
         fullscreen.hidden =
@@ -3242,10 +3171,10 @@ function openWorkFileModal(
 
             /* -----------------------------------------
                iPad
-               เข้าโหมดเต็มจอในหน้าเดิมเท่านั้น
+               Fullscreen ภายในหน้าเดิม
 
-               ไม่มีปุ่ม "ย่อกลับ"
-               ออกด้วย X
+               กดแล้วปุ่ม Fullscreen หาย
+               ออกจากโหมดด้วย X เท่านั้น
                ----------------------------------------- */
 
             if (
@@ -3256,10 +3185,6 @@ function openWorkFileModal(
                     "is-ipad-fullscreen"
                 );
 
-
-                /*
-                 * เริ่ม fullscreen ที่ 1x
-                 */
 
                 if (
                     type === "poster"
@@ -3272,22 +3197,6 @@ function openWorkFileModal(
                 }
 
 
-                if (
-                    type === "abstract"
-                ) {
-
-                    resetPdfZoom(
-                        pdfPages
-                    );
-
-                }
-
-
-                /*
-                 * เข้าแล้วซ่อนปุ่มนี้
-                 * เหลือ X สำหรับออก
-                 */
-
                 fullscreen.hidden =
                     true;
 
@@ -3299,7 +3208,7 @@ function openWorkFileModal(
 
             /* -----------------------------------------
                Desktop
-               ใช้ Fullscreen API เดิม
+               Fullscreen จริง
                ----------------------------------------- */
 
             const target =
@@ -3345,294 +3254,330 @@ function openWorkFileModal(
 
 }
 
-    /* =====================================================
-       WORK FILE POPUP — CLOSE
-       ===================================================== */
+/* =====================================================
+   WORK FILE POPUP — CLOSE
+   ===================================================== */
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-            const modal =
+        const modal =
+            document.getElementById(
+                "workFileModal"
+            );
+
+        const closeButton =
+            document.getElementById(
+                "workFileModalClose"
+            );
+
+        if (!modal) {
+            return;
+        }
+
+
+        function closeWorkFileModal() {
+
+            modal.hidden = true;
+
+            modal.classList.remove(
+                "is-ipad-fullscreen"
+            );
+
+            const pdf =
                 document.getElementById(
-                    "workFileModal"
+                    "workFilePdf"
                 );
 
-            const closeButton =
+            const poster =
                 document.getElementById(
-                    "workFileModalClose"
+                    "workFilePoster"
                 );
 
-            if (!modal) {
-                return;
-            }
+            resetPosterZoom(
+                poster
+            );
 
-
-            function closeWorkFileModal() {
-
-                modal.hidden = true;
-
-                modal.classList.remove(
-                    "is-ipad-fullscreen"
-                );
-
-                const pdf =
-                    document.getElementById(
-                        "workFilePdf"
-                    );
-
-                const poster =
-                    document.getElementById(
-                        "workFilePoster"
-                    );
-
-                resetPosterZoom(
-                    poster
-                );
-
-                const pdfViewer =
-                    document.getElementById(
-                        "workFilePdfViewer"
-                    );
-
-
-                const pdfPages =
-                    document.getElementById(
-                        "workFilePdfPages"
-                    );
-
-
-                resetPdfZoom(
-                    pdfPages
+            const pdfViewer =
+                document.getElementById(
+                    "workFilePdfViewer"
                 );
 
 
-                if (
-                    pdfViewer
-                ) {
-
-                    pdfViewer.hidden =
-                        true;
-
-                }
-
-
-                if (
-                    pdfPages
-                ) {
-
-                    pdfPages.innerHTML =
-                        "";
-
-                }
-
-                if (pdf) {
-                    pdf.src = "";
-                }
-
-                if (poster) {
-                    poster.src = "";
-                }
-
-                document.body.classList.remove(
-                    "work-file-modal-open"
-                );
-            }
-
-
-            if (closeButton) {
-
-                closeButton.addEventListener(
-                    "click",
-                    closeWorkFileModal
+            const pdfPages =
+                document.getElementById(
+                    "workFilePdfPages"
                 );
 
-            }
 
-
-            modal.addEventListener(
-                "click",
-                function (event) {
-
-                    if (
-                        event.target.hasAttribute(
-                            "data-modal-close"
-                        )
-                    ) {
-
-                        closeWorkFileModal();
-
-                    }
-
-                }
+            resetPdfZoom(
+                pdfPages
             );
 
 
-            document.addEventListener(
-                "keydown",
-                function (event) {
+            if (
+                pdfViewer
+            ) {
 
-                    if (
-                        event.key === "Escape" &&
-                        !modal.hidden
-                    ) {
+                pdfViewer.hidden =
+                    true;
 
-                        closeWorkFileModal();
+            }
 
-                    }
 
-                }
+            if (
+                pdfPages
+            ) {
+
+                pdfPages.innerHTML =
+                    "";
+
+            }
+
+            if (pdf) {
+                pdf.src = "";
+            }
+
+            if (poster) {
+                poster.src = "";
+            }
+
+            document.body.classList.remove(
+                "work-file-modal-open"
+            );
+        }
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeWorkFileModal
             );
 
         }
-    );
 
 
-    /* -----------------------------------------------
-       12. แสดงจำนวนที่ประเมินแล้ว
-       ----------------------------------------------- */
+        modal.addEventListener(
+            "click",
+            function (event) {
 
-    displayEvaluatedCount();
+                if (
+                    event.target.hasAttribute(
+                        "data-modal-close"
+                    )
+                ) {
 
+                    closeWorkFileModal();
 
-    /* -----------------------------------------------
-       13. ทุกอย่างพร้อมแล้ว
-       ซ่อนตัววิ่ง
-       ----------------------------------------------- */
+                }
 
-    hideCategoryLoading();
-
-    preloadWorkFiles(
-        works
-    );
-
-
-    console.log(
-        "กรรมการ =",
-        judge.name
-    );
+            }
+        );
 
 
-    console.log(
-        "ผลงานที่ได้รับมอบหมาย =",
-        works.length
-    );
+        document.addEventListener(
+            "keydown",
+            function (event) {
 
-    /* =====================================================
-       REFRESH SCORE STATUS
-       ตรวจคะแนนจริงจาก Google Sheet
-       ===================================================== */
+                if (
+                    event.key === "Escape" &&
+                    !modal.hidden
+                ) {
 
-    async function refreshScoreButtons(
-        works
+                    closeWorkFileModal();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* -----------------------------------------------
+   12. แสดงจำนวนที่ประเมินแล้ว
+   ----------------------------------------------- */
+
+displayEvaluatedCount();
+
+
+/* -----------------------------------------------
+   13. ทุกอย่างพร้อมแล้ว
+   ซ่อนตัววิ่ง
+   ----------------------------------------------- */
+
+hideCategoryLoading();
+
+preloadWorkFiles(
+    works
+);
+
+
+console.log(
+    "กรรมการ =",
+    judge.name
+);
+
+
+console.log(
+    "ผลงานที่ได้รับมอบหมาย =",
+    works.length
+);
+
+/* =====================================================
+   REFRESH SCORE STATUS
+   ตรวจคะแนนจริงจาก Google Sheet
+   ===================================================== */
+
+async function refreshScoreButtons(
+    works
+) {
+
+    if (
+        !Array.isArray(
+            works
+        )
     ) {
 
-        if (
-            !Array.isArray(
-                works
-            )
-        ) {
+        return;
 
-            return;
-
-        }
+    }
 
 
-        /* -----------------------------------------------
-           อ่านกรรมการปัจจุบัน
-           ----------------------------------------------- */
+    /* -----------------------------------------------
+       อ่านกรรมการปัจจุบัน
+       ----------------------------------------------- */
 
-        const raw =
-            sessionStorage.getItem(
-                "judge"
+    const raw =
+        sessionStorage.getItem(
+            "judge"
+        );
+
+
+    if (!raw) {
+
+        console.warn(
+            "REFRESH SCORE: ไม่พบข้อมูลกรรมการ"
+        );
+
+        return;
+
+    }
+
+
+    let judgeId =
+        "";
+
+
+    try {
+
+        const data =
+            JSON.parse(
+                raw
             );
 
 
-        if (!raw) {
-
-            console.warn(
-                "REFRESH SCORE: ไม่พบข้อมูลกรรมการ"
-            );
-
-            return;
-
-        }
+        const judge =
+            data &&
+                data.judge
+                ? data.judge
+                : data;
 
 
-        let judgeId =
-            "";
+        judgeId =
+            String(
+                judge.id ||
+                judge.judge_id ||
+                judge.code ||
+                ""
+            ).trim();
+
+    }
+    catch (
+    error
+    ) {
+
+        console.warn(
+            "REFRESH SCORE: อ่านข้อมูลกรรมการไม่ได้",
+            error
+        );
+
+        return;
+
+    }
 
 
-        try {
+    if (!judgeId) {
 
-            const data =
-                JSON.parse(
-                    raw
-                );
+        console.warn(
+            "REFRESH SCORE: ไม่พบรหัสกรรมการ"
+        );
 
+        return;
 
-            const judge =
-                data &&
-                    data.judge
-                    ? data.judge
-                    : data;
+    }
 
 
-            judgeId =
-                String(
-                    judge.id ||
-                    judge.judge_id ||
-                    judge.code ||
-                    ""
-                ).trim();
+    /* -----------------------------------------------
+       ตรวจคะแนนทุกผลงาน
+       ----------------------------------------------- */
 
-        }
-        catch (
-        error
-        ) {
+    await Promise.all(
 
-            console.warn(
-                "REFRESH SCORE: อ่านข้อมูลกรรมการไม่ได้",
-                error
-            );
+        works.map(
 
-            return;
+            async function (
+                work
+            ) {
 
-        }
+                const workId =
+                    String(
+                        work.id ||
+                        work.work_id ||
+                        ""
+                    ).trim();
 
 
-        if (!judgeId) {
+                if (!workId) {
 
-            console.warn(
-                "REFRESH SCORE: ไม่พบรหัสกรรมการ"
-            );
+                    work.hasSubmitted =
+                        false;
 
-            return;
+                    return;
 
-        }
-
-
-        /* -----------------------------------------------
-           ตรวจคะแนนทุกผลงาน
-           ----------------------------------------------- */
-
-        await Promise.all(
-
-            works.map(
-
-                async function (
-                    work
-                ) {
-
-                    const workId =
-                        String(
-                            work.id ||
-                            work.work_id ||
-                            ""
-                        ).trim();
+                }
 
 
-                    if (!workId) {
+                try {
+
+                    const response =
+                        await fetch(
+                            GAS_URL +
+                            "?action=getScoreForEdit" +
+                            "&judge=" +
+                            encodeURIComponent(
+                                judgeId
+                            ) +
+                            "&work_id=" +
+                            encodeURIComponent(
+                                workId
+                            ) +
+                            "&_t=" +
+                            Date.now(),
+                            {
+                                method:
+                                    "GET",
+
+                                cache:
+                                    "no-store"
+                            }
+                        );
+
+
+                    if (!response.ok) {
 
                         work.hasSubmitted =
                             false;
@@ -3642,216 +3587,180 @@ function openWorkFileModal(
                     }
 
 
-                    try {
-
-                        const response =
-                            await fetch(
-                                GAS_URL +
-                                "?action=getScoreForEdit" +
-                                "&judge=" +
-                                encodeURIComponent(
-                                    judgeId
-                                ) +
-                                "&work_id=" +
-                                encodeURIComponent(
-                                    workId
-                                ) +
-                                "&_t=" +
-                                Date.now(),
-                                {
-                                    method:
-                                        "GET",
-
-                                    cache:
-                                        "no-store"
-                                }
-                            );
+                    const result =
+                        await response.json();
 
 
-                        if (!response.ok) {
-
-                            work.hasSubmitted =
-                                false;
-
-                            return;
-
-                        }
+                    let score =
+                        null;
 
 
-                        const result =
-                            await response.json();
+                    if (
+                        result &&
+                        result.success === false
+                    ) {
 
-
-                        let score =
+                        score =
                             null;
 
+                    }
+                    else if (
+                        result &&
+                        result.data
+                    ) {
 
-                        if (
-                            result &&
-                            result.success === false
+                        score =
+                            result.data;
+
+                    }
+                    else if (
+                        result &&
+                        result.score
+                    ) {
+
+                        score =
+                            result.score;
+
+                    }
+                    else if (
+                        result &&
+                        (
+                            result.c1 !== undefined ||
+                            result.c2 !== undefined ||
+                            result.c3 !== undefined ||
+                            result.c4 !== undefined ||
+                            result.c5 !== undefined ||
+                            result.c6 !== undefined ||
+                            result.c7 !== undefined ||
+                            result.c8 !== undefined
+                        )
+                    ) {
+
+                        score =
+                            result;
+
+                    }
+
+
+                    /* -----------------------------------
+                       ต้องมีคะแนนจริงอย่างน้อย 1 ช่อง
+                       ----------------------------------- */
+
+                    let hasRealScore =
+                        false;
+
+
+                    if (
+                        score &&
+                        typeof score ===
+                        "object"
+                    ) {
+
+                        for (
+                            let i = 1;
+                            i <= 8;
+                            i++
                         ) {
 
-                            score =
-                                null;
-
-                        }
-                        else if (
-                            result &&
-                            result.data
-                        ) {
-
-                            score =
-                                result.data;
-
-                        }
-                        else if (
-                            result &&
-                            result.score
-                        ) {
-
-                            score =
-                                result.score;
-
-                        }
-                        else if (
-                            result &&
-                            (
-                                result.c1 !== undefined ||
-                                result.c2 !== undefined ||
-                                result.c3 !== undefined ||
-                                result.c4 !== undefined ||
-                                result.c5 !== undefined ||
-                                result.c6 !== undefined ||
-                                result.c7 !== undefined ||
-                                result.c8 !== undefined
-                            )
-                        ) {
-
-                            score =
-                                result;
-
-                        }
+                            const value =
+                                score[
+                                "c" +
+                                i
+                                ];
 
 
-                        /* -----------------------------------
-                           ต้องมีคะแนนจริงอย่างน้อย 1 ช่อง
-                           ----------------------------------- */
-
-                        let hasRealScore =
-                            false;
-
-
-                        if (
-                            score &&
-                            typeof score ===
-                            "object"
-                        ) {
-
-                            for (
-                                let i = 1;
-                                i <= 8;
-                                i++
+                            if (
+                                value !== undefined &&
+                                value !== null &&
+                                value !== ""
                             ) {
 
-                                const value =
-                                    score[
-                                    "c" +
-                                    i
-                                    ];
+                                hasRealScore =
+                                    true;
 
-
-                                if (
-                                    value !== undefined &&
-                                    value !== null &&
-                                    value !== ""
-                                ) {
-
-                                    hasRealScore =
-                                        true;
-
-                                    break;
-
-                                }
+                                break;
 
                             }
 
                         }
 
-
-                        work.hasSubmitted =
-                            hasRealScore;
-
                     }
-                    catch (
-                    error
-                    ) {
-
-                        console.warn(
-                            "ตรวจคะแนนไม่ได้:",
-                            workId,
-                            error
-                        );
 
 
-                        work.hasSubmitted =
-                            false;
-
-                    }
+                    work.hasSubmitted =
+                        hasRealScore;
 
                 }
+                catch (
+                error
+                ) {
 
-            )
-
-        );
-
-
-        /* -----------------------------------------------
-           เก็บสถานะล่าสุด
-           ----------------------------------------------- */
-
-        sessionStorage.setItem(
-            "works",
-            JSON.stringify(
-                works
-            )
-        );
-
-    }
-
-    document.addEventListener(
-        "fullscreenchange",
-        function () {
-
-            const poster =
-                document.getElementById(
-                    "workFilePoster"
-                );
-
-
-            if (
-                !document.fullscreenElement
-            ) {
-
-                resetPosterZoom(
-                    poster
-                );
-
-                const fullscreen =
-                    document.getElementById(
-                        "workFileFullscreen"
+                    console.warn(
+                        "ตรวจคะแนนไม่ได้:",
+                        workId,
+                        error
                     );
 
 
-                if (
-                    fullscreen
-                ) {
-
-                    fullscreen.textContent =
-                        "⛶ ดูเต็มจอ";
+                    work.hasSubmitted =
+                        false;
 
                 }
 
             }
 
-        }
+        )
+
     );
+
+
+    /* -----------------------------------------------
+       เก็บสถานะล่าสุด
+       ----------------------------------------------- */
+
+    sessionStorage.setItem(
+        "works",
+        JSON.stringify(
+            works
+        )
+    );
+
+}
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+        const poster =
+            document.getElementById(
+                "workFilePoster"
+            );
+
+
+        if (
+            !document.fullscreenElement
+        ) {
+
+            resetPosterZoom(
+                poster
+            );
+
+            const fullscreen =
+                document.getElementById(
+                    "workFileFullscreen"
+                );
+
+
+            if (
+                fullscreen
+            ) {
+
+                fullscreen.textContent =
+                    "⛶ ดูเต็มจอ";
+
+            }
+
+        }
+
+    }
+);
