@@ -2113,39 +2113,81 @@ function openWorkFileModal(
        ----------------------------------------- */
 
     fullscreen.onclick =
-        function () {
+    function () {
 
-            const target =
-                type === "abstract"
-                    ? pdf
-                    : poster;
+        const isIPad =
+            /iPad|Macintosh/.test(
+                navigator.userAgent
+            ) &&
+            navigator.maxTouchPoints > 1;
 
 
-            /*
-             * ก่อนเปิดโปสเตอร์ fullscreen
-             * reset zoom ทุกครั้ง
-             */
+        /* =========================================
+           iPad
+           เปิดไฟล์จริงในแท็บใหม่
+           Safari จะ pinch zoom ได้ตามปกติ
+           ========================================= */
+
+        if (
+            isIPad
+        ) {
 
             if (
-                type === "poster"
+                type === "abstract"
             ) {
 
-                resetPosterZoom(
-                    poster
+                window.open(
+                    pdf.src,
+                    "_blank"
+                );
+
+            }
+            else {
+
+                window.open(
+                    poster.src,
+                    "_blank"
                 );
 
             }
 
 
-            if (
-                target.requestFullscreen
-            ) {
+            return;
 
-                target.requestFullscreen();
+        }
 
-            }
 
-        };
+        /* =========================================
+           Desktop
+           ใช้ Fullscreen เดิม
+           ========================================= */
+
+        const target =
+            type === "abstract"
+                ? pdf
+                : poster;
+
+
+        if (
+            type === "poster"
+        ) {
+
+            resetPosterZoom(
+                poster
+            );
+
+        }
+
+
+        if (
+            target.requestFullscreen
+        ) {
+
+            target.requestFullscreen();
+
+        }
+
+    };
 
 
     /* -----------------------------------------

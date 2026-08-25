@@ -3689,3 +3689,73 @@ and (orientation: portrait) {
 .work-file-loading[hidden] {
     display: none !important;
 }
+
+/* =====================================================
+   iPad — FILE PREVIEW FIX
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal-dialog {
+        width: 96vw !important;
+        height: 92vh !important;
+    }
+
+
+    .work-file-modal-content {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* บทคัดย่อ */
+
+    .work-file-pdf:not([hidden]) {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        flex: 1 1 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* โปสเตอร์ */
+
+    .work-file-poster:not([hidden]) {
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 96% !important;
+        max-height: 96% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        flex: 0 0 auto !important;
+    }
+
+
+    /* ตัวที่ซ่อนห้ามกินพื้นที่ */
+
+    .work-file-pdf[hidden],
+    .work-file-poster[hidden],
+    .work-file-modal-empty[hidden],
+    .work-file-loading[hidden] {
+        display: none !important;
+    }
+
+}
