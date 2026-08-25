@@ -1789,8 +1789,15 @@ function openWorkFileModal(
             "wheel",
             function (event) {
 
+                const canZoom =
+                    document.fullscreenElement === poster ||
+                    modal.classList.contains(
+                        "is-ipad-fullscreen"
+                    );
+
+
                 if (
-                    document.fullscreenElement !== poster
+                    !canZoom
                 ) {
                     return;
                 }
@@ -1833,8 +1840,15 @@ function openWorkFileModal(
             "touchstart",
             function (event) {
 
+                const canZoom =
+                    document.fullscreenElement === poster ||
+                    modal.classList.contains(
+                        "is-ipad-fullscreen"
+                    );
+
+
                 if (
-                    document.fullscreenElement !== poster
+                    !canZoom
                 ) {
                     return;
                 }
@@ -1868,8 +1882,15 @@ function openWorkFileModal(
             "touchmove",
             function (event) {
 
+                const canZoom =
+                    document.fullscreenElement === poster ||
+                    modal.classList.contains(
+                        "is-ipad-fullscreen"
+                    );
+
+
                 if (
-                    document.fullscreenElement !== poster
+                    !canZoom
                 ) {
                     return;
                 }
@@ -2162,29 +2183,50 @@ function openWorkFileModal(
 
             /* =========================================
                iPad
-               เปิดไฟล์จริงในแท็บใหม่
-               Safari จะ pinch zoom ได้ตามปกติ
+               Fullscreen ภายในหน้าเดิม
                ========================================= */
 
             if (
                 isIPad
             ) {
 
+                const isFullscreen =
+                    modal.classList.contains(
+                        "is-ipad-fullscreen"
+                    );
+
+
                 if (
-                    type === "abstract"
+                    isFullscreen
                 ) {
 
-                    window.open(
-                        pdf.src,
-                        "_blank"
+                    modal.classList.remove(
+                        "is-ipad-fullscreen"
+                    );
+
+
+                    fullscreen.textContent =
+                        "⛶ ดูเต็มจอ";
+
+
+                    resetPosterZoom(
+                        poster
                     );
 
                 }
                 else {
 
-                    window.open(
-                        poster.src,
-                        "_blank"
+                    modal.classList.add(
+                        "is-ipad-fullscreen"
+                    );
+
+
+                    fullscreen.textContent =
+                        "↙ ย่อกลับ";
+
+
+                    resetPosterZoom(
+                        poster
                     );
 
                 }
@@ -2197,7 +2239,7 @@ function openWorkFileModal(
 
             /* =========================================
                Desktop
-               ใช้ Fullscreen เดิม
+               Fullscreen จริงเหมือนเดิม
                ========================================= */
 
             const target =
@@ -2269,6 +2311,10 @@ document.addEventListener(
 
             modal.hidden = true;
 
+            modal.classList.remove(
+                "is-ipad-fullscreen"
+            );
+
             const pdf =
                 document.getElementById(
                     "workFilePdf"
@@ -2278,6 +2324,10 @@ document.addEventListener(
                 document.getElementById(
                     "workFilePoster"
                 );
+
+            resetPosterZoom(
+                poster
+            );
 
             if (pdf) {
                 pdf.src = "";
@@ -2688,6 +2738,21 @@ document.addEventListener(
             resetPosterZoom(
                 poster
             );
+
+            const fullscreen =
+                document.getElementById(
+                    "workFileFullscreen"
+                );
+
+
+            if (
+                fullscreen
+            ) {
+
+                fullscreen.textContent =
+                    "⛶ ดูเต็มจอ";
+
+            }
 
         }
 

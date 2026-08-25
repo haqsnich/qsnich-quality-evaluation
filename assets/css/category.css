@@ -3759,3 +3759,88 @@ and (orientation: portrait) {
     }
 
 }
+/* =====================================================
+   iPad — FULLSCREEN IN SAME PAGE
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        padding: 0 !important;
+
+        z-index: 99999 !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+
+        margin: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        flex: 1 1 auto !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: auto !important;
+    }
+
+
+    /* PDF เต็มพื้นที่ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-pdf:not([hidden]) {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Poster กลางหน้าจอ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster:not([hidden]) {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        transform-origin: center center !important;
+    }
+
+}
