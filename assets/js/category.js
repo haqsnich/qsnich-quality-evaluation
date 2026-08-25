@@ -1997,35 +1997,21 @@ function openWorkFileModal(
         }
 
 
+        /*
+ * ต้องเปิดพื้นที่ iframe ก่อนโหลด
+ * เพื่อให้ iPad Safari / Google Drive Viewer
+ * คำนวณขนาดตั้งแต่แรกได้ถูกต้อง
+ */
+
+        pdf.hidden =
+            false;
+
+
         pdf.onload =
             function () {
 
                 loading.hidden =
                     true;
-
-
-                pdf.hidden =
-                    false;
-
-
-                /*
-                 * iPad Safari
-                 * บังคับคำนวณขนาด iframe ใหม่
-                 * หลังจากแสดง PDF
-                 */
-
-                pdf.style.width =
-                    "99.9%";
-
-
-                requestAnimationFrame(
-                    function () {
-
-                        pdf.style.width =
-                            "100%";
-
-                    }
-                );
 
             };
 
