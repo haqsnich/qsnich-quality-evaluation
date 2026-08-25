@@ -1989,10 +1989,41 @@ function openWorkFileModal(
             driveMatch[1]
         ) {
 
-            previewUrl =
-                "https://drive.google.com/file/d/" +
-                driveMatch[1] +
-                "/preview";
+            const isIPad =
+                /iPad|Macintosh/.test(
+                    navigator.userAgent
+                ) &&
+                navigator.maxTouchPoints > 1;
+
+
+            if (
+                isIPad
+            ) {
+
+                /*
+                 * iPad:
+                 * ใช้ไฟล์ PDF โดยตรง
+                 * ไม่ใช้ Google Drive Preview
+                 */
+
+                previewUrl =
+                    "https://drive.google.com/uc?export=view&id=" +
+                    driveMatch[1];
+
+            }
+            else {
+
+                /*
+                 * Desktop:
+                 * ใช้ Google Drive Preview เหมือนเดิม
+                 */
+
+                previewUrl =
+                    "https://drive.google.com/file/d/" +
+                    driveMatch[1] +
+                    "/preview";
+
+            }
 
         }
 
