@@ -3837,3 +3837,115 @@ document.addEventListener(
 
     }
 );
+
+/* =====================================================
+   iPAD — LOCK PAGE ZOOM
+   ห้ามซูมหน้าเว็บ
+   ยกเว้นตอนดูไฟล์ Full View
+   ===================================================== */
+
+(function () {
+
+    function allowFileZoom() {
+
+        const modal =
+            document.getElementById(
+                "workFileModal"
+            );
+
+
+        return (
+            modal &&
+            modal.classList.contains(
+                "is-ipad-fullscreen"
+            )
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Safari Gesture Zoom
+       ----------------------------------------- */
+
+    document.addEventListener(
+        "gesturestart",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    document.addEventListener(
+        "gesturechange",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    document.addEventListener(
+        "gestureend",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       กัน Pinch จาก Touch โดยตรง
+       ----------------------------------------- */
+
+    document.addEventListener(
+        "touchmove",
+        function (event) {
+
+            if (
+                event.touches.length > 1 &&
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+})();
