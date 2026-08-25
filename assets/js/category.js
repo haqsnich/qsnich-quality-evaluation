@@ -1925,6 +1925,16 @@ function setupPosterZoom(
         "true";
 
 
+    /* =================================================
+       เช็กว่าตอนนี้อนุญาตให้ Zoom หรือไม่
+
+       Desktop:
+       - ต้องอยู่ใน Fullscreen จริง
+
+       iPad:
+       - ใช้ Full View ของ Modal
+       ================================================= */
+
     function canZoom() {
 
         return (
@@ -1937,15 +1947,19 @@ function setupPosterZoom(
     }
 
 
-    /* -----------------------------------------
-       Desktop — Mouse Wheel
-       ----------------------------------------- */
+    /* =================================================
+       DESKTOP — MOUSE WHEEL ZOOM
+       ================================================= */
 
     poster.addEventListener(
         "wheel",
-        function (event) {
+        function (
+            event
+        ) {
 
-            if (!canZoom()) {
+            if (
+                !canZoom()
+            ) {
                 return;
             }
 
@@ -1968,25 +1982,33 @@ function setupPosterZoom(
 
         },
         {
-            passive: false
+            passive:
+                false
         }
     );
 
 
-    /* -----------------------------------------
-       iPad — Touch Start
-       ----------------------------------------- */
+    /* =================================================
+       iPAD — TOUCH START
+       ================================================= */
 
     poster.addEventListener(
         "touchstart",
-        function (event) {
+        function (
+            event
+        ) {
 
-            if (!canZoom()) {
+            if (
+                !canZoom()
+            ) {
                 return;
             }
 
 
-            /* 2 นิ้ว = เริ่ม Pinch */
+            /* -----------------------------------------
+               2 นิ้ว
+               เริ่ม Pinch Zoom
+               ----------------------------------------- */
 
             if (
                 event.touches.length === 2
@@ -2020,7 +2042,10 @@ function setupPosterZoom(
             }
 
 
-            /* 1 นิ้ว = เตรียม Drag */
+            /* -----------------------------------------
+               1 นิ้ว
+               เตรียมลากเมื่อ Zoom แล้ว
+               ----------------------------------------- */
 
             if (
                 event.touches.length === 1 &&
@@ -2041,27 +2066,33 @@ function setupPosterZoom(
 
         },
         {
-            passive: false
+            passive:
+                false
         }
     );
 
 
-    /* -----------------------------------------
-       iPad — Touch Move
-       ----------------------------------------- */
+    /* =================================================
+       iPAD — TOUCH MOVE
+       ================================================= */
 
     poster.addEventListener(
         "touchmove",
-        function (event) {
+        function (
+            event
+        ) {
 
-            if (!canZoom()) {
+            if (
+                !canZoom()
+            ) {
                 return;
             }
 
 
-            /* ================================
-               2 นิ้ว = Zoom
-               ================================ */
+            /* -----------------------------------------
+               2 นิ้ว
+               Pinch Zoom
+               ----------------------------------------- */
 
             if (
                 event.touches.length === 2
@@ -2082,6 +2113,7 @@ function setupPosterZoom(
 
                     posterPinchDistance =
                         newDistance;
+
 
                     return;
 
@@ -2107,10 +2139,6 @@ function setupPosterZoom(
                 );
 
 
-                /* ถ้านิ้วสองนิ้วเคลื่อนพร้อมกัน
-                   ให้รูปเคลื่อนตาม */
-
-
                 posterPinchDistance =
                     newDistance;
 
@@ -2123,19 +2151,15 @@ function setupPosterZoom(
                     midpoint.y;
 
 
-                applyPosterTransform(
-                    poster
-                );
-
-
                 return;
 
             }
 
 
-            /* ================================
-               1 นิ้ว = Drag
-               ================================ */
+            /* -----------------------------------------
+               1 นิ้ว
+               ลากดูส่วนต่าง ๆ ของโปสเตอร์
+               ----------------------------------------- */
 
             if (
                 event.touches.length === 1 &&
@@ -2175,21 +2199,34 @@ function setupPosterZoom(
 
         },
         {
-            passive: false
+            passive:
+                false
         }
     );
 
 
-    /* -----------------------------------------
-       Touch End
-       ----------------------------------------- */
+    /* =================================================
+       iPAD — TOUCH END
+       ================================================= */
 
     poster.addEventListener(
         "touchend",
-        function (event) {
+        function (
+            event
+        ) {
 
-            posterPinchDistance = 0;
+            /*
+             * จบ Pinch รอบนี้
+             */
 
+            posterPinchDistance =
+                0;
+
+
+            /*
+             * ถ้ายังเหลือนิ้วหนึ่งนิ้วบนจอ
+             * เตรียมให้ลากต่อได้ทันที
+             */
 
             if (
                 event.touches.length === 1
@@ -2205,8 +2242,28 @@ function setupPosterZoom(
             }
             else {
 
-                posterDragX = 0;
-                posterDragY = 0;
+                posterDragX =
+                    0;
+
+
+                posterDragY =
+                    0;
+
+            }
+
+
+            /*
+             * ถ้าหุบกลับถึง 1x
+             * บังคับให้โปสเตอร์กลับกลางจอ
+             */
+
+            if (
+                posterScale <= 1
+            ) {
+
+                resetPosterZoom(
+                    poster
+                );
 
             }
 
@@ -3181,24 +3238,40 @@ function openWorkFileModal(
                 isIPad
             ) {
 
-                modal.classList.add(
-                    "is-ipad-fullscreen"
-                );
-
+                /* =========================================
+                   บทคัดย่อ
+                   เปิด PDF ใน Safari เหมือนเดิม
+                   ========================================= */
 
                 if (
-                    type === "poster"
+                    type === "abstract"
                 ) {
 
-                    resetPosterZoom(
-                        poster
+                    window.open(
+                        pdf.src,
+                        "_blank"
                     );
+
+
+                    return;
 
                 }
 
 
-                fullscreen.hidden =
-                    true;
+                /* =========================================
+                   โปสเตอร์
+                   ใช้ Full View ภายในเว็บ
+                   เพื่อให้เริ่มจากภาพรวม 100%
+                   ========================================= */
+
+                resetPosterZoom(
+                    poster
+                );
+
+
+                modal.classList.add(
+                    "is-ipad-fullscreen"
+                );
 
 
                 return;

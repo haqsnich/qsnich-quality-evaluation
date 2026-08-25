@@ -3972,3 +3972,66 @@ and (orientation: portrait) {
 
     touch-action: none !important;
 }
+
+/* =====================================================
+   iPad — POSTER FULL VIEW
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        padding: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        background: #111 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        transform-origin: center center !important;
+
+        touch-action: none !important;
+    }
+
+}
