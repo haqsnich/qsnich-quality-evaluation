@@ -1531,6 +1531,11 @@ function openWorkFileModal(
             "workFileModalEmpty"
         );
 
+    const loading =
+        document.getElementById(
+            "workFileLoading"
+        );
+
     const score =
         document.getElementById(
             "workFileScore"
@@ -1547,7 +1552,8 @@ function openWorkFileModal(
         !title ||
         !pdf ||
         !poster ||
-        !empty
+        !empty ||
+        !loading
     ) {
         return;
     }
@@ -1560,6 +1566,9 @@ function openWorkFileModal(
     pdf.hidden = true;
     poster.hidden = true;
     empty.hidden = true;
+
+    /* เปิด Spinner รอไว้ทันที */
+    loading.hidden = false;
 
     pdf.src = "";
     poster.src = "";
@@ -1615,12 +1624,20 @@ function openWorkFileModal(
         }
 
 
+        pdf.onload =
+            function () {
+
+                loading.hidden =
+                    true;
+
+                pdf.hidden =
+                    false;
+
+            };
+
+
         pdf.src =
             previewUrl;
-
-
-        pdf.hidden =
-            false;
 
 
         fullscreen.hidden =
@@ -1672,17 +1689,24 @@ function openWorkFileModal(
         }
 
 
+        poster.onload =
+            function () {
+
+                loading.hidden =
+                    true;
+
+                poster.hidden =
+                    false;
+
+            };
+
+
         poster.src =
             imageUrl;
 
 
-        poster.hidden =
-            false;
-
-
         fullscreen.hidden =
             false;
-
     }
 
 
