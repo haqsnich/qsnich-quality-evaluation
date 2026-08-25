@@ -2003,8 +2003,29 @@ function openWorkFileModal(
                 loading.hidden =
                     true;
 
+
                 pdf.hidden =
                     false;
+
+
+                /*
+                 * iPad Safari
+                 * บังคับคำนวณขนาด iframe ใหม่
+                 * หลังจากแสดง PDF
+                 */
+
+                pdf.style.width =
+                    "99.9%";
+
+
+                requestAnimationFrame(
+                    function () {
+
+                        pdf.style.width =
+                            "100%";
+
+                    }
+                );
 
             };
 
@@ -2113,81 +2134,81 @@ function openWorkFileModal(
        ----------------------------------------- */
 
     fullscreen.onclick =
-    function () {
+        function () {
 
-        const isIPad =
-            /iPad|Macintosh/.test(
-                navigator.userAgent
-            ) &&
-            navigator.maxTouchPoints > 1;
+            const isIPad =
+                /iPad|Macintosh/.test(
+                    navigator.userAgent
+                ) &&
+                navigator.maxTouchPoints > 1;
 
 
-        /* =========================================
-           iPad
-           เปิดไฟล์จริงในแท็บใหม่
-           Safari จะ pinch zoom ได้ตามปกติ
-           ========================================= */
-
-        if (
-            isIPad
-        ) {
+            /* =========================================
+               iPad
+               เปิดไฟล์จริงในแท็บใหม่
+               Safari จะ pinch zoom ได้ตามปกติ
+               ========================================= */
 
             if (
-                type === "abstract"
+                isIPad
             ) {
 
-                window.open(
-                    pdf.src,
-                    "_blank"
+                if (
+                    type === "abstract"
+                ) {
+
+                    window.open(
+                        pdf.src,
+                        "_blank"
+                    );
+
+                }
+                else {
+
+                    window.open(
+                        poster.src,
+                        "_blank"
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            /* =========================================
+               Desktop
+               ใช้ Fullscreen เดิม
+               ========================================= */
+
+            const target =
+                type === "abstract"
+                    ? pdf
+                    : poster;
+
+
+            if (
+                type === "poster"
+            ) {
+
+                resetPosterZoom(
+                    poster
                 );
 
             }
-            else {
 
-                window.open(
-                    poster.src,
-                    "_blank"
-                );
+
+            if (
+                target.requestFullscreen
+            ) {
+
+                target.requestFullscreen();
 
             }
 
-
-            return;
-
-        }
-
-
-        /* =========================================
-           Desktop
-           ใช้ Fullscreen เดิม
-           ========================================= */
-
-        const target =
-            type === "abstract"
-                ? pdf
-                : poster;
-
-
-        if (
-            type === "poster"
-        ) {
-
-            resetPosterZoom(
-                poster
-            );
-
-        }
-
-
-        if (
-            target.requestFullscreen
-        ) {
-
-            target.requestFullscreen();
-
-        }
-
-    };
+        };
 
 
     /* -----------------------------------------
