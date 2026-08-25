@@ -2907,6 +2907,119 @@ function setupPdfZoom(
 
 }
 
+/* =====================================================
+   LOCK NATIVE PINCH ZOOM INSIDE FILE POPUP
+
+   หน้าที่:
+   - ห้าม Safari ซูมทั้งหน้า / ทั้ง popup
+   - custom zoom ของ Poster / PDF ยังทำงานได้
+   ===================================================== */
+
+function setupWorkFileModalZoomLock(
+    modal
+) {
+
+    if (
+        !modal ||
+        modal.dataset.zoomLockReady
+    ) {
+
+        return;
+
+    }
+
+
+    modal.dataset.zoomLockReady =
+        "true";
+
+
+    /* =================================================
+       Safari gesture events
+       กัน Browser Page Zoom
+       ================================================= */
+
+    modal.addEventListener(
+        "gesturestart",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    modal.addEventListener(
+        "gesturechange",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    modal.addEventListener(
+        "gestureend",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       Touch Pinch
+
+       ถ้ามีมากกว่า 1 นิ้ว
+       ห้าม Safari เอา gesture ไป Zoom หน้าเว็บ
+
+       แต่ event ยังเดินผ่านระบบ custom zoom
+       ของ Poster / PDF ตามปกติ
+       ================================================= */
+
+    modal.addEventListener(
+        "touchmove",
+        function (
+            event
+        ) {
+
+            if (
+                event.touches &&
+                event.touches.length > 1
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+}
+
 async function openWorkFileModal(
     work,
     type
@@ -2971,7 +3084,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ตรวจ Element
+       CHECK
        ================================================= */
 
     if (
@@ -2997,7 +3110,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ตรวจ iPad
+       DEVICE
        ================================================= */
 
     const isIPad =
@@ -3005,6 +3118,32 @@ async function openWorkFileModal(
             navigator.userAgent
         ) &&
         navigator.maxTouchPoints > 1;
+
+
+    /* =================================================
+       เตรียมระบบ Gesture
+
+       สำคัญ:
+       Lock native Safari zoom ก่อน
+       แล้วค่อยให้ custom viewer จัดการไฟล์
+       ================================================= */
+
+    setupWorkFileModalZoomLock(
+        modal
+    );
+
+
+    setupPosterZoom(
+        poster,
+        modal
+    );
+
+
+    setupPdfZoom(
+        pdfViewer,
+        pdfPages,
+        modal
+    );
 
 
     /* =================================================
@@ -3054,23 +3193,6 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       เตรียม Zoom
-       ================================================= */
-
-    setupPosterZoom(
-        poster,
-        modal
-    );
-
-
-    setupPdfZoom(
-        pdfViewer,
-        pdfPages,
-        modal
-    );
-
-
-    /* =================================================
        TITLE
        ================================================= */
 
@@ -3081,9 +3203,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       เปิด Popup ก่อนโหลดไฟล์
-
-       Spinner จะขึ้นทันที
+       เปิด Popup ก่อน
        ================================================= */
 
     modal.hidden =
@@ -3096,7 +3216,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ปุ่มไปหน้าลงคะแนน
+       SCORE BUTTON
        ================================================= */
 
     score.onclick =
@@ -3110,7 +3230,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ABSTRACT / PDF
+       ABSTRACT
        ================================================= */
 
     if (
@@ -3132,9 +3252,10 @@ async function openWorkFileModal(
 
         /* =================================================
            iPAD
+           ใช้ PDF.js เท่านั้น
 
-           ใช้ PDF.js Canvas
-           เพื่อให้ Zoom เฉพาะ PDF
+           ห้าม fallback ไป Google Drive iframe
+           เพราะจะกลับมาคุม pinch ไม่ได้
            ================================================= */
 
         if (
@@ -3144,12 +3265,6 @@ async function openWorkFileModal(
             let directPdfUrl =
                 pdfUrl;
 
-
-            /*
-             * ถ้าเป็น Google Drive
-             * เปลี่ยนจาก /view
-             * เป็น URL สำหรับไฟล์ PDF
-             */
 
             if (
                 driveMatch &&
@@ -3191,91 +3306,52 @@ async function openWorkFileModal(
 
                 }
 
+
+                throw new Error(
+                    "PDF.js render returned false"
+                );
+
             }
             catch (
                 error
             ) {
 
-                console.warn(
-                    "iPad PDF.js render ไม่สำเร็จ:",
+                console.error(
+                    "iPad PDF Render Error:",
                     error
                 );
 
-            }
+
+                loading.hidden =
+                    true;
 
 
-            /* =================================================
-               FALLBACK
-
-               ถ้า PDF.js โหลด Drive ไม่ผ่าน
-               ให้กลับไปใช้ Google Drive iframe
-               เพื่อไม่ให้ไฟล์เปิดไม่ได้ทั้งหน้า
-               ================================================= */
-
-            let previewUrl =
-                pdfUrl;
+                pdf.hidden =
+                    true;
 
 
-            if (
-                driveMatch &&
-                driveMatch[1]
-            ) {
+                pdfViewer.hidden =
+                    true;
 
-                previewUrl =
-                    "https://drive.google.com/file/d/" +
-                    driveMatch[1] +
-                    "/preview";
+
+                empty.hidden =
+                    false;
+
+
+                empty.textContent =
+                    "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง";
+
+
+                return;
 
             }
-
-
-            pdf.hidden =
-                false;
-
-
-            pdfViewer.hidden =
-                true;
-
-
-            pdf.onload =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-                };
-
-
-            pdf.onerror =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-
-                    pdf.hidden =
-                        true;
-
-
-                    empty.hidden =
-                        false;
-
-                };
-
-
-            pdf.src =
-                previewUrl;
-
-
-            return;
 
         }
 
 
         /* =================================================
            DESKTOP
-
-           ใช้ Google Drive iframe เหมือนเดิม
+           ใช้ Google Drive Preview ได้เหมือนเดิม
            ================================================= */
 
         let previewUrl =
@@ -3416,7 +3492,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ไม่มีไฟล์
+       EMPTY
        ================================================= */
 
     loading.hidden =
