@@ -4035,3 +4035,62 @@ and (orientation: portrait) {
     }
 
 }
+
+/* =====================================================
+   WORK FILE — HIDDEN FIX
+   element ที่ hidden ต้องหายจริง
+   ===================================================== */
+
+#workFileModalEmpty[hidden],
+#workFilePdf[hidden],
+#workFilePdfViewer[hidden],
+#workFilePoster[hidden],
+#workFileLoading[hidden] {
+    display: none !important;
+}
+
+.work-file-modal-content {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
+.work-file-poster {
+    touch-action: none !important;
+    transform-origin: center center !important;
+    will-change: transform;
+}
+
+/* =====================================================
+   PDF CUSTOM ZOOM
+   ซูมเฉพาะเอกสาร ไม่ซูม Popup
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    touch-action: none !important;
+}
+
+
+.work-file-pdf-pages {
+    width: 100%;
+
+    transform-origin: center top;
+
+    will-change: transform;
+
+    touch-action: none !important;
+}
+
+
+.work-file-pdf-page {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto 16px;
+}
