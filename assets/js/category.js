@@ -1789,6 +1789,10 @@ function zoomPosterAtPoint(
     }
 
 
+    const oldScale =
+        posterScale;
+
+
     newScale =
         Math.min(
             5,
@@ -1799,22 +1803,16 @@ function zoomPosterAtPoint(
         );
 
 
-    /* =========================================
-       ถ้ากลับมา 1x
-       คืนรูปเข้ากลาง
-       ========================================= */
+    /* =================================================
+       กลับมาที่ 1x
+       = ภาพรวมตรงกลาง
+       ================================================= */
 
     if (
         newScale <= 1
     ) {
 
-        posterScale = 1;
-
-        posterTranslateX = 0;
-        posterTranslateY = 0;
-
-
-        applyPosterTransform(
+        resetPosterZoom(
             poster
         );
 
@@ -1824,71 +1822,63 @@ function zoomPosterAtPoint(
     }
 
 
-    /*
-     * rect ณ ตอนนี้
-     * รวม scale + translate ปัจจุบันแล้ว
-     */
+    /* =================================================
+       ตำแหน่งรูปปัจจุบัน
+       ================================================= */
 
     const rect =
         poster.getBoundingClientRect();
 
 
-    /*
-     * ตำแหน่งเดิมของรูปก่อน translate
-     */
-
-    const baseLeft =
-        rect.left -
-        posterTranslateX;
+    const centerX =
+        rect.left +
+        rect.width / 2;
 
 
-    const baseTop =
-        rect.top -
-        posterTranslateY;
+    const centerY =
+        rect.top +
+        rect.height / 2;
 
 
     /*
-     * หาว่าจุดที่นิ้วแตะ
-     * อยู่ตรงตำแหน่งไหนของรูปจริง
+     * ตำแหน่งนิ้วเทียบกับกลางรูป
      */
 
-    const imageX =
-        (
-            pointX -
-            rect.left
-        ) /
-        posterScale;
-
-
-    const imageY =
-        (
-            pointY -
-            rect.top
-        ) /
-        posterScale;
-
-
-    /*
-     * คำนวณ translate ใหม่
-     * เพื่อให้จุดเดิมของรูป
-     * ยังคงอยู่ใต้นิ้วหลังซูม
-     */
-
-    posterTranslateX =
+    const offsetX =
         pointX -
-        baseLeft -
+        centerX;
+
+
+    const offsetY =
+        pointY -
+        centerY;
+
+
+    /*
+     * อัตราการเปลี่ยน Scale
+     */
+
+    const scaleRatio =
+        newScale /
+        oldScale;
+
+
+    /*
+     * ชดเชยตำแหน่ง
+     * เพื่อให้ขยายจากบริเวณระหว่างสองนิ้ว
+     */
+
+    posterTranslateX -=
+        offsetX *
         (
-            imageX *
-            newScale
+            scaleRatio - 1
         );
 
 
-    posterTranslateY =
-        pointY -
-        baseTop -
+    posterTranslateY -=
+        offsetY *
         (
-            imageY *
-            newScale
+            scaleRatio - 1
         );
 
 
@@ -3306,7 +3296,7 @@ async function openWorkFileModal(
             isIPad
         ) {
 
-            let directPdfUrl =
+            let previewUrl =
                 pdfUrl;
 
 
@@ -3315,83 +3305,63 @@ async function openWorkFileModal(
                 driveMatch[1]
             ) {
 
-                directPdfUrl =
-                    "https://drive.google.com/uc?export=download&id=" +
-                    driveMatch[1];
+                previewUrl =
+                    "https://drive.google.com/file/d/" +
+                    driveMatch[1] +
+                    "/preview";
 
             }
 
 
-            try {
+            /*
+             * iPad ใช้ Drive Preview ภายใน Popup
+             * ไม่เปิดแท็บใหม่
+             * ไม่เด้งเข้า Google Drive App
+             */
 
-                const rendered =
-                    await renderPdfForIPad(
-                        directPdfUrl
-                    );
+            pdfViewer.hidden =
+                true;
 
 
-                if (
-                    rendered
-                ) {
+            pdf.hidden =
+                false;
 
-                    pdf.hidden =
+
+            pdf.onload =
+                function () {
+
+                    loading.hidden =
                         true;
 
+                };
 
-                    pdfViewer.hidden =
-                        false;
 
+            pdf.onerror =
+                function () {
 
                     loading.hidden =
                         true;
 
 
-                    return;
-
-                }
-
-
-                throw new Error(
-                    "PDF.js render returned false"
-                );
-
-            }
-            catch (
-            error
-            ) {
-
-                console.error(
-                    "iPad PDF Render Error:",
-                    error
-                );
+                    pdf.hidden =
+                        true;
 
 
-                loading.hidden =
-                    true;
+                    showWorkFileEmpty(
+                        empty,
+                        "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+                    );
+
+                };
 
 
-                pdf.hidden =
-                    true;
+            pdf.src =
+                previewUrl;
 
 
-                pdfViewer.hidden =
-                    true;
-
-
-                empty.hidden =
-                    false;
-
-
-                empty.textContent =
-                    "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง";
-
-
-                return;
-
-            }
+            return;
 
         }
-
 
         /* =================================================
            DESKTOP
@@ -3443,9 +3413,9 @@ async function openWorkFileModal(
                     true;
 
 
-                empty.hidden =
-                    false;
-
+                showWorkFileEmpty(
+                    empty
+                );
             };
 
 
@@ -3520,8 +3490,9 @@ async function openWorkFileModal(
                     true;
 
 
-                empty.hidden =
-                    false;
+                showWorkFileEmpty(
+                    empty
+                );
 
             };
 
@@ -3543,8 +3514,9 @@ async function openWorkFileModal(
         true;
 
 
-    empty.hidden =
-        false;
+    showWorkFileEmpty(
+        empty
+    );
 
 }
 
