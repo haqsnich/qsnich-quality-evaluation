@@ -2890,46 +2890,66 @@ function openWorkFileModal(
             "workFileModal"
         );
 
+
     const title =
         document.getElementById(
             "workFileModalTitle"
         );
+
 
     const pdf =
         document.getElementById(
             "workFilePdf"
         );
 
+
     const poster =
         document.getElementById(
             "workFilePoster"
         );
+
 
     const empty =
         document.getElementById(
             "workFileModalEmpty"
         );
 
+
     const loading =
         document.getElementById(
             "workFileLoading"
         );
+
 
     const score =
         document.getElementById(
             "workFileScore"
         );
 
+
+    /*
+     * ปุ่ม Fullscreen
+     * ตอนนี้ไม่ใช้แล้ว
+     *
+     * ยังเก็บใน HTML ชั่วคราว
+     * แต่ซ่อนไว้ก่อน
+     */
+
     const fullscreen =
         document.getElementById(
             "workFileFullscreen"
         );
+
 
     const pdfViewer =
         document.getElementById(
             "workFilePdfViewer"
         );
 
+
+    /* =================================================
+       ตรวจ Element ที่จำเป็นจริง ๆ
+       ================================================= */
 
     if (
         !modal ||
@@ -2938,8 +2958,7 @@ function openWorkFileModal(
         !poster ||
         !empty ||
         !loading ||
-        !score ||
-        !fullscreen
+        !score
     ) {
 
         return;
@@ -2948,18 +2967,24 @@ function openWorkFileModal(
 
 
     /* =================================================
-       ตรวจว่าเป็น iPad
+       ซ่อนปุ่ม Fullscreen
        ================================================= */
 
-    const isIPad =
-        /iPad|Macintosh/.test(
-            navigator.userAgent
-        ) &&
-        navigator.maxTouchPoints > 1;
+    if (
+        fullscreen
+    ) {
+
+        fullscreen.hidden =
+            true;
+
+    }
 
 
     /* =================================================
-       เตรียม Poster Zoom
+       เตรียมระบบ Zoom ของ Poster
+
+       ตอนนี้ยังไม่เปิดให้ Zoom ใน Popup
+       เราจะทำในขั้นถัดไป
        ================================================= */
 
     setupPosterZoom(
@@ -2977,22 +3002,34 @@ function openWorkFileModal(
     );
 
 
+    /*
+     * เอาโหมด Fullscreen เก่าทิ้งทุกครั้ง
+     */
+
     modal.classList.remove(
         "is-ipad-fullscreen"
     );
 
 
+    /* PDF */
+
     pdf.hidden =
         true;
 
+
+    /* Poster */
 
     poster.hidden =
         true;
 
 
+    /* Empty */
+
     empty.hidden =
         true;
 
+
+    /* PDF Canvas Viewer */
 
     if (
         pdfViewer
@@ -3004,9 +3041,15 @@ function openWorkFileModal(
     }
 
 
+    /* Spinner */
+
     loading.hidden =
         false;
 
+
+    /*
+     * ล้างไฟล์จากงานก่อนหน้า
+     */
 
     pdf.src =
         "";
@@ -3014,10 +3057,6 @@ function openWorkFileModal(
 
     poster.src =
         "";
-
-
-    fullscreen.hidden =
-        true;
 
 
     /* =================================================
@@ -3032,8 +3071,12 @@ function openWorkFileModal(
 
     /* =================================================
        ABSTRACT / PDF
-       ใช้ Google Drive iframe
-       ทั้ง Desktop และ iPad
+
+       ขั้นนี้ยังใช้ Google Drive iframe ก่อน
+       เพื่อให้ Popup เดิมยังทำงานได้
+
+       ขั้น PDF Zoom เราจะเปลี่ยนเป็น PDF.js
+       ในขั้นถัด ๆ ไป
        ================================================= */
 
     if (
@@ -3071,8 +3114,7 @@ function openWorkFileModal(
 
 
         /*
-         * แสดง iframe ก่อนกำหนด src
-         * ให้ iPad คำนวณขนาดได้ถูก
+         * เปิดพื้นที่ iframe ก่อนกำหนด src
          */
 
         pdf.hidden =
@@ -3095,6 +3137,10 @@ function openWorkFileModal(
                     true;
 
 
+                pdf.hidden =
+                    true;
+
+
                 empty.hidden =
                     false;
 
@@ -3103,10 +3149,6 @@ function openWorkFileModal(
 
         pdf.src =
             previewUrl;
-
-
-        fullscreen.hidden =
-            false;
 
     }
 
@@ -3169,6 +3211,10 @@ function openWorkFileModal(
                     true;
 
 
+                poster.hidden =
+                    true;
+
+
                 empty.hidden =
                     false;
 
@@ -3177,10 +3223,6 @@ function openWorkFileModal(
 
         poster.src =
             imageUrl;
-
-
-        fullscreen.hidden =
-            false;
 
     }
 
@@ -3198,15 +3240,11 @@ function openWorkFileModal(
         empty.hidden =
             false;
 
-
-        fullscreen.hidden =
-            true;
-
     }
 
 
     /* =================================================
-       ปุ่มลงคะแนน
+       ปุ่มไปหน้าลงคะแนน
        ================================================= */
 
     score.onclick =
@@ -3215,100 +3253,6 @@ function openWorkFileModal(
             selectWork(
                 work
             );
-
-        };
-
-
-    /* =================================================
-       ปุ่ม FULLSCREEN
-       ================================================= */
-
-    fullscreen.onclick =
-        function () {
-
-            /* -----------------------------------------
-               iPad
-               Fullscreen ภายในหน้าเดิม
-
-               กดแล้วปุ่ม Fullscreen หาย
-               ออกจากโหมดด้วย X เท่านั้น
-               ----------------------------------------- */
-
-            if (
-                isIPad
-            ) {
-
-                /* =========================================
-                   บทคัดย่อ
-                   เปิด PDF ใน Safari เหมือนเดิม
-                   ========================================= */
-
-                if (
-                    type === "abstract"
-                ) {
-
-                    window.open(
-                        pdf.src,
-                        "_blank"
-                    );
-
-
-                    return;
-
-                }
-
-
-                /* =========================================
-                   โปสเตอร์
-                   ใช้ Full View ภายในเว็บ
-                   เพื่อให้เริ่มจากภาพรวม 100%
-                   ========================================= */
-
-                resetPosterZoom(
-                    poster
-                );
-
-
-                modal.classList.add(
-                    "is-ipad-fullscreen"
-                );
-
-
-                return;
-
-            }
-
-
-            /* -----------------------------------------
-               Desktop
-               Fullscreen จริง
-               ----------------------------------------- */
-
-            const target =
-                type === "abstract"
-                    ? pdf
-                    : poster;
-
-
-            if (
-                type === "poster"
-            ) {
-
-                resetPosterZoom(
-                    poster
-                );
-
-            }
-
-
-            if (
-                target &&
-                target.requestFullscreen
-            ) {
-
-                target.requestFullscreen();
-
-            }
 
         };
 
@@ -3837,3 +3781,115 @@ document.addEventListener(
 
     }
 );
+
+/* =====================================================
+   iPAD — LOCK PAGE ZOOM
+   ห้ามซูมหน้าเว็บ
+   ยกเว้นตอนดูไฟล์ Full View
+   ===================================================== */
+
+(function () {
+
+    function allowFileZoom() {
+
+        const modal =
+            document.getElementById(
+                "workFileModal"
+            );
+
+
+        return (
+            modal &&
+            modal.classList.contains(
+                "is-ipad-fullscreen"
+            )
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Safari Gesture Zoom
+       ----------------------------------------- */
+
+    document.addEventListener(
+        "gesturestart",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    document.addEventListener(
+        "gesturechange",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    document.addEventListener(
+        "gestureend",
+        function (event) {
+
+            if (
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       กัน Pinch จาก Touch โดยตรง
+       ----------------------------------------- */
+
+    document.addEventListener(
+        "touchmove",
+        function (event) {
+
+            if (
+                event.touches.length > 1 &&
+                !allowFileZoom()
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+})();
