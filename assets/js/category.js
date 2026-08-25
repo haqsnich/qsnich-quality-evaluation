@@ -1643,39 +1643,82 @@ function preloadWorkFiles(
 }
 
 /* =====================================================
-   POSTER ZOOM
-   รองรับ iPad pinch + mouse wheel
+   POSTER ZOOM + PAN
+   iPad pinch zoom + drag
+   Desktop mouse wheel zoom
    ===================================================== */
 
-let posterScale =
-    1;
+let posterScale = 1;
+
+let posterTranslateX = 0;
+let posterTranslateY = 0;
+
+let posterPinchDistance = 0;
+let posterPinchMidX = 0;
+let posterPinchMidY = 0;
+
+let posterDragX = 0;
+let posterDragY = 0;
 
 
-let posterStartDistance =
-    0;
+/* -----------------------------------------
+   Apply Transform
+   ----------------------------------------- */
+
+function applyPosterTransform(
+    poster
+) {
+
+    if (!poster) {
+        return;
+    }
+
+    poster.style.transform =
+        "translate3d(" +
+        posterTranslateX +
+        "px, " +
+        posterTranslateY +
+        "px, 0) scale(" +
+        posterScale +
+        ")";
+
+}
 
 
-let posterStartScale =
-    1;
-
+/* -----------------------------------------
+   Reset
+   ----------------------------------------- */
 
 function resetPosterZoom(
     poster
 ) {
 
-    posterScale =
-        1;
+    posterScale = 1;
+
+    posterTranslateX = 0;
+    posterTranslateY = 0;
+
+    posterPinchDistance = 0;
+    posterPinchMidX = 0;
+    posterPinchMidY = 0;
+
+    posterDragX = 0;
+    posterDragY = 0;
 
 
     if (poster) {
 
         poster.style.transform =
-            "scale(1)";
+            "translate3d(0, 0, 0) scale(1)";
 
     }
 
 }
 
+
+/* -----------------------------------------
+   ระยะระหว่าง 2 นิ้ว
+   ----------------------------------------- */
 
 function getTouchDistance(
     touches
@@ -1685,9 +1728,7 @@ function getTouchDistance(
         !touches ||
         touches.length < 2
     ) {
-
         return 0;
-
     }
 
 
@@ -1704,6 +1745,432 @@ function getTouchDistance(
     return Math.hypot(
         dx,
         dy
+    );
+
+}
+
+
+/* -----------------------------------------
+   จุดกึ่งกลางระหว่าง 2 นิ้ว
+   ----------------------------------------- */
+
+function getTouchMidpoint(
+    touches
+) {
+
+    return {
+
+        x:
+            (
+                touches[0].clientX +
+                touches[1].clientX
+            ) / 2,
+
+        y:
+            (
+                touches[0].clientY +
+                touches[1].clientY
+            ) / 2
+
+    };
+
+}
+
+
+/* -----------------------------------------
+   ซูมตามตำแหน่งนิ้ว / เมาส์
+   ----------------------------------------- */
+
+function zoomPosterAtPoint(
+    poster,
+    newScale,
+    pointX,
+    pointY
+) {
+
+    if (!poster) {
+        return;
+    }
+
+
+    newScale =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                newScale
+            )
+        );
+
+
+    /* กลับ 1x = กลับตำแหน่งเดิม */
+
+    if (
+        newScale <= 1
+    ) {
+
+        posterScale = 1;
+
+        posterTranslateX = 0;
+        posterTranslateY = 0;
+
+        applyPosterTransform(
+            poster
+        );
+
+        return;
+
+    }
+
+
+    const scaleRatio =
+        newScale /
+        posterScale;
+
+
+    posterTranslateX =
+        pointX -
+        (
+            pointX -
+            posterTranslateX
+        ) *
+        scaleRatio;
+
+
+    posterTranslateY =
+        pointY -
+        (
+            pointY -
+            posterTranslateY
+        ) *
+        scaleRatio;
+
+
+    posterScale =
+        newScale;
+
+
+    applyPosterTransform(
+        poster
+    );
+
+}
+
+
+/* =====================================================
+   SETUP POSTER ZOOM EVENTS
+   ===================================================== */
+
+function setupPosterZoom(
+    poster,
+    modal
+) {
+
+    if (
+        !poster ||
+        !modal ||
+        poster.dataset.zoomReady
+    ) {
+        return;
+    }
+
+
+    poster.dataset.zoomReady =
+        "true";
+
+
+    function canZoom() {
+
+        return (
+            document.fullscreenElement === poster ||
+            modal.classList.contains(
+                "is-ipad-fullscreen"
+            )
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Desktop — Mouse Wheel
+       ----------------------------------------- */
+
+    poster.addEventListener(
+        "wheel",
+        function (event) {
+
+            if (!canZoom()) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+
+            const factor =
+                event.deltaY < 0
+                    ? 1.15
+                    : 0.87;
+
+
+            zoomPosterAtPoint(
+                poster,
+                posterScale * factor,
+                event.clientX,
+                event.clientY
+            );
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       iPad — Touch Start
+       ----------------------------------------- */
+
+    poster.addEventListener(
+        "touchstart",
+        function (event) {
+
+            if (!canZoom()) {
+                return;
+            }
+
+
+            /* 2 นิ้ว = เริ่ม Pinch */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                posterPinchDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                posterPinchMidX =
+                    midpoint.x;
+
+
+                posterPinchMidY =
+                    midpoint.y;
+
+
+                return;
+
+            }
+
+
+            /* 1 นิ้ว = เตรียม Drag */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       iPad — Touch Move
+       ----------------------------------------- */
+
+    poster.addEventListener(
+        "touchmove",
+        function (event) {
+
+            if (!canZoom()) {
+                return;
+            }
+
+
+            /* ================================
+               2 นิ้ว = Zoom
+               ================================ */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+
+                const newDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                if (
+                    !posterPinchDistance
+                ) {
+
+                    posterPinchDistance =
+                        newDistance;
+
+                    return;
+
+                }
+
+
+                const midpoint =
+                    getTouchMidpoint(
+                        event.touches
+                    );
+
+
+                const ratio =
+                    newDistance /
+                    posterPinchDistance;
+
+
+                zoomPosterAtPoint(
+                    poster,
+                    posterScale * ratio,
+                    midpoint.x,
+                    midpoint.y
+                );
+
+
+                /* ถ้านิ้วสองนิ้วเคลื่อนพร้อมกัน
+                   ให้รูปเคลื่อนตาม */
+
+                posterTranslateX +=
+                    midpoint.x -
+                    posterPinchMidX;
+
+
+                posterTranslateY +=
+                    midpoint.y -
+                    posterPinchMidY;
+
+
+                posterPinchDistance =
+                    newDistance;
+
+
+                posterPinchMidX =
+                    midpoint.x;
+
+
+                posterPinchMidY =
+                    midpoint.y;
+
+
+                applyPosterTransform(
+                    poster
+                );
+
+
+                return;
+
+            }
+
+
+            /* ================================
+               1 นิ้ว = Drag
+               ================================ */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                event.preventDefault();
+
+
+                const touch =
+                    event.touches[0];
+
+
+                posterTranslateX +=
+                    touch.clientX -
+                    posterDragX;
+
+
+                posterTranslateY +=
+                    touch.clientY -
+                    posterDragY;
+
+
+                posterDragX =
+                    touch.clientX;
+
+
+                posterDragY =
+                    touch.clientY;
+
+
+                applyPosterTransform(
+                    poster
+                );
+
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------
+       Touch End
+       ----------------------------------------- */
+
+    poster.addEventListener(
+        "touchend",
+        function (event) {
+
+            posterPinchDistance = 0;
+
+
+            if (
+                event.touches.length === 1
+            ) {
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+            else {
+
+                posterDragX = 0;
+                posterDragY = 0;
+
+            }
+
+        }
     );
 
 }
@@ -1769,189 +2236,10 @@ function openWorkFileModal(
         return;
     }
 
-
-    /* =================================================
-       POSTER ZOOM EVENTS
-       ================================================= */
-
-    if (
-        poster &&
-        !poster.dataset.zoomReady
-    ) {
-
-        poster.dataset.zoomReady =
-            "true";
-
-
-        /* Mouse wheel zoom */
-
-        poster.addEventListener(
-            "wheel",
-            function (event) {
-
-                const canZoom =
-                    document.fullscreenElement === poster ||
-                    modal.classList.contains(
-                        "is-ipad-fullscreen"
-                    );
-
-
-                if (
-                    !canZoom
-                ) {
-                    return;
-                }
-
-
-                event.preventDefault();
-
-
-                const delta =
-                    event.deltaY < 0
-                        ? 0.12
-                        : -0.12;
-
-
-                posterScale =
-                    Math.min(
-                        4,
-                        Math.max(
-                            1,
-                            posterScale + delta
-                        )
-                    );
-
-
-                poster.style.transform =
-                    "scale(" +
-                    posterScale +
-                    ")";
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        /* iPad — เริ่ม pinch */
-
-        poster.addEventListener(
-            "touchstart",
-            function (event) {
-
-                const canZoom =
-                    document.fullscreenElement === poster ||
-                    modal.classList.contains(
-                        "is-ipad-fullscreen"
-                    );
-
-
-                if (
-                    !canZoom
-                ) {
-                    return;
-                }
-
-
-                if (
-                    event.touches.length === 2
-                ) {
-
-                    posterStartDistance =
-                        getTouchDistance(
-                            event.touches
-                        );
-
-
-                    posterStartScale =
-                        posterScale;
-
-                }
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        /* iPad — pinch zoom */
-
-        poster.addEventListener(
-            "touchmove",
-            function (event) {
-
-                const canZoom =
-                    document.fullscreenElement === poster ||
-                    modal.classList.contains(
-                        "is-ipad-fullscreen"
-                    );
-
-
-                if (
-                    !canZoom
-                ) {
-                    return;
-                }
-
-
-                if (
-                    event.touches.length !== 2
-                ) {
-                    return;
-                }
-
-
-                event.preventDefault();
-
-
-                const currentDistance =
-                    getTouchDistance(
-                        event.touches
-                    );
-
-
-                if (
-                    !posterStartDistance
-                ) {
-                    return;
-                }
-
-
-                const ratio =
-                    currentDistance /
-                    posterStartDistance;
-
-
-                posterScale =
-                    Math.min(
-                        4,
-                        Math.max(
-                            1,
-                            posterStartScale * ratio
-                        )
-                    );
-
-
-                poster.style.transform =
-                    "scale(" +
-                    posterScale +
-                    ")";
-
-            },
-            {
-                passive: false
-            }
-        );
-
-    }
-
-
-    /* -----------------------------------------
-       Reset
-       ----------------------------------------- */
-
+    setupPosterZoom(
+    poster,
+    modal
+);
 
     /* -----------------------------------------
        Reset

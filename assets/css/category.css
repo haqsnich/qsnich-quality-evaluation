@@ -3604,13 +3604,6 @@ and (orientation: portrait) {
    POSTER FULLSCREEN + ZOOM
    ===================================================== */
 
-.work-file-poster {
-    touch-action: none;
-    transform-origin: center center;
-    transition: transform 0.12s ease;
-}
-
-
 /* ตอนเข้า fullscreen */
 
 .work-file-poster:fullscreen {
@@ -3807,7 +3800,6 @@ and (orientation: portrait) {
         align-items: center !important;
         justify-content: center !important;
 
-        overflow: auto !important;
     }
 
 
@@ -3840,7 +3832,35 @@ and (orientation: portrait) {
 
         object-fit: contain !important;
 
-        transform-origin: center center !important;
     }
+
+}
+
+/* =====================================================
+   POSTER ZOOM + PAN
+   ===================================================== */
+
+.work-file-poster {
+    touch-action: none !important;
+
+    transform-origin: 0 0 !important;
+
+    will-change: transform;
+
+    user-select: none !important;
+
+    -webkit-user-select: none !important;
+
+    -webkit-user-drag: none;
+}
+
+
+/* ตอน iPad Fullscreen จำลอง
+   ไม่ให้ container เลื่อนแทนรูป */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-modal-content {
+
+    overflow: hidden !important;
 
 }
