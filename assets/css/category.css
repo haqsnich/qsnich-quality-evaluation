@@ -3599,3 +3599,93 @@ and (orientation: portrait) {
     }
 
 }
+
+/* =====================================================
+   POSTER FULLSCREEN + ZOOM
+   ===================================================== */
+
+.work-file-poster {
+    touch-action: none;
+    transform-origin: center center;
+    transition: transform 0.12s ease;
+}
+
+
+/* ตอนเข้า fullscreen */
+
+.work-file-poster:fullscreen {
+    max-width: none !important;
+    max-height: none !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    object-fit: contain;
+
+    cursor: grab;
+}
+
+
+.work-file-poster:fullscreen:active {
+    cursor: grabbing;
+}
+
+/* =====================================================
+   WORK FILE VIEWER — CENTER FIX
+   ===================================================== */
+
+.work-file-modal-content {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* PDF ต้องกินพื้นที่ viewer เต็ม */
+
+.work-file-pdf:not([hidden]) {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    flex: 1 1 100% !important;
+
+    border: 0 !important;
+}
+
+
+/* Poster อยู่กึ่งกลาง */
+
+.work-file-poster:not([hidden]) {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    margin: auto !important;
+
+    object-fit: contain !important;
+
+    flex: 0 0 auto !important;
+}
+
+
+/* ของที่ hidden ต้องไม่กินพื้นที่เด็ดขาด */
+
+.work-file-pdf[hidden],
+.work-file-poster[hidden],
+.work-file-modal-empty[hidden],
+.work-file-loading[hidden] {
+    display: none !important;
+}

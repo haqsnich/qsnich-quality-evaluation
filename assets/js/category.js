@@ -1497,6 +1497,217 @@ document.addEventListener(
     }
 );
 
+/* =====================================================
+   PRELOAD WORK FILES
+   โหลดไฟล์รอเบื้องหลัง
+   ===================================================== */
+
+function preloadWorkFiles(
+    works
+) {
+
+    if (
+        !Array.isArray(works) ||
+        works.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * รอให้หน้า Category แสดงเสร็จก่อน
+     * ไม่แย่งเน็ตตอนกำลังโหลดรายชื่อ/คะแนน
+     */
+
+    setTimeout(
+        function () {
+
+            works.forEach(
+                function (
+                    work
+                ) {
+
+                    /* =========================================
+                       PRELOAD POSTER
+                       ========================================= */
+
+                    if (
+                        work.poster_url
+                    ) {
+
+                        const posterUrl =
+                            String(
+                                work.poster_url
+                            ).trim();
+
+
+                        const driveMatch =
+                            posterUrl.match(
+                                /\/file\/d\/([^/]+)/
+                            );
+
+
+                        let imageUrl =
+                            posterUrl;
+
+
+                        if (
+                            driveMatch &&
+                            driveMatch[1]
+                        ) {
+
+                            imageUrl =
+                                "https://drive.google.com/thumbnail?id=" +
+                                driveMatch[1] +
+                                "&sz=w2000";
+
+                        }
+
+
+                        const image =
+                            new Image();
+
+
+                        image.src =
+                            imageUrl;
+
+                    }
+
+
+                    /* =========================================
+                       PRELOAD PDF
+                       ========================================= */
+
+                    if (
+                        work.pdf_url
+                    ) {
+
+                        const pdfUrl =
+                            String(
+                                work.pdf_url
+                            ).trim();
+
+
+                        const driveMatch =
+                            pdfUrl.match(
+                                /\/file\/d\/([^/]+)/
+                            );
+
+
+                        let previewUrl =
+                            pdfUrl;
+
+
+                        if (
+                            driveMatch &&
+                            driveMatch[1]
+                        ) {
+
+                            previewUrl =
+                                "https://drive.google.com/file/d/" +
+                                driveMatch[1] +
+                                "/preview";
+
+                        }
+
+
+                        const link =
+                            document.createElement(
+                                "link"
+                            );
+
+
+                        link.rel =
+                            "prefetch";
+
+
+                        link.href =
+                            previewUrl;
+
+
+                        document.head.appendChild(
+                            link
+                        );
+
+                    }
+
+                }
+            );
+
+        },
+        1200
+    );
+
+}
+
+/* =====================================================
+   POSTER ZOOM
+   รองรับ iPad pinch + mouse wheel
+   ===================================================== */
+
+let posterScale =
+    1;
+
+
+let posterStartDistance =
+    0;
+
+
+let posterStartScale =
+    1;
+
+
+function resetPosterZoom(
+    poster
+) {
+
+    posterScale =
+        1;
+
+
+    if (poster) {
+
+        poster.style.transform =
+            "scale(1)";
+
+    }
+
+}
+
+
+function getTouchDistance(
+    touches
+) {
+
+    if (
+        !touches ||
+        touches.length < 2
+    ) {
+
+        return 0;
+
+    }
+
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+
+    return Math.hypot(
+        dx,
+        dy
+    );
+
+}
+
 /* =================================================
    WORK FILE POPUP
    ================================================= */
@@ -1557,6 +1768,168 @@ function openWorkFileModal(
     ) {
         return;
     }
+
+
+    /* =================================================
+       POSTER ZOOM EVENTS
+       ================================================= */
+
+    if (
+        poster &&
+        !poster.dataset.zoomReady
+    ) {
+
+        poster.dataset.zoomReady =
+            "true";
+
+
+        /* Mouse wheel zoom */
+
+        poster.addEventListener(
+            "wheel",
+            function (event) {
+
+                if (
+                    document.fullscreenElement !== poster
+                ) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const delta =
+                    event.deltaY < 0
+                        ? 0.12
+                        : -0.12;
+
+
+                posterScale =
+                    Math.min(
+                        4,
+                        Math.max(
+                            1,
+                            posterScale + delta
+                        )
+                    );
+
+
+                poster.style.transform =
+                    "scale(" +
+                    posterScale +
+                    ")";
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        /* iPad — เริ่ม pinch */
+
+        poster.addEventListener(
+            "touchstart",
+            function (event) {
+
+                if (
+                    document.fullscreenElement !== poster
+                ) {
+                    return;
+                }
+
+
+                if (
+                    event.touches.length === 2
+                ) {
+
+                    posterStartDistance =
+                        getTouchDistance(
+                            event.touches
+                        );
+
+
+                    posterStartScale =
+                        posterScale;
+
+                }
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        /* iPad — pinch zoom */
+
+        poster.addEventListener(
+            "touchmove",
+            function (event) {
+
+                if (
+                    document.fullscreenElement !== poster
+                ) {
+                    return;
+                }
+
+
+                if (
+                    event.touches.length !== 2
+                ) {
+                    return;
+                }
+
+
+                event.preventDefault();
+
+
+                const currentDistance =
+                    getTouchDistance(
+                        event.touches
+                    );
+
+
+                if (
+                    !posterStartDistance
+                ) {
+                    return;
+                }
+
+
+                const ratio =
+                    currentDistance /
+                    posterStartDistance;
+
+
+                posterScale =
+                    Math.min(
+                        4,
+                        Math.max(
+                            1,
+                            posterStartScale * ratio
+                        )
+                    );
+
+
+                poster.style.transform =
+                    "scale(" +
+                    posterScale +
+                    ")";
+
+            },
+            {
+                passive: false
+            }
+        );
+
+    }
+
+
+    /* -----------------------------------------
+       Reset
+       ----------------------------------------- */
 
 
     /* -----------------------------------------
@@ -1747,6 +2120,23 @@ function openWorkFileModal(
                     ? pdf
                     : poster;
 
+
+            /*
+             * ก่อนเปิดโปสเตอร์ fullscreen
+             * reset zoom ทุกครั้ง
+             */
+
+            if (
+                type === "poster"
+            ) {
+
+                resetPosterZoom(
+                    poster
+                );
+
+            }
+
+
             if (
                 target.requestFullscreen
             ) {
@@ -1758,11 +2148,18 @@ function openWorkFileModal(
         };
 
 
-    modal.hidden = false;
+    /* -----------------------------------------
+       เปิด Popup
+       ----------------------------------------- */
+
+    modal.hidden =
+        false;
+
 
     document.body.classList.add(
         "work-file-modal-open"
     );
+
 }
 
 /* =====================================================
@@ -1877,6 +2274,10 @@ displayEvaluatedCount();
    ----------------------------------------------- */
 
 hideCategoryLoading();
+
+preloadWorkFiles(
+    works
+);
 
 
 console.log(
@@ -2189,3 +2590,26 @@ async function refreshScoreButtons(
     );
 
 }
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+        const poster =
+            document.getElementById(
+                "workFilePoster"
+            );
+
+
+        if (
+            !document.fullscreenElement
+        ) {
+
+            resetPosterZoom(
+                poster
+            );
+
+        }
+
+    }
+);
