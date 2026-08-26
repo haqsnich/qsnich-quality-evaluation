@@ -4142,3 +4142,115 @@ and (orientation: portrait) {
     }
 
 }
+
+/* =====================================================
+   WORK FILE PDF — SCROLL FIX
+   ใช้ทั้งบทคัดย่อ + โปสเตอร์ PDF
+   ===================================================== */
+
+/* ล็อกหน้าเว็บด้านหลังไม่ให้เลื่อนตอน Popup เปิด */
+body.work-file-modal-open {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+}
+
+
+/* Popup content ไม่เป็นตัวรับ scroll */
+.work-file-modal-content {
+    overflow: hidden !important;
+}
+
+
+/* =====================================================
+   ตัว Viewer เป็นพื้นที่เลื่อนจริง
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+
+    -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior: contain;
+
+    touch-action: pan-x pan-y pinch-zoom !important;
+
+    scrollbar-gutter: stable;
+}
+
+
+/* =====================================================
+   กลุ่ม PDF ทุกหน้า
+   ===================================================== */
+
+.work-file-pdf-pages {
+    position: relative !important;
+
+    width: 100% !important;
+
+    min-height: 100%;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    transform-origin: center top !important;
+}
+
+
+/* =====================================================
+   แต่ละหน้า PDF
+   ===================================================== */
+
+.work-file-pdf-page {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+
+    flex: 0 0 auto;
+
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   iPad Fullscreen
+   ต้องยังเลื่อน PDF ได้
+   ===================================================== */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-viewer {
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+
+    -webkit-overflow-scrolling: touch;
+
+    touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+
+/* อย่าให้ content แย่ง scroll จาก viewer */
+.work-file-modal.is-ipad-fullscreen
+.work-file-modal-content {
+
+    overflow: hidden !important;
+
+}

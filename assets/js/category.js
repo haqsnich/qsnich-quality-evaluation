@@ -1602,7 +1602,8 @@ document.addEventListener(
 
 /* =====================================================
    PRELOAD WORK FILES
-   โหลดไฟล์รอเบื้องหลัง
+   ใช้ไฟล์ Local จากเว็บโดยตรง
+   ไม่ผ่าน GAS / Google Drive
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1610,7 +1611,9 @@ function preloadWorkFiles(
 ) {
 
     if (
-        !Array.isArray(works) ||
+        !Array.isArray(
+            works
+        ) ||
         works.length === 0
     ) {
 
@@ -1620,8 +1623,8 @@ function preloadWorkFiles(
 
 
     /*
-     * รอให้หน้า Category แสดงเสร็จก่อน
-     * ไม่แย่งเน็ตตอนกำลังโหลดรายชื่อ/คะแนน
+     * รอให้หน้า Category แสดงก่อน
+     * แล้วค่อย preload เบื้องหลัง
      */
 
     setTimeout(
@@ -1632,8 +1635,54 @@ function preloadWorkFiles(
                     work
                 ) {
 
+                    if (!work) {
+
+                        return;
+
+                    }
+
+
                     /* =========================================
-                       PRELOAD POSTER
+                       ABSTRACT PDF
+                       ========================================= */
+
+                    if (
+                        work.pdf_url
+                    ) {
+
+                        const abstractUrl =
+                            String(
+                                work.pdf_url
+                            ).trim();
+
+
+                        const abstractLink =
+                            document.createElement(
+                                "link"
+                            );
+
+
+                        abstractLink.rel =
+                            "prefetch";
+
+
+                        abstractLink.as =
+                            "fetch";
+
+
+                        abstractLink.href =
+                            abstractUrl;
+
+
+                        document.head.appendChild(
+                            abstractLink
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       POSTER PDF
                        ========================================= */
 
                     if (
@@ -1646,92 +1695,26 @@ function preloadWorkFiles(
                             ).trim();
 
 
-                        const driveMatch =
-                            posterUrl.match(
-                                /\/file\/d\/([^/]+)/
-                            );
-
-
-                        let imageUrl =
-                            posterUrl;
-
-
-                        if (
-                            driveMatch &&
-                            driveMatch[1]
-                        ) {
-
-                            imageUrl =
-                                "https://drive.google.com/thumbnail?id=" +
-                                driveMatch[1] +
-                                "&sz=w2000";
-
-                        }
-
-
-                        const image =
-                            new Image();
-
-
-                        image.src =
-                            imageUrl;
-
-                    }
-
-
-                    /* =========================================
-                       PRELOAD PDF
-                       ========================================= */
-
-                    if (
-                        work.pdf_url
-                    ) {
-
-                        const pdfUrl =
-                            String(
-                                work.pdf_url
-                            ).trim();
-
-
-                        const driveMatch =
-                            pdfUrl.match(
-                                /\/file\/d\/([^/]+)/
-                            );
-
-
-                        let previewUrl =
-                            pdfUrl;
-
-
-                        if (
-                            driveMatch &&
-                            driveMatch[1]
-                        ) {
-
-                            previewUrl =
-                                "https://drive.google.com/file/d/" +
-                                driveMatch[1] +
-                                "/preview";
-
-                        }
-
-
-                        const link =
+                        const posterLink =
                             document.createElement(
                                 "link"
                             );
 
 
-                        link.rel =
+                        posterLink.rel =
                             "prefetch";
 
 
-                        link.href =
-                            previewUrl;
+                        posterLink.as =
+                            "fetch";
+
+
+                        posterLink.href =
+                            posterUrl;
 
 
                         document.head.appendChild(
-                            link
+                            posterLink
                         );
 
                     }
@@ -1740,7 +1723,7 @@ function preloadWorkFiles(
             );
 
         },
-        1200
+        800
     );
 
 }
@@ -2768,11 +2751,10 @@ function setupPdfZoom(
        ================================================= */
 
     viewer.style.touchAction =
-        "none";
-
+        "pan-x pan-y";
 
     pages.style.touchAction =
-        "none";
+        "pan-x pan-y";
 
 
     /* =================================================
@@ -3299,7 +3281,8 @@ async function ensurePdfJsForIPad() {
 }
 
 /* =====================================================
-   iPad PDF CANVAS VIEWER
+   PDF CANVAS VIEWER
+   ใช้ไฟล์ Local โดยตรง
    Render ทุกหน้า
    ===================================================== */
 
@@ -3343,124 +3326,34 @@ async function renderPdfForIPad(
     }
 
 
+    if (
+        !source ||
+        !source.url
+    ) {
+
+        return false;
+
+    }
+
+
     try {
 
         pages.innerHTML =
             "";
 
 
-        let loadingTask;
-
-
         /*
-         * Google Drive
-         * ให้ GAS ดึงไฟล์แทน
+         * Local PDF
+         * ไม่ผ่าน GAS
+         * ไม่ผ่าน Drive
          */
 
-        if (
-            source &&
-            source.fileId
-        ) {
-
-            const response =
-                await fetch(
-                    GAS_URL +
-                    "?action=pdfFile" +
-                    "&file_id=" +
-                    encodeURIComponent(
-                        source.fileId
-                    ) +
-                    "&_t=" +
-                    Date.now(),
-                    {
-                        method:
-                            "GET",
-
-                        cache:
-                            "no-store"
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "โหลด PDF จากระบบไม่สำเร็จ"
-                );
-
-            }
-
-
-            const result =
-                await response.json();
-
-
-            if (
-                !result ||
-                result.success === false ||
-                !result.base64
-            ) {
-
-                throw new Error(
-                    result &&
-                        result.message
-                        ? result.message
-                        : "ไม่พบข้อมูล PDF"
-                );
-            }
-
-
-            const binary =
-                atob(
-                    result.base64
-                );
-
-
-            const bytes =
-                new Uint8Array(
-                    binary.length
-                );
-
-
-            for (
-                let i = 0;
-                i < binary.length;
-                i++
-            ) {
-
-                bytes[i] =
-                    binary.charCodeAt(
-                        i
-                    );
-
-            }
-
-
-            loadingTask =
-                window.pdfjsLib.getDocument({
-
-                    data:
-                        bytes
-
-                });
-
-        }
-        else if (
-            source &&
-            source.url
-        ) {
-
-            loadingTask =
-                window.pdfjsLib.getDocument(
+        const loadingTask =
+            window.pdfjsLib.getDocument(
+                String(
                     source.url
-                );
-
-        }
-        else {
-
-            return false;
-
-        }
+                ).trim()
+            );
 
 
         const pdfDocument =
@@ -3482,7 +3375,8 @@ async function renderPdfForIPad(
             const viewport =
                 page.getViewport({
 
-                    scale: 2
+                    scale:
+                        2
 
                 });
 
@@ -3540,10 +3434,12 @@ async function renderPdfForIPad(
         return true;
 
     }
-    catch (error) {
+    catch (
+    error
+    ) {
 
         console.error(
-            "PDF Canvas Error:",
+            "Local PDF Error:",
             error
         );
 
@@ -3553,9 +3449,10 @@ async function renderPdfForIPad(
 
 
         throw new Error(
-            error && error.message
+            error &&
+                error.message
                 ? error.message
-                : "PDF Canvas Error"
+                : "ไม่สามารถโหลด PDF ได้"
         );
 
     }
@@ -3718,6 +3615,13 @@ function showWorkFileEmpty(
 
 }
 
+/* =====================================================
+   OPEN WORK FILE MODAL
+   Local PDF Only
+   - Abstract = PDF หลายหน้า
+   - Poster   = PDF
+   ===================================================== */
+
 async function openWorkFileModal(
     work,
     type
@@ -3781,10 +3685,6 @@ async function openWorkFileModal(
         );
 
 
-    /* =================================================
-       CHECK
-       ================================================= */
-
     if (
         !modal ||
         !title ||
@@ -3808,31 +3708,10 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       DEVICE
-       ================================================= */
-
-    const isIPad =
-        /iPad|Macintosh/.test(
-            navigator.userAgent
-        ) &&
-        navigator.maxTouchPoints > 1;
-
-
-    /* =================================================
-       เตรียมระบบ Gesture
- 
-       สำคัญ:
-       Lock native Safari zoom ก่อน
-       แล้วค่อยให้ custom viewer จัดการไฟล์
+       SETUP
        ================================================= */
 
     setupWorkFileModalZoomLock(
-        modal
-    );
-
-
-    setupPosterZoom(
-        poster,
         modal
     );
 
@@ -3848,26 +3727,40 @@ async function openWorkFileModal(
        RESET
        ================================================= */
 
-    resetPosterZoom(
-        poster
-    );
-
-
     resetPdfZoom(
         pdfPages
     );
+
+    pdfViewer.scrollTop =
+        0;
+
+
+    pdfViewer.scrollLeft =
+        0;
 
 
     pdf.hidden =
         true;
 
 
-    pdfViewer.hidden =
-        true;
+    pdf.src =
+        "";
 
 
     poster.hidden =
         true;
+
+
+    poster.src =
+        "";
+
+
+    pdfViewer.hidden =
+        true;
+
+
+    pdfPages.innerHTML =
+        "";
 
 
     hideWorkFileEmpty(
@@ -3877,47 +3770,6 @@ async function openWorkFileModal(
 
     loading.hidden =
         false;
-
-
-    pdfPages.innerHTML =
-        "";
-
-
-    /* =================================================
-   CLEAR OLD FILE EVENTS
- 
-   สำคัญ:
-   ป้องกัน onload / onerror ของไฟล์รอบก่อน
-   ทำงานข้ามมาทับไฟล์รอบใหม่
-   ================================================= */
-
-    pdf.onload =
-        null;
-
-
-    pdf.onerror =
-        null;
-
-
-    poster.onload =
-        null;
-
-
-    poster.onerror =
-        null;
-
-
-    /* -----------------------------------------------
-       ล้าง Source เก่า
-       หลังจากล้าง Event แล้วเท่านั้น
-       ----------------------------------------------- */
-
-    pdf.src =
-        "";
-
-
-    poster.src =
-        "";
 
 
     /* =================================================
@@ -3931,7 +3783,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       เปิด Popup ก่อน
+       OPEN MODAL
        ================================================= */
 
     modal.hidden =
@@ -3958,352 +3810,177 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ABSTRACT
+       หา URL
        ================================================= */
 
+    let fileUrl =
+        "";
+
+
     if (
-        type === "abstract" &&
-        work.pdf_url
+        type === "abstract"
     ) {
 
-        const pdfUrl =
+        fileUrl =
             String(
-                work.pdf_url
+                work &&
+                    work.pdf_url
+                    ? work.pdf_url
+                    : ""
             ).trim();
 
+    }
+    else if (
+        type === "poster"
+    ) {
 
-        const driveMatch =
-            pdfUrl.match(
-                /\/file\/d\/([^/]+)/
-            );
+        fileUrl =
+            String(
+                work &&
+                    work.poster_url
+                    ? work.poster_url
+                    : ""
+            ).trim();
 
+    }
 
-        /* =================================================
-   iPAD
-   ใช้ PDF.js Canvas Viewer เท่านั้น
- 
-   ห้าม fallback ไป Google Drive iframe
-   เพราะจะกลับมาคุม pinch ไม่ได้
-   ================================================= */
 
-        if (
-            isIPad
-        ) {
+    if (
+        !fileUrl
+    ) {
 
-            /* =================================================
-               iPAD ABSTRACT
-        
-               1. ลองใช้ PDF.js ก่อน
-               2. ถ้า PDF.js ไม่สำเร็จ
-                  fallback ไป Google Drive Preview
-        
-               ไม่เกี่ยวกับระบบ Poster
-               ================================================= */
+        loading.hidden =
+            true;
 
-            pdf.hidden =
-                true;
 
+        showWorkFileEmpty(
+            empty
+        );
 
-            pdf.src =
-                "";
 
+        return;
 
-            pdfViewer.hidden =
-                true;
+    }
 
 
-            pdfPages.innerHTML =
-                "";
+    /* =================================================
+       LOCAL PDF
+       ใช้ PDF.js เหมือนกันทั้ง Abstract / Poster
 
+       ไม่ผ่าน GAS
+       ไม่ผ่าน Google Drive
+       ================================================= */
 
-            let rendered =
-                false;
+    try {
 
+        const rendered =
+            await renderPdfForIPad({
 
-            /* -----------------------------------------------
-               ลอง PDF.js ก่อน
-               ----------------------------------------------- */
+                url:
+                    fileUrl
 
-            try {
-
-                if (
-                    driveMatch &&
-                    driveMatch[1]
-                ) {
-
-                    rendered =
-                        await renderPdfForIPad({
-
-                            fileId:
-                                driveMatch[1]
-
-                        });
-
-                }
-                else {
-
-                    rendered =
-                        await renderPdfForIPad({
-
-                            url:
-                                pdfUrl
-
-                        });
-
-                }
-
-            }
-            catch (
-            error
-            ) {
-
-                console.error(
-                    "iPad PDF.js ไม่สำเร็จ:",
-                    error
-                );
-
-
-                loading.hidden =
-                    true;
-
-
-                pdfViewer.hidden =
-                    true;
-
-
-                pdf.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty,
-                    "โหลดบทคัดย่อไม่สำเร็จ: " +
-                    (
-                        error && error.message
-                            ? error.message
-                            : "Unknown error"
-                    )
-                );
-
-
-                return;
-
-            }
-
-
-            /* -----------------------------------------------
-               PDF.js สำเร็จ
-               ----------------------------------------------- */
-
-            if (
-                rendered
-            ) {
-
-                loading.hidden =
-                    true;
-
-
-                pdfViewer.hidden =
-                    false;
-
-
-                pdf.hidden =
-                    true;
-
-
-                resetPdfZoom(
-                    pdfPages
-                );
-
-
-                return;
-
-            }
-
-
-            /* =================================================
-            PDF.js ไม่สำเร็จ
- 
-   iPad ห้ามใช้ iframe
-   เพราะจะควบคุม pinch zoom ไม่ได้
-                ================================================= */
-
-            loading.hidden =
-                true;
-
-
-            pdfViewer.hidden =
-                true;
-
-
-            pdf.hidden =
-                true;
-
-
-            showWorkFileEmpty(
-                empty,
-                "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-            );
-
-
-            return;
-
-        }
-
-        /* =================================================
-           DESKTOP
-           ใช้ Google Drive Preview ได้เหมือนเดิม
-           ================================================= */
-
-        let previewUrl =
-            pdfUrl;
+            });
 
 
         if (
-            driveMatch &&
-            driveMatch[1]
+            !rendered
         ) {
 
-            previewUrl =
-                "https://drive.google.com/file/d/" +
-                driveMatch[1] +
-                "/preview";
+            throw new Error(
+                "ไม่สามารถแสดงไฟล์ได้"
+            );
 
         }
+
+
+        loading.hidden =
+            true;
+
+
+        pdfViewer.hidden =
+            false;
 
 
         pdf.hidden =
-            false;
+            true;
+
+
+        poster.hidden =
+            true;
+
+
+        resetPdfZoom(
+            pdfPages
+        );
+
+
+        /* -----------------------------------------------
+           ทุกไฟล์เริ่มจากบนสุดเสมอ
+           ----------------------------------------------- */
+
+        pdfViewer.scrollTop =
+            0;
+
+
+        pdfViewer.scrollLeft =
+            0;
+
+
+        requestAnimationFrame(
+            function () {
+
+                pdfViewer.scrollTop =
+                    0;
+
+
+                pdfViewer.scrollLeft =
+                    0;
+
+            }
+        );
+
+
+        return;
+
+    }
+    catch (
+    error
+    ) {
+
+        console.error(
+            "Local Work File Error:",
+            error
+        );
+
+
+        loading.hidden =
+            true;
 
 
         pdfViewer.hidden =
             true;
 
 
-        pdf.onload =
-            function () {
-
-                loading.hidden =
-                    true;
-
-            };
+        pdf.hidden =
+            true;
 
 
-        pdf.onerror =
-            function () {
-
-                loading.hidden =
-                    true;
+        poster.hidden =
+            true;
 
 
-                pdf.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty
-                );
-            };
-
-
-        pdf.src =
-            previewUrl;
-
-
-        return;
+        showWorkFileEmpty(
+            empty,
+            "โหลดไฟล์ไม่สำเร็จ: " +
+            (
+                error &&
+                    error.message
+                    ? error.message
+                    : "Unknown error"
+            )
+        );
 
     }
-
-
-    /* =================================================
-       POSTER
-       ================================================= */
-
-    if (
-        type === "poster" &&
-        work.poster_url
-    ) {
-
-        const posterUrl =
-            String(
-                work.poster_url
-            ).trim();
-
-
-        let imageUrl =
-            posterUrl;
-
-
-        const driveMatch =
-            posterUrl.match(
-                /\/file\/d\/([^/]+)/
-            );
-
-
-        if (
-            driveMatch &&
-            driveMatch[1]
-        ) {
-
-            imageUrl =
-                "https://drive.google.com/thumbnail?id=" +
-                driveMatch[1] +
-                "&sz=w2000";
-
-        }
-
-
-        poster.onload =
-            function () {
-
-                loading.hidden =
-                    true;
-
-
-                poster.hidden =
-                    false;
-
-            };
-
-
-        poster.onerror =
-            function () {
-
-                loading.hidden =
-                    true;
-
-
-                poster.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty
-                );
-
-            };
-
-
-        poster.src =
-            imageUrl;
-
-
-        return;
-
-    }
-
-
-    /* =================================================
-       EMPTY
-       ================================================= */
-
-    loading.hidden =
-        true;
-
-
-    showWorkFileEmpty(
-        empty
-    );
 
 }
 
@@ -4372,6 +4049,14 @@ document.addEventListener(
             if (
                 pdfViewer
             ) {
+
+                pdfViewer.scrollTop =
+                    0;
+
+
+                pdfViewer.scrollLeft =
+                    0;
+
 
                 pdfViewer.hidden =
                     true;
