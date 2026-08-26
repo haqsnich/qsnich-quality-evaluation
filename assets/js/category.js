@@ -1700,43 +1700,44 @@ function preloadWorkFiles(
 }
 
 /* =====================================================
-   POSTER ZOOM + PAN
+   PDF ZOOM + PAN
+   Adapt จากระบบ Poster โดยตรง
    iPad pinch zoom + drag
-   Desktop mouse wheel zoom
    ===================================================== */
 
-let posterScale = 1;
+let pdfScale = 1;
 
-let posterTranslateX = 0;
-let posterTranslateY = 0;
+let pdfTranslateX = 0;
+let pdfTranslateY = 0;
 
-let posterPinchDistance = 0;
-let posterPinchMidX = 0;
-let posterPinchMidY = 0;
+let pdfPinchDistance = 0;
+let pdfPinchMidX = 0;
+let pdfPinchMidY = 0;
 
-let posterDragX = 0;
-let posterDragY = 0;
+let pdfDragX = 0;
+let pdfDragY = 0;
 
 
 /* -----------------------------------------
    Apply Transform
    ----------------------------------------- */
 
-function applyPosterTransform(
-    poster
+function applyPdfTransform(
+    pages
 ) {
 
-    if (!poster) {
+    if (!pages) {
         return;
     }
 
-    poster.style.transform =
+
+    pages.style.transform =
         "translate3d(" +
-        posterTranslateX +
+        pdfTranslateX +
         "px, " +
-        posterTranslateY +
+        pdfTranslateY +
         "px, 0) scale(" +
-        posterScale +
+        pdfScale +
         ")";
 
 }
@@ -1746,26 +1747,26 @@ function applyPosterTransform(
    Reset
    ----------------------------------------- */
 
-function resetPosterZoom(
-    poster
+function resetPdfZoom(
+    pages
 ) {
 
-    posterScale = 1;
+    pdfScale = 1;
 
-    posterTranslateX = 0;
-    posterTranslateY = 0;
+    pdfTranslateX = 0;
+    pdfTranslateY = 0;
 
-    posterPinchDistance = 0;
-    posterPinchMidX = 0;
-    posterPinchMidY = 0;
+    pdfPinchDistance = 0;
+    pdfPinchMidX = 0;
+    pdfPinchMidY = 0;
 
-    posterDragX = 0;
-    posterDragY = 0;
+    pdfDragX = 0;
+    pdfDragY = 0;
 
 
-    if (poster) {
+    if (pages) {
 
-        poster.style.transform =
+        pages.style.transform =
             "translate3d(0, 0, 0) scale(1)";
 
     }
@@ -1774,80 +1775,24 @@ function resetPosterZoom(
 
 
 /* -----------------------------------------
-   ระยะระหว่าง 2 นิ้ว
+   Zoom ตรงตำแหน่งนิ้ว
+   Adapt จาก Poster
    ----------------------------------------- */
 
-function getTouchDistance(
-    touches
-) {
-
-    if (
-        !touches ||
-        touches.length < 2
-    ) {
-        return 0;
-    }
-
-
-    const dx =
-        touches[0].clientX -
-        touches[1].clientX;
-
-
-    const dy =
-        touches[0].clientY -
-        touches[1].clientY;
-
-
-    return Math.hypot(
-        dx,
-        dy
-    );
-
-}
-
-
-/* -----------------------------------------
-   จุดกึ่งกลางระหว่าง 2 นิ้ว
-   ----------------------------------------- */
-
-function getTouchMidpoint(
-    touches
-) {
-
-    return {
-
-        x:
-            (
-                touches[0].clientX +
-                touches[1].clientX
-            ) / 2,
-
-        y:
-            (
-                touches[0].clientY +
-                touches[1].clientY
-            ) / 2
-
-    };
-
-}
-
-
-function zoomPosterAtPoint(
-    poster,
+function zoomPdfAtPoint(
+    pages,
     newScale,
     pointX,
     pointY
 ) {
 
-    if (!poster) {
+    if (!pages) {
         return;
     }
 
 
     const oldScale =
-        posterScale;
+        pdfScale;
 
 
     newScale =
@@ -1869,8 +1814,8 @@ function zoomPosterAtPoint(
         newScale <= 1
     ) {
 
-        resetPosterZoom(
-            poster
+        resetPdfZoom(
+            pages
         );
 
 
@@ -1880,11 +1825,11 @@ function zoomPosterAtPoint(
 
 
     /* =================================================
-       ตำแหน่งรูปปัจจุบัน
+       ตำแหน่ง PDF ปัจจุบัน
        ================================================= */
 
     const rect =
-        poster.getBoundingClientRect();
+        pages.getBoundingClientRect();
 
 
     const centerX =
@@ -1898,7 +1843,7 @@ function zoomPosterAtPoint(
 
 
     /*
-     * ตำแหน่งนิ้วเทียบกับกลางรูป
+     * ตำแหน่งนิ้วเทียบกับกลาง PDF
      */
 
     const offsetX =
@@ -1925,40 +1870,47 @@ function zoomPosterAtPoint(
      * เพื่อให้ขยายจากบริเวณระหว่างสองนิ้ว
      */
 
-    posterTranslateX -=
+    pdfTranslateX -=
         offsetX *
         (
             scaleRatio - 1
         );
 
 
-    posterTranslateY -=
+    pdfTranslateY -=
         offsetY *
         (
             scaleRatio - 1
         );
 
 
-    posterScale =
+    pdfScale =
         newScale;
 
 
-    applyPosterTransform(
-        poster
+    applyPdfTransform(
+        pages
     );
 
 }
 
 
-function setupPosterZoom(
-    poster,
+/* =====================================================
+   SETUP PDF ZOOM EVENTS
+   Adapt จาก Poster
+   ===================================================== */
+
+function setupPdfZoom(
+    viewer,
+    pages,
     modal
 ) {
 
     if (
-        !poster ||
+        !viewer ||
+        !pages ||
         !modal ||
-        poster.dataset.zoomReady
+        viewer.dataset.zoomReady
     ) {
 
         return;
@@ -1966,73 +1918,31 @@ function setupPosterZoom(
     }
 
 
-    poster.dataset.zoomReady =
+    viewer.dataset.zoomReady =
         "true";
 
 
     /* =================================================
-       อนุญาต Zoom เฉพาะตอน Popup เปิดอยู่
-       และ Poster กำลังแสดงจริง
+       อนุญาต Zoom เฉพาะตอน
+       - Popup เปิดอยู่
+       - PDF Viewer กำลังแสดงจริง
        ================================================= */
 
     function canZoom() {
 
         return (
             !modal.hidden &&
-            !poster.hidden
+            !viewer.hidden
         );
 
     }
 
 
     /* =================================================
-       DESKTOP — MOUSE WHEEL ZOOM
-       ================================================= */
-
-    poster.addEventListener(
-        "wheel",
-        function (
-            event
-        ) {
-
-            if (
-                !canZoom()
-            ) {
-
-                return;
-
-            }
-
-
-            event.preventDefault();
-
-
-            const factor =
-                event.deltaY < 0
-                    ? 1.15
-                    : 0.87;
-
-
-            zoomPosterAtPoint(
-                poster,
-                posterScale * factor,
-                event.clientX,
-                event.clientY
-            );
-
-        },
-        {
-            passive:
-                false
-        }
-    );
-
-
-    /* =================================================
        iPAD — TOUCH START
        ================================================= */
 
-    poster.addEventListener(
+    viewer.addEventListener(
         "touchstart",
         function (
             event
@@ -2058,7 +1968,7 @@ function setupPosterZoom(
                 event.preventDefault();
 
 
-                posterPinchDistance =
+                pdfPinchDistance =
                     getTouchDistance(
                         event.touches
                     );
@@ -2070,11 +1980,11 @@ function setupPosterZoom(
                     );
 
 
-                posterPinchMidX =
+                pdfPinchMidX =
                     midpoint.x;
 
 
-                posterPinchMidY =
+                pdfPinchMidY =
                     midpoint.y;
 
 
@@ -2090,17 +2000,17 @@ function setupPosterZoom(
 
             if (
                 event.touches.length === 1 &&
-                posterScale > 1
+                pdfScale > 1
             ) {
 
                 event.preventDefault();
 
 
-                posterDragX =
+                pdfDragX =
                     event.touches[0].clientX;
 
 
-                posterDragY =
+                pdfDragY =
                     event.touches[0].clientY;
 
             }
@@ -2117,7 +2027,7 @@ function setupPosterZoom(
        iPAD — TOUCH MOVE
        ================================================= */
 
-    poster.addEventListener(
+    viewer.addEventListener(
         "touchmove",
         function (
             event
@@ -2150,10 +2060,10 @@ function setupPosterZoom(
 
 
                 if (
-                    !posterPinchDistance
+                    !pdfPinchDistance
                 ) {
 
-                    posterPinchDistance =
+                    pdfPinchDistance =
                         newDistance;
 
 
@@ -2170,26 +2080,26 @@ function setupPosterZoom(
 
                 const ratio =
                     newDistance /
-                    posterPinchDistance;
+                    pdfPinchDistance;
 
 
-                zoomPosterAtPoint(
-                    poster,
-                    posterScale * ratio,
+                zoomPdfAtPoint(
+                    pages,
+                    pdfScale * ratio,
                     midpoint.x,
                     midpoint.y
                 );
 
 
-                posterPinchDistance =
+                pdfPinchDistance =
                     newDistance;
 
 
-                posterPinchMidX =
+                pdfPinchMidX =
                     midpoint.x;
 
 
-                posterPinchMidY =
+                pdfPinchMidY =
                     midpoint.y;
 
 
@@ -2204,7 +2114,7 @@ function setupPosterZoom(
 
             if (
                 event.touches.length === 1 &&
-                posterScale > 1
+                pdfScale > 1
             ) {
 
                 event.preventDefault();
@@ -2214,26 +2124,26 @@ function setupPosterZoom(
                     event.touches[0];
 
 
-                posterTranslateX +=
+                pdfTranslateX +=
                     touch.clientX -
-                    posterDragX;
+                    pdfDragX;
 
 
-                posterTranslateY +=
+                pdfTranslateY +=
                     touch.clientY -
-                    posterDragY;
+                    pdfDragY;
 
 
-                posterDragX =
+                pdfDragX =
                     touch.clientX;
 
 
-                posterDragY =
+                pdfDragY =
                     touch.clientY;
 
 
-                applyPosterTransform(
-                    poster
+                applyPdfTransform(
+                    pages
                 );
 
             }
@@ -2250,36 +2160,36 @@ function setupPosterZoom(
        TOUCH END
        ================================================= */
 
-    poster.addEventListener(
+    viewer.addEventListener(
         "touchend",
         function (
             event
         ) {
 
-            posterPinchDistance =
+            pdfPinchDistance =
                 0;
 
 
             if (
                 event.touches.length === 1 &&
-                posterScale > 1
+                pdfScale > 1
             ) {
 
-                posterDragX =
+                pdfDragX =
                     event.touches[0].clientX;
 
 
-                posterDragY =
+                pdfDragY =
                     event.touches[0].clientY;
 
             }
             else {
 
-                posterDragX =
+                pdfDragX =
                     0;
 
 
-                posterDragY =
+                pdfDragY =
                     0;
 
             }
@@ -2287,15 +2197,15 @@ function setupPosterZoom(
 
             /*
              * ถ้าหุบกลับถึง 1x
-             * ให้รูปกลับตรงกลาง
+             * ให้ PDF กลับตรงกลาง
              */
 
             if (
-                posterScale <= 1
+                pdfScale <= 1
             ) {
 
-                resetPosterZoom(
-                    poster
+                resetPdfZoom(
+                    pages
                 );
 
             }
@@ -3558,80 +3468,28 @@ async function openWorkFileModal(
 
 
             /* =================================================
-               PDF.js ไม่สำเร็จ
-        
-               FALLBACK:
-               ใช้ Google Drive Preview แทน
-        
-               สำคัญ:
-               แก้เฉพาะบทคัดย่อ
-               ไม่แตะระบบ Poster
-               ================================================= */
+            PDF.js ไม่สำเร็จ
 
-            console.warn(
-                "ใช้ Google Drive Preview สำหรับ iPad"
-            );
+   iPad ห้ามใช้ iframe
+   เพราะจะควบคุม pinch zoom ไม่ได้
+                ================================================= */
 
-
-            let previewUrl =
-                pdfUrl;
-
-
-            if (
-                driveMatch &&
-                driveMatch[1]
-            ) {
-
-                previewUrl =
-                    "https://drive.google.com/file/d/" +
-                    driveMatch[1] +
-                    "/preview";
-
-            }
+            loading.hidden =
+                true;
 
 
             pdfViewer.hidden =
                 true;
 
 
-            pdfPages.innerHTML =
-                "";
-
-
             pdf.hidden =
-                false;
+                true;
 
 
-            pdf.onload =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-                };
-
-
-            pdf.onerror =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-
-                    pdf.hidden =
-                        true;
-
-
-                    showWorkFileEmpty(
-                        empty,
-                        "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-                    );
-
-                };
-
-
-            pdf.src =
-                previewUrl;
+            showWorkFileEmpty(
+                empty,
+                "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+            );
 
 
             return;
