@@ -1700,6 +1700,712 @@ function preloadWorkFiles(
 }
 
 /* =====================================================
+   POSTER ZOOM + PAN
+
+   iPad pinch zoom + drag
+   Desktop mouse wheel zoom
+
+   แยก State จาก PDF โดยสมบูรณ์
+   ===================================================== */
+
+let posterScale = 1;
+
+let posterTranslateX = 0;
+let posterTranslateY = 0;
+
+let posterPinchDistance = 0;
+
+let posterDragX = 0;
+let posterDragY = 0;
+
+
+/* =====================================================
+   POSTER — ระยะระหว่าง 2 นิ้ว
+   ===================================================== */
+
+function getPosterTouchDistance(
+    touches
+) {
+
+    if (
+        !touches ||
+        touches.length < 2
+    ) {
+
+        return 0;
+
+    }
+
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+
+    return Math.hypot(
+        dx,
+        dy
+    );
+
+}
+
+
+/* =====================================================
+   POSTER — จุดกึ่งกลางระหว่าง 2 นิ้ว
+   ===================================================== */
+
+function getPosterTouchMidpoint(
+    touches
+) {
+
+    return {
+
+        x:
+            (
+                touches[0].clientX +
+                touches[1].clientX
+            ) / 2,
+
+        y:
+            (
+                touches[0].clientY +
+                touches[1].clientY
+            ) / 2
+
+    };
+
+}
+
+
+/* =====================================================
+   APPLY POSTER TRANSFORM
+   ===================================================== */
+
+function applyPosterTransform(
+    poster
+) {
+
+    if (!poster) {
+
+        return;
+
+    }
+
+
+    poster.style.transform =
+        "translate3d(" +
+        posterTranslateX +
+        "px, " +
+        posterTranslateY +
+        "px, 0) scale(" +
+        posterScale +
+        ")";
+
+
+    poster.style.transformOrigin =
+        "center center";
+
+}
+
+
+/* =====================================================
+   RESET POSTER
+   ===================================================== */
+
+function resetPosterZoom(
+    poster
+) {
+
+    posterScale =
+        1;
+
+
+    posterTranslateX =
+        0;
+
+
+    posterTranslateY =
+        0;
+
+
+    posterPinchDistance =
+        0;
+
+
+    posterDragX =
+        0;
+
+
+    posterDragY =
+        0;
+
+
+    if (poster) {
+
+        poster.style.transform =
+            "translate3d(0, 0, 0) scale(1)";
+
+
+        poster.style.transformOrigin =
+            "center center";
+
+    }
+
+}
+
+
+/* =====================================================
+   ZOOM POSTER AT POINT
+   ===================================================== */
+
+function zoomPosterAtPoint(
+    poster,
+    newScale,
+    pointX,
+    pointY
+) {
+
+    if (!poster) {
+
+        return;
+
+    }
+
+
+    const oldScale =
+        posterScale;
+
+
+    newScale =
+        Math.min(
+            5,
+            Math.max(
+                1,
+                newScale
+            )
+        );
+
+
+    /* -----------------------------------------
+       กลับถึง 1x
+       ----------------------------------------- */
+
+    if (
+        newScale <= 1
+    ) {
+
+        resetPosterZoom(
+            poster
+        );
+
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------
+       ตำแหน่ง Poster ปัจจุบัน
+       ----------------------------------------- */
+
+    const rect =
+        poster.getBoundingClientRect();
+
+
+    const centerX =
+        rect.left +
+        rect.width / 2;
+
+
+    const centerY =
+        rect.top +
+        rect.height / 2;
+
+
+    const offsetX =
+        pointX -
+        centerX;
+
+
+    const offsetY =
+        pointY -
+        centerY;
+
+
+    const scaleRatio =
+        newScale /
+        oldScale;
+
+
+    /* -----------------------------------------
+       ขยายจากตำแหน่งนิ้ว
+       ----------------------------------------- */
+
+    posterTranslateX -=
+        offsetX *
+        (
+            scaleRatio - 1
+        );
+
+
+    posterTranslateY -=
+        offsetY *
+        (
+            scaleRatio - 1
+        );
+
+
+    posterScale =
+        newScale;
+
+
+    applyPosterTransform(
+        poster
+    );
+
+}
+
+
+/* =====================================================
+   SETUP POSTER ZOOM
+   ===================================================== */
+
+function setupPosterZoom(
+    poster,
+    modal
+) {
+
+    if (
+        !poster ||
+        !modal ||
+        poster.dataset.zoomReady
+    ) {
+
+        return;
+
+    }
+
+
+    poster.dataset.zoomReady =
+        "true";
+
+
+    /* =================================================
+       ป้องกัน Safari Native Zoom
+       เฉพาะ Poster
+       ================================================= */
+
+    poster.style.touchAction =
+        "none";
+
+
+    poster.addEventListener(
+        "gesturestart",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    poster.addEventListener(
+        "gesturechange",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    poster.addEventListener(
+        "gestureend",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       อนุญาต Zoom เฉพาะตอน
+       Popup เปิด + Poster แสดงอยู่
+       ================================================= */
+
+    function canZoom() {
+
+        return (
+            !modal.hidden &&
+            !poster.hidden
+        );
+
+    }
+
+
+    /* =================================================
+       DESKTOP — MOUSE WHEEL
+       ================================================= */
+
+    poster.addEventListener(
+        "wheel",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const factor =
+                event.deltaY < 0
+                    ? 1.15
+                    : 0.87;
+
+
+            zoomPosterAtPoint(
+                poster,
+                posterScale * factor,
+                event.clientX,
+                event.clientY
+            );
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH START
+       ================================================= */
+
+    poster.addEventListener(
+        "touchstart",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               2 นิ้ว = เริ่ม Pinch
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                posterPinchDistance =
+                    getPosterTouchDistance(
+                        event.touches
+                    );
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               1 นิ้ว = Drag
+               เฉพาะเมื่อ Zoom > 1
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH MOVE
+       ================================================= */
+
+    poster.addEventListener(
+        "touchmove",
+        function (
+            event
+        ) {
+
+            if (
+                !canZoom()
+            ) {
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               2 นิ้ว = Pinch Zoom
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 2
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                const newDistance =
+                    getPosterTouchDistance(
+                        event.touches
+                    );
+
+
+                if (
+                    !posterPinchDistance
+                ) {
+
+                    posterPinchDistance =
+                        newDistance;
+
+
+                    return;
+
+                }
+
+
+                const midpoint =
+                    getPosterTouchMidpoint(
+                        event.touches
+                    );
+
+
+                const ratio =
+                    newDistance /
+                    posterPinchDistance;
+
+
+                zoomPosterAtPoint(
+                    poster,
+                    posterScale * ratio,
+                    midpoint.x,
+                    midpoint.y
+                );
+
+
+                posterPinchDistance =
+                    newDistance;
+
+
+                return;
+
+            }
+
+
+            /* -----------------------------------------
+               1 นิ้ว = Drag
+               ----------------------------------------- */
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+
+                const touch =
+                    event.touches[0];
+
+
+                posterTranslateX +=
+                    touch.clientX -
+                    posterDragX;
+
+
+                posterTranslateY +=
+                    touch.clientY -
+                    posterDragY;
+
+
+                posterDragX =
+                    touch.clientX;
+
+
+                posterDragY =
+                    touch.clientY;
+
+
+                applyPosterTransform(
+                    poster
+                );
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH END
+       ================================================= */
+
+    poster.addEventListener(
+        "touchend",
+        function (
+            event
+        ) {
+
+            posterPinchDistance =
+                0;
+
+
+            if (
+                event.touches.length === 1 &&
+                posterScale > 1
+            ) {
+
+                posterDragX =
+                    event.touches[0].clientX;
+
+
+                posterDragY =
+                    event.touches[0].clientY;
+
+            }
+            else {
+
+                posterDragX =
+                    0;
+
+
+                posterDragY =
+                    0;
+
+            }
+
+
+            if (
+                posterScale <= 1
+            ) {
+
+                resetPosterZoom(
+                    poster
+                );
+
+            }
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH CANCEL
+       ================================================= */
+
+    poster.addEventListener(
+        "touchcancel",
+        function () {
+
+            posterPinchDistance =
+                0;
+
+
+            posterDragX =
+                0;
+
+
+            posterDragY =
+                0;
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+}
+
+/* =====================================================
    PDF ZOOM + PAN
    Adapt จากระบบ Poster
    แยกทำงานเฉพาะบทคัดย่อ
