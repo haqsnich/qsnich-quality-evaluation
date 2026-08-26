@@ -1434,6 +1434,7 @@ function showCategoryError(
         "category-error-message";
 
     text.textContent =
+        message ||
         "กรุณากด refresh หน้านี้ หรือเข้าสู่ระบบใหม่อีกครั้ง";
 
 
@@ -3861,20 +3862,8 @@ async function checkExistingScores(
         ).trim();
 
 
-    if (!judgeId) {
-
-        throw new Error(
-            "ไม่พบรหัสกรรมการสำหรับตรวจสอบคะแนน"
-        );
-
-    }
-
-
     /* -----------------------------------------------
        ตั้งค่าเริ่มต้น
-
-       ทุกผลงานถือว่ายังไม่ประเมิน
-       จนกว่าจะตรวจเจอในชีทจริง
        ----------------------------------------------- */
 
     works.forEach(
@@ -3891,8 +3880,19 @@ async function checkExistingScores(
     );
 
 
+    if (!judgeId) {
+
+        console.warn(
+            "ไม่พบรหัสกรรมการสำหรับตรวจสอบคะแนน"
+        );
+
+        return works;
+
+    }
+
+
     /* -----------------------------------------------
-       โหลดสถานะคะแนนจาก GAS
+       Timeout
        ----------------------------------------------- */
 
     const controller =
@@ -3911,6 +3911,10 @@ async function checkExistingScores(
 
 
     try {
+
+        /* -----------------------------------------------
+           โหลดสถานะคะแนนจาก GAS
+           ----------------------------------------------- */
 
         const response =
             await fetch(
@@ -3974,8 +3978,7 @@ async function checkExistingScores(
 
 
         /* -----------------------------------------------
-           สร้าง Set ของผลงานที่กรรมการ
-           ส่งคะแนนแล้วจริงในชีท
+           รายการผลงานที่ลงคะแนนแล้ว
            ----------------------------------------------- */
 
         const submittedSet =
@@ -4002,16 +4005,8 @@ async function checkExistingScores(
             );
 
 
-        console.log(
-            "SUBMITTED WORK IDS =",
-            Array.from(
-                submittedSet
-            )
-        );
-
-
         /* -----------------------------------------------
-           ผูกสถานะเข้ากับแต่ละผลงาน
+           ใส่สถานะลงใน Works
            ----------------------------------------------- */
 
         works.forEach(
@@ -4042,15 +4037,18 @@ async function checkExistingScores(
 
 
         console.log(
-            "WORKS SCORE STATUS =",
-            works
+            "SUBMITTED WORK IDS =",
+            Array.from(
+                submittedSet
+            )
         );
 
 
-        /* -----------------------------------------------
-           สำคัญ:
-           ต้อง Return กลับไปให้ loadCategoryData()
-           ----------------------------------------------- */
+        console.log(
+            "WORKS AFTER SCORE CHECK =",
+            works
+        );
+
 
         return works;
 
@@ -4059,34 +4057,39 @@ async function checkExistingScores(
     error
     ) {
 
-        console.error(
-            "ตรวจสอบสถานะคะแนนไม่ได้:",
-            error
-        );
+        /* -----------------------------------------------
+           สำคัญมาก
 
-
-        /*
-         * หน้านี้ออกแบบให้ต้องรู้สถานะคะแนนจริง
-         * ก่อนแสดงรายการ
-         *
-         * เพราะฉะนั้นถ้าตรวจไม่ได้
-         * ให้ส่ง Error กลับไป
-         * ไม่ควรแสดงสถานะเดา ๆ
-         */
+           เช็กคะแนนไม่ได้
+           ห้ามทำให้ Category พัง
+           ----------------------------------------------- */
 
         if (
             error &&
             error.name === "AbortError"
         ) {
 
-            throw new Error(
-                "ตรวจสอบสถานะคะแนนใช้เวลานานเกินไป กรุณาลองใหม่อีกครั้ง"
+            console.warn(
+                "ตรวจสถานะคะแนน Timeout"
+            );
+
+        }
+        else {
+
+            console.warn(
+                "ตรวจสถานะคะแนนไม่ได้:",
+                error
             );
 
         }
 
 
-        throw error;
+        /*
+         * คืน Works กลับไป
+         * เพื่อให้หน้า Category แสดงต่อได้
+         */
+
+        return works;
 
     }
     finally {
