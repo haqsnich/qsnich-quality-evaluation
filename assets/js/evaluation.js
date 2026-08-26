@@ -1050,6 +1050,10 @@ async function loadCriteriaFromAPI() {
 
     try {
 
+        updateCriteriaProgress(
+            true
+        );
+
         /* =================================================
            1. เริ่มโหลด
            ================================================= */
@@ -1695,7 +1699,9 @@ function updateTotalScore() {
    UPDATE PROGRESS
    ===================================================== */
 
-function updateCriteriaProgress() {
+function updateCriteriaProgress(
+    isLoading = false
+) {
 
     const progress =
         document.getElementById(
@@ -1708,17 +1714,64 @@ function updateCriteriaProgress() {
     }
 
 
+    /* =================================================
+       ระหว่างยังโหลด Criteria
+
+       ห้ามแสดงจำนวนเก่าที่ Hardcode จาก HTML
+       เช่น 0/8
+       ================================================= */
+
+    if (
+        isLoading
+    ) {
+
+        progress.textContent =
+            "กำลังโหลดเกณฑ์...";
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       Criteria ยังไม่มา
+       ================================================= */
+
+    if (
+        !Array.isArray(
+            criteria
+        ) ||
+        criteria.length === 0
+    ) {
+
+        progress.textContent =
+            "ประเมินแล้ว 0/0";
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       นับจำนวนข้อที่กรอกจริง
+       ================================================= */
+
     const inputs =
         document.querySelectorAll(
             ".score-input"
         );
 
 
-    let answered = 0;
+    let answered =
+        0;
 
 
     inputs.forEach(
-        function (input) {
+        function (
+            input
+        ) {
 
             if (
                 input.value !== ""
@@ -1732,11 +1785,17 @@ function updateCriteriaProgress() {
     );
 
 
+    /* =================================================
+       จำนวนข้อทั้งหมดใช้ criteria.length
+
+       ไม่ Hardcode 8 / 12
+       ================================================= */
+
     progress.textContent =
         "ประเมินแล้ว " +
         answered +
         "/" +
-        inputs.length;
+        criteria.length;
 
 }
 
@@ -3029,6 +3088,34 @@ async function submitScore() {
     scoreData.total =
         total;
 
+    console.log(
+        "===== SCORE DEBUG ====="
+    );
+
+    console.log(
+        "criteria.length =",
+        criteria.length
+    );
+
+    console.log(
+        "criteria =",
+        criteria
+    );
+
+    console.log(
+        "scoreData =",
+        scoreData
+    );
+
+    console.log(
+        "total =",
+        total
+    );
+
+    console.log(
+        "======================="
+    );
+
 
     /*
      * Popup
@@ -3318,17 +3405,23 @@ async function saveConfirmedScore(
 
     try {
 
+        console.log(
+            "POST API URL =",
+            APP_CONFIG.API_URL
+        );
+
+        console.log(
+            "POST SCORE DATA =",
+            scoreData
+        );
+
+
         const response =
             await fetch(
                 APP_CONFIG.API_URL,
                 {
                     method:
                         "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-                    },
 
                     body:
                         JSON.stringify({
@@ -3470,9 +3563,14 @@ async function saveConfirmedScore(
         };
 
 
+        /*
+ * เก็บคะแนน Backup ตามจำนวนเกณฑ์จริง
+ * ไม่ล็อกจำนวนข้อ
+ */
+
         for (
             let i = 1;
-            i <= 8;
+            i <= criteria.length;
             i++
         ) {
 

@@ -12,7 +12,7 @@ Version : 2.0.1
    ===================================================== */
 
 const GAS_URL =
-    "https://script.google.com/macros/s/AKfycbzak_-7CxO6BvJ4GW-n5O9BvpbPGME-PQXdfoFlU-VHHHcsTKUsEEEDEq06zaqmZ-3BPw/exec";
+    APP_CONFIG.API_URL;
 
 
 /* =====================================================
@@ -3663,36 +3663,6 @@ document.addEventListener(
 );
 
 
-/* -----------------------------------------------
-   12. แสดงจำนวนที่ประเมินแล้ว
-   ----------------------------------------------- */
-
-displayEvaluatedCount();
-
-
-/* -----------------------------------------------
-   13. ทุกอย่างพร้อมแล้ว
-   ซ่อนตัววิ่ง
-   ----------------------------------------------- */
-
-hideCategoryLoading();
-
-preloadWorkFiles(
-    works
-);
-
-
-console.log(
-    "กรรมการ =",
-    judge.name
-);
-
-
-console.log(
-    "ผลงานที่ได้รับมอบหมาย =",
-    works.length
-);
-
 /* =====================================================
    REFRESH SCORE STATUS
    ตรวจคะแนนจริงจาก Google Sheet
@@ -3858,99 +3828,125 @@ async function refreshScoreButtons(
 
 
                     let score =
-                        null;
+    null;
 
 
-                    if (
-                        result &&
-                        result.success === false
-                    ) {
+/* -----------------------------------
+   หา Object คะแนนจาก Response
+   รองรับจำนวนเกณฑ์แบบ Dynamic
+   ----------------------------------- */
 
-                        score =
-                            null;
+if (
+    result &&
+    result.success === false
+) {
 
-                    }
-                    else if (
-                        result &&
-                        result.data
-                    ) {
+    score =
+        null;
 
-                        score =
-                            result.data;
+}
+else if (
+    result &&
+    result.data &&
+    typeof result.data === "object"
+) {
 
-                    }
-                    else if (
-                        result &&
-                        result.score
-                    ) {
+    score =
+        result.data;
 
-                        score =
-                            result.score;
+}
+else if (
+    result &&
+    result.score &&
+    typeof result.score === "object"
+) {
 
-                    }
-                    else if (
-                        result &&
-                        (
-                            result.c1 !== undefined ||
-                            result.c2 !== undefined ||
-                            result.c3 !== undefined ||
-                            result.c4 !== undefined ||
-                            result.c5 !== undefined ||
-                            result.c6 !== undefined ||
-                            result.c7 !== undefined ||
-                            result.c8 !== undefined
-                        )
-                    ) {
+    score =
+        result.score;
 
-                        score =
-                            result;
+}
+else if (
+    result &&
+    typeof result === "object"
+) {
 
-                    }
+    const hasScoreKey =
+        Object.keys(
+            result
+        ).some(
+            function (
+                key
+            ) {
 
+                return /^c\d+$/.test(
+                    key
+                );
 
-                    /* -----------------------------------
-                       ต้องมีคะแนนจริงอย่างน้อย 1 ช่อง
-                       ----------------------------------- */
-
-                    let hasRealScore =
-                        false;
-
-
-                    if (
-                        score &&
-                        typeof score ===
-                        "object"
-                    ) {
-
-                        for (
-                            let i = 1;
-                            i <= 8;
-                            i++
-                        ) {
-
-                            const value =
-                                score[
-                                "c" +
-                                i
-                                ];
+            }
+        );
 
 
-                            if (
-                                value !== undefined &&
-                                value !== null &&
-                                value !== ""
-                            ) {
+    if (
+        hasScoreKey
+    ) {
 
-                                hasRealScore =
-                                    true;
+        score =
+            result;
 
-                                break;
+    }
 
-                            }
+}
 
-                        }
 
-                    }
+/* -----------------------------------
+   ตรวจว่ามีคะแนนจริงอย่างน้อย 1 ช่อง
+
+   รองรับ c1, c2, c3 ... cN
+   ไม่ล็อกจำนวนเกณฑ์
+   ----------------------------------- */
+
+let hasRealScore =
+    false;
+
+
+if (
+    score &&
+    typeof score === "object"
+) {
+
+    hasRealScore =
+        Object.keys(
+            score
+        ).some(
+            function (
+                key
+            ) {
+
+                if (
+                    !/^c\d+$/.test(
+                        key
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                const value =
+                    score[key];
+
+
+                return (
+                    value !== undefined &&
+                    value !== null &&
+                    value !== ""
+                );
+
+            }
+        );
+
+}
 
 
                     work.hasSubmitted =
