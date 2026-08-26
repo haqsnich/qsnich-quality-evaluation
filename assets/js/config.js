@@ -5,23 +5,14 @@
 ครั้งที่ 28 ประจำปี 2569
 
 config.js
-Version : 2.0.0
+Version : 2.0.1
 ========================================================
 */
 
 const APP_CONFIG = {
 
-  // ==========================================
-  // GAS V.2 API
-  // ==========================================
-
   API_URL:
-    "https://script.google.com/macros/s/AKfycbzak_-7CxO6BvJ4GW-n5O9BvpbPGME-PQXdfoFlU-VHHHcsTKUsEEEDEq06zaqmZ-3BPw/exec",
-
-
-  // ==========================================
-  // ข้อมูลระบบ
-  // ==========================================
+    "https://script.google.com/macros/s/AKfycbxNpdxNxFBrvRKRYa_Dm6N62cpCId1vf8c9LfskPWQeeznVmV66w1M5SaZ5JBbiwWXCdA/exec",
 
   APP_NAME:
     "ระบบประเมินผลงาน",
@@ -36,6 +27,6 @@ const APP_CONFIG = {
     "2569",
 
   VERSION:
-    "2.0.0"
+    "2.0.1"
 
 };
