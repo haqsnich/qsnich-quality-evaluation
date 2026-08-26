@@ -1434,6 +1434,7 @@ function showCategoryError(
         "category-error-message";
 
     text.textContent =
+        message ||
         "กรุณากด refresh หน้านี้ หรือเข้าสู่ระบบใหม่อีกครั้ง";
 
 
@@ -3447,6 +3448,16 @@ async function openWorkFileModal(
             isIPad
         ) {
 
+            /* =================================================
+               iPAD ABSTRACT
+        
+               1. ลองใช้ PDF.js ก่อน
+               2. ถ้า PDF.js ไม่สำเร็จ
+                  fallback ไป Google Drive Preview
+        
+               ไม่เกี่ยวกับระบบ Poster
+               ================================================= */
+
             pdf.hidden =
                 true;
 
@@ -3467,62 +3478,108 @@ async function openWorkFileModal(
                 false;
 
 
-            if (
-                driveMatch &&
-                driveMatch[1]
+            /* -----------------------------------------------
+               ลอง PDF.js ก่อน
+               ----------------------------------------------- */
+
+            try {
+
+                if (
+                    driveMatch &&
+                    driveMatch[1]
+                ) {
+
+                    rendered =
+                        await renderPdfForIPad({
+
+                            fileId:
+                                driveMatch[1]
+
+                        });
+
+                }
+                else {
+
+                    rendered =
+                        await renderPdfForIPad({
+
+                            url:
+                                pdfUrl
+
+                        });
+
+                }
+
+            }
+            catch (
+            error
             ) {
 
-                rendered =
-                    await renderPdfForIPad({
+                console.warn(
+                    "iPad PDF.js ไม่สำเร็จ:",
+                    error
+                );
 
-                        fileId:
-                            driveMatch[1]
-
-                    });
-
-            }
-            else {
 
                 rendered =
-                    await renderPdfForIPad({
-
-                        url:
-                            pdfUrl
-
-                    });
+                    false;
 
             }
 
 
-            loading.hidden =
-                true;
-
+            /* -----------------------------------------------
+               PDF.js สำเร็จ
+               ----------------------------------------------- */
 
             if (
                 rendered
             ) {
 
+                loading.hidden =
+                    true;
+
+
                 pdfViewer.hidden =
                     false;
+
+
+                pdf.hidden =
+                    true;
 
 
                 resetPdfZoom(
                     pdfPages
                 );
 
-            }
-            else {
 
-                pdfViewer.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty,
-                    "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-                );
+                return;
 
             }
+
+
+            /* =================================================
+            PDF.js ไม่สำเร็จ
+
+   iPad ห้ามใช้ iframe
+   เพราะจะควบคุม pinch zoom ไม่ได้
+                ================================================= */
+
+            loading.hidden =
+                true;
+
+
+            pdfViewer.hidden =
+                true;
+
+
+            pdf.hidden =
+                true;
+
+
+            showWorkFileEmpty(
+                empty,
+                "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+            );
 
 
             return;
@@ -3968,7 +4025,7 @@ async function checkExistingScores(
 
             throw new Error(
                 result &&
-                result.message
+                    result.message
                     ? result.message
                     : "โหลดสถานะคะแนนไม่สำเร็จ"
             );
@@ -4053,7 +4110,7 @@ async function checkExistingScores(
 
     }
     catch (
-        error
+    error
     ) {
 
         /* -----------------------------------------------
