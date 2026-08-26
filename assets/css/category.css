@@ -4094,3 +4094,51 @@ and (orientation: portrait) {
 
     margin: 0 auto 16px;
 }
+
+/* =====================================================
+   CATEGORY CONTENT ENTER
+   Animation ตอนรายการผลงานแสดง
+   ===================================================== */
+
+#workList.content-enter {
+
+    animation:
+        categoryContentEnter
+        0.48s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* =====================================================
+   CATEGORY CONTENT ENTER KEYFRAMES
+   ===================================================== */
+
+@keyframes categoryContentEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}

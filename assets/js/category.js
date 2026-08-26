@@ -24,12 +24,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        /*
-         * แสดงตัววิ่งทุกครั้ง
-         */
-
-        showCategoryLoading();
-
 
         /*
          * โหลดข้อมูลใหม่จาก GAS
@@ -102,27 +96,6 @@ function showCategoryLoading() {
 
 function hideCategoryLoading() {
 
-    const loading =
-        document.getElementById(
-            "categoryLoading"
-        );
-
-
-    if (!loading) {
-        return;
-    }
-
-
-    loading.classList.add(
-        "hide"
-    );
-
-
-    /*
-     * รอให้ตัววิ่งเริ่มหายก่อน
-     * แล้วค่อยให้เนื้อหาเลื่อนขึ้น
-     */
-
     const workList =
         document.getElementById(
             "workList"
@@ -130,32 +103,19 @@ function hideCategoryLoading() {
 
 
     if (!workList) {
+
         return;
+
     }
 
-
-    /*
-     * เอา animation เดิมออกก่อน
-     * กันกรณีเรียกฟังก์ชันซ้ำ
-     */
 
     workList.classList.remove(
         "content-enter"
     );
 
 
-    /*
-     * บังคับให้ Browser วาดรอบใหม่
-     * ก่อนเริ่ม Animation
-     */
-
     void workList.offsetWidth;
 
-
-    /*
-     * รอให้ตัววิ่งเริ่มยุบ
-     * แล้วค่อยปล่อย Content ขึ้นมา
-     */
 
     setTimeout(
         function () {
@@ -165,7 +125,7 @@ function hideCategoryLoading() {
             );
 
         },
-        600
+        80
     );
 
 }
@@ -231,13 +191,15 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           3. โหลดผลงานจาก GAS
-           ----------------------------------------------- */
+   3. โหลดผลงานจาก Static JSON
+
+   ไม่ยิง GAS
+   ไม่อ่าน Google Sheet
+   ----------------------------------------------- */
 
         const response =
             await fetch(
-                GAS_URL +
-                "?action=works&_t=" +
+                "./data/works.json?_t=" +
                 Date.now(),
                 {
                     method:
@@ -252,43 +214,28 @@ async function loadCategoryData() {
         if (!response.ok) {
 
             throw new Error(
-                "ไม่สามารถเชื่อมต่อระบบข้อมูลผลงานได้"
+                "ไม่สามารถโหลดข้อมูลผลงานได้"
             );
 
         }
 
+
+        /* -----------------------------------------------
+           4. อ่าน JSON
+           ----------------------------------------------- */
 
         const result =
             await response.json();
 
 
         console.log(
-            "WORKS API RESULT =",
+            "STATIC WORKS RESULT =",
             result
         );
 
 
         /* -----------------------------------------------
-           4. ตรวจ Response
-           ----------------------------------------------- */
-
-        if (
-            !result ||
-            result.success === false
-        ) {
-
-            throw new Error(
-                result &&
-                    result.message
-                    ? result.message
-                    : "ไม่สามารถโหลดผลงานได้"
-            );
-
-        }
-
-
-        /* -----------------------------------------------
-           5. ดึง Array ผลงาน
+           5. ตรวจข้อมูล Works
            ----------------------------------------------- */
 
         let allWorks =
@@ -306,6 +253,7 @@ async function loadCategoryData() {
 
         }
         else if (
+            result &&
             Array.isArray(
                 result.works
             )
@@ -315,17 +263,19 @@ async function loadCategoryData() {
                 result.works;
 
         }
-        else if (
-            Array.isArray(
-                result.data
+
+
+        if (
+            !Array.isArray(
+                allWorks
             )
         ) {
 
-            allWorks =
-                result.data;
+            throw new Error(
+                "รูปแบบข้อมูล works.json ไม่ถูกต้อง"
+            );
 
         }
-
 
         /* -----------------------------------------------
            6. หา ID กรรมการ
@@ -458,45 +408,31 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           9. ตรวจคะแนนจริงจากชีท
+    9. ตั้งค่าเริ่มต้น
 
-           ต้องรอให้ตรวจเสร็จก่อน
-           จึงค่อยแสดงรายการผลงาน
+    รายชื่อผลงานแสดงทันที
+    ส่วนจำนวน "ประเมินแล้ว"
+    โหลดสถานะคะแนนเบื้องหลัง
+    ----------------------------------------------- */
 
-           เพื่อป้องกัน:
-           - สถานะประเมินแล้วขึ้นช้า
-           - หน้าเว็บกระพริบ
-           - จำนวนประเมินแล้วคลาดเคลื่อน
-           ----------------------------------------------- */
+        works.forEach(
+            function (
+                work
+            ) {
 
-        works =
-            await checkExistingScores(
-                judgeId,
-                works
-            );
+                if (work) {
 
+                    work.hasSubmitted =
+                        false;
 
-        /* -----------------------------------------------
-           9.1 ตรวจผลลัพธ์จาก checkExistingScores
+                }
 
-           ป้องกันกรณีฟังก์ชันไม่ได้ return Array
-           ----------------------------------------------- */
-
-        if (
-            !Array.isArray(
-                works
-            )
-        ) {
-
-            throw new Error(
-                "ไม่สามารถตรวจสอบสถานะคะแนนได้"
-            );
-
-        }
+            }
+        );
 
 
         /* -----------------------------------------------
-           10. เก็บ Works หลังตรวจสถานะคะแนนแล้ว
+           10. เก็บ Works ลง Session ก่อน
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -514,10 +450,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           11. อัปเดตข้อมูล Login ใน Session
-
-           ให้ข้อมูล works ใน judge session
-           เป็นชุดเดียวกับที่ตรวจคะแนนแล้ว
+           11. อัปเดตข้อมูล Login
            ----------------------------------------------- */
 
         const updatedSession = {
@@ -550,8 +483,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           12. ข้อมูลพร้อมแล้ว
-           ค่อยแสดงทุกอย่างพร้อมกัน
+           12. แสดงรายชื่อผลงานทันที
            ----------------------------------------------- */
 
         displayWorks(
@@ -564,15 +496,136 @@ async function loadCategoryData() {
         );
 
 
-        displayEvaluatedCount();
+        /* -----------------------------------------------
+           จำนวน "ประเมินแล้ว"
+           แสดง ... ระหว่างรอ GAS
+           ----------------------------------------------- */
+
+        const evaluatedElement =
+            document.getElementById(
+                "evaluatedCount"
+            );
+
+
+        if (
+            evaluatedElement
+        ) {
+
+            evaluatedElement.textContent =
+                "...";
+
+        }
 
 
         /* -----------------------------------------------
-           13. ทุกอย่างเสร็จแล้ว
-           ค่อยซ่อน Loading
+           เล่น Animation รายการ
            ----------------------------------------------- */
 
         hideCategoryLoading();
+
+
+        /* -----------------------------------------------
+           13. ตรวจคะแนนเบื้องหลัง
+
+           สำคัญ:
+           ไม่มี await
+           จึงไม่บล็อกรายชื่อผลงาน
+           ----------------------------------------------- */
+
+        checkExistingScores(
+            judgeId,
+            works
+        )
+            .then(
+                function (
+                    checkedWorks
+                ) {
+
+                    if (
+                        !Array.isArray(
+                            checkedWorks
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    /* ---------------------------------------
+                       เก็บ Works ที่มีสถานะคะแนนจริง
+                       --------------------------------------- */
+
+                    sessionStorage.setItem(
+                        "works",
+                        JSON.stringify(
+                            checkedWorks
+                        )
+                    );
+
+
+                    /* ---------------------------------------
+                       อัปเดต Judge Session
+                       --------------------------------------- */
+
+                    const currentSession =
+                        JSON.parse(
+                            sessionStorage.getItem(
+                                "judge"
+                            ) ||
+                            "{}"
+                        );
+
+
+                    currentSession.works =
+                        checkedWorks;
+
+
+                    sessionStorage.setItem(
+                        "judge",
+                        JSON.stringify(
+                            currentSession
+                        )
+                    );
+
+
+                    /* ---------------------------------------
+                       อัปเดตเฉพาะเลขประเมินแล้ว
+                       ไม่ Render รายการผลงานใหม่
+                       --------------------------------------- */
+
+                    displayEvaluatedCount();
+
+
+                    console.log(
+                        "SCORE STATUS READY =",
+                        checkedWorks
+                    );
+
+                }
+            )
+            .catch(
+                function (
+                    error
+                ) {
+
+                    console.warn(
+                        "ตรวจสถานะคะแนนเบื้องหลังไม่สำเร็จ:",
+                        error
+                    );
+
+
+                    if (
+                        evaluatedElement
+                    ) {
+
+                        evaluatedElement.textContent =
+                            "-";
+
+                    }
+
+                }
+            );
 
 
         /* -----------------------------------------------
@@ -598,12 +651,6 @@ async function loadCategoryData() {
 
 
         console.log(
-            "WORKS AFTER SCORE CHECK =",
-            works
-        );
-
-
-        console.log(
             "CATEGORY READY"
         );
 
@@ -618,12 +665,11 @@ async function loadCategoryData() {
         );
 
 
-        hideCategoryLoading();
-
-
         showCategoryError(
-            error.message ||
-            "เกิดข้อผิดพลาดในการโหลดข้อมูล"
+            error &&
+                error.message
+                ? error.message
+                : "เกิดข้อผิดพลาดในการโหลดข้อมูล"
         );
 
     }
@@ -1701,10 +1747,10 @@ function preloadWorkFiles(
 
 /* =====================================================
    POSTER ZOOM + PAN
-
+ 
    iPad pinch zoom + drag
    Desktop mouse wheel zoom
-
+ 
    แยก State จาก PDF โดยสมบูรณ์
    ===================================================== */
 
@@ -2716,7 +2762,7 @@ function setupPdfZoom(
 
     /* =================================================
        สำคัญมาก
-
+ 
        กัน Safari ใช้ Native Zoom
        เฉพาะพื้นที่ PDF
        ================================================= */
@@ -2731,7 +2777,7 @@ function setupPdfZoom(
 
     /* =================================================
        Safari Gesture Events
-
+ 
        กันการซูมทั้งหน้า / ทั้ง Popup
        ================================================= */
 
@@ -2791,7 +2837,7 @@ function setupPdfZoom(
 
     /* =================================================
        อนุญาต Custom Zoom เฉพาะเมื่อ
-
+ 
        - Popup เปิด
        - PDF Viewer แสดงอยู่
        ================================================= */
@@ -3079,7 +3125,7 @@ function setupPdfZoom(
 
     /* =================================================
        TOUCH CANCEL
-
+ 
        กันนิ้วหลุด / Safari ยกเลิก Gesture
        แล้ว State ค้าง
        ================================================= */
@@ -3506,7 +3552,11 @@ async function renderPdfForIPad(
             "";
 
 
-        return false;
+        throw new Error(
+            error && error.message
+                ? error.message
+                : "PDF Canvas Error"
+        );
 
     }
 
@@ -3514,7 +3564,7 @@ async function renderPdfForIPad(
 
 /* =====================================================
    LOCK NATIVE PINCH ZOOM INSIDE FILE POPUP
-
+ 
    หน้าที่:
    - ห้าม Safari ซูมทั้งหน้า / ทั้ง popup
    - custom zoom ของ Poster / PDF ยังทำงานได้
@@ -3593,10 +3643,10 @@ function setupWorkFileModalZoomLock(
 
     /* =================================================
        Touch Pinch
-
+ 
        ถ้ามีมากกว่า 1 นิ้ว
        ห้าม Safari เอา gesture ไป Zoom หน้าเว็บ
-
+ 
        แต่ event ยังเดินผ่านระบบ custom zoom
        ของ Poster / PDF ตามปกติ
        ================================================= */
@@ -3770,7 +3820,7 @@ async function openWorkFileModal(
 
     /* =================================================
        เตรียมระบบ Gesture
-
+ 
        สำคัญ:
        Lock native Safari zoom ก่อน
        แล้วค่อยให้ custom viewer จัดการไฟล์
@@ -3835,7 +3885,7 @@ async function openWorkFileModal(
 
     /* =================================================
    CLEAR OLD FILE EVENTS
-
+ 
    สำคัญ:
    ป้องกัน onload / onerror ของไฟล์รอบก่อน
    ทำงานข้ามมาทับไฟล์รอบใหม่
@@ -3931,7 +3981,7 @@ async function openWorkFileModal(
         /* =================================================
    iPAD
    ใช้ PDF.js Canvas Viewer เท่านั้น
-
+ 
    ห้าม fallback ไป Google Drive iframe
    เพราะจะกลับมาคุม pinch ไม่ได้
    ================================================= */
@@ -4007,14 +4057,36 @@ async function openWorkFileModal(
             error
             ) {
 
-                console.warn(
+                console.error(
                     "iPad PDF.js ไม่สำเร็จ:",
                     error
                 );
 
 
-                rendered =
-                    false;
+                loading.hidden =
+                    true;
+
+
+                pdfViewer.hidden =
+                    true;
+
+
+                pdf.hidden =
+                    true;
+
+
+                showWorkFileEmpty(
+                    empty,
+                    "โหลดบทคัดย่อไม่สำเร็จ: " +
+                    (
+                        error && error.message
+                            ? error.message
+                            : "Unknown error"
+                    )
+                );
+
+
+                return;
 
             }
 
@@ -4051,7 +4123,7 @@ async function openWorkFileModal(
 
             /* =================================================
             PDF.js ไม่สำเร็จ
-
+ 
    iPad ห้ามใช้ iframe
    เพราะจะควบคุม pinch zoom ไม่ได้
                 ================================================= */
@@ -4607,7 +4679,7 @@ async function checkExistingScores(
 
         /* -----------------------------------------------
            สำคัญมาก
-
+ 
            เช็กคะแนนไม่ได้
            ห้ามทำให้ Category พัง
            ----------------------------------------------- */
