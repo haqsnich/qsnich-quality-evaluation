@@ -3109,6 +3109,150 @@ function setupPdfZoom(
 }
 
 /* =====================================================
+   PDF.JS LOADER FOR iPAD ABSTRACT
+   ===================================================== */
+
+const PDFJS_FALLBACK_VERSION =
+    "3.11.174";
+
+
+function setupPdfJsWorker(
+    lib
+) {
+
+    if (
+        !lib ||
+        !lib.GlobalWorkerOptions
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        lib.GlobalWorkerOptions.workerSrc
+    ) {
+
+        return;
+
+    }
+
+
+    const version =
+        String(
+            lib.version ||
+            PDFJS_FALLBACK_VERSION
+        ).trim();
+
+
+    lib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+        version +
+        "/pdf.worker.min.js";
+
+}
+
+
+async function ensurePdfJsForIPad() {
+
+    if (
+        window.pdfjsLib
+    ) {
+
+        setupPdfJsWorker(
+            window.pdfjsLib
+        );
+
+
+        return true;
+
+    }
+
+
+    if (
+        window.__pdfJsLoadingPromise
+    ) {
+
+        return window.__pdfJsLoadingPromise;
+
+    }
+
+
+    window.__pdfJsLoadingPromise =
+        new Promise(
+            function (
+                resolve
+            ) {
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+                    PDFJS_FALLBACK_VERSION +
+                    "/pdf.min.js";
+
+
+                script.async =
+                    true;
+
+
+                script.onload =
+                    function () {
+
+                        if (
+                            window.pdfjsLib
+                        ) {
+
+                            setupPdfJsWorker(
+                                window.pdfjsLib
+                            );
+
+
+                            resolve(
+                                true
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        resolve(
+                            false
+                        );
+
+                    };
+
+
+                script.onerror =
+                    function () {
+
+                        resolve(
+                            false
+                        );
+
+                    };
+
+
+                document.head.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    return window.__pdfJsLoadingPromise;
+
+}
+
+/* =====================================================
    iPad PDF CANVAS VIEWER
    Render ทุกหน้า
    ===================================================== */
@@ -3131,7 +3275,20 @@ async function renderPdfForIPad(
 
     if (
         !viewer ||
-        !pages ||
+        !pages
+    ) {
+
+        return false;
+
+    }
+
+
+    const pdfJsReady =
+        await ensurePdfJsForIPad();
+
+
+    if (
+        !pdfJsReady ||
         !window.pdfjsLib
     ) {
 
@@ -3199,10 +3356,11 @@ async function renderPdfForIPad(
             ) {
 
                 throw new Error(
-                    result?.message ||
-                    "ไม่พบข้อมูล PDF"
+                    result &&
+                        result.message
+                        ? result.message
+                        : "ไม่พบข้อมูล PDF"
                 );
-
             }
 
 
