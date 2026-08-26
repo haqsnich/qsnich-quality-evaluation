@@ -351,9 +351,13 @@ async function loadCategoryData() {
 
         /* -----------------------------------------------
            7. กรองผลงานตามกรรมการ
+
+           สำคัญ:
+           ใช้ let เพราะข้อ 9 จะนำ works
+           ไปอัปเดตสถานะคะแนนใหม่
            ----------------------------------------------- */
 
-        const works =
+        let works =
             allWorks.filter(
 
                 function (
@@ -395,6 +399,7 @@ async function loadCategoryData() {
                         )
                             .split(",")
                             .map(
+
                                 function (
                                     id
                                 ) {
@@ -404,6 +409,7 @@ async function loadCategoryData() {
                                     ).trim();
 
                                 }
+
                             )
                             .filter(
                                 Boolean
@@ -420,7 +426,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           8. เรียงตาม order
+           8. เรียงผลงานตาม order
            ----------------------------------------------- */
 
         works.sort(
@@ -431,14 +437,19 @@ async function loadCategoryData() {
             ) {
 
                 return (
+
                     Number(
                         a.order ||
                         0
-                    ) -
+                    )
+
+                    -
+
                     Number(
                         b.order ||
                         0
                     )
+
                 );
 
             }
@@ -449,19 +460,43 @@ async function loadCategoryData() {
         /* -----------------------------------------------
            9. ตรวจคะแนนจริงจากชีท
 
-           สำคัญ:
-           รอตรงนี้ให้เสร็จก่อน
-           ยังไม่แสดงรายการ
-           ยังไม่ซ่อนตัววิ่ง
+           ต้องรอให้ตรวจเสร็จก่อน
+           จึงค่อยแสดงรายการผลงาน
+
+           เพื่อป้องกัน:
+           - สถานะประเมินแล้วขึ้นช้า
+           - หน้าเว็บกระพริบ
+           - จำนวนประเมินแล้วคลาดเคลื่อน
            ----------------------------------------------- */
 
-        await refreshScoreButtons(
-            works
-        );
+        works =
+            await checkExistingScores(
+                judgeId,
+                works
+            );
 
 
         /* -----------------------------------------------
-           10. เก็บ Works หลังมีสถานะคะแนนแล้ว
+           9.1 ตรวจผลลัพธ์จาก checkExistingScores
+
+           ป้องกันกรณีฟังก์ชันไม่ได้ return Array
+           ----------------------------------------------- */
+
+        if (
+            !Array.isArray(
+                works
+            )
+        ) {
+
+            throw new Error(
+                "ไม่สามารถตรวจสอบสถานะคะแนนได้"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           10. เก็บ Works หลังตรวจสถานะคะแนนแล้ว
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -479,7 +514,10 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           11. เก็บข้อมูล Login
+           11. อัปเดตข้อมูล Login ใน Session
+
+           ให้ข้อมูล works ใน judge session
+           เป็นชุดเดียวกับที่ตรวจคะแนนแล้ว
            ----------------------------------------------- */
 
         const updatedSession = {
@@ -512,7 +550,8 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           12. แสดงทุกอย่างพร้อมกัน
+           12. ข้อมูลพร้อมแล้ว
+           ค่อยแสดงทุกอย่างพร้อมกัน
            ----------------------------------------------- */
 
         displayWorks(
@@ -529,12 +568,16 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           13. ข้อมูลทุกอย่างพร้อมแล้ว
-           ค่อยซ่อนตัววิ่ง
+           13. ทุกอย่างเสร็จแล้ว
+           ค่อยซ่อน Loading
            ----------------------------------------------- */
 
         hideCategoryLoading();
 
+
+        /* -----------------------------------------------
+           Debug
+           ----------------------------------------------- */
 
         console.log(
             "กรรมการ =",
@@ -543,8 +586,20 @@ async function loadCategoryData() {
 
 
         console.log(
+            "รหัสกรรมการ =",
+            judgeId
+        );
+
+
+        console.log(
             "ผลงานที่ได้รับมอบหมาย =",
             works.length
+        );
+
+
+        console.log(
+            "WORKS AFTER SCORE CHECK =",
+            works
         );
 
 
@@ -567,7 +622,8 @@ async function loadCategoryData() {
 
 
         showCategoryError(
-            error.message
+            error.message ||
+            "เกิดข้อผิดพลาดในการโหลดข้อมูล"
         );
 
     }
@@ -3774,110 +3830,199 @@ document.addEventListener(
 
 
 /* =====================================================
-   REFRESH SCORE STATUS
-   ตรวจคะแนนจริงจาก Google Sheet
+   CHECK EXISTING SCORES
+   ตรวจคะแนนจริงจากชีทก่อนแสดง Category
    ===================================================== */
 
-async function refreshScoreButtons(
+async function checkExistingScores(
+    judgeId,
     works
 ) {
 
-    if (
-        !Array.isArray(
-            works
-        )
-    ) {
-
-        return;
-
-    }
-
-
     /* -----------------------------------------------
-       อ่านกรรมการปัจจุบัน
+       ตรวจข้อมูลเบื้องต้น
        ----------------------------------------------- */
 
-    const raw =
-        sessionStorage.getItem(
-            "judge"
-        );
-
-
-    if (!raw) {
-
-        console.warn(
-            "REFRESH SCORE: ไม่พบข้อมูลกรรมการ"
-        );
-
-        return;
-
-    }
-
-
-    let judgeId =
-        "";
-
-
-    try {
-
-        const data =
-            JSON.parse(
-                raw
-            );
-
-
-        const judge =
-            data &&
-                data.judge
-                ? data.judge
-                : data;
-
-
-        judgeId =
-            String(
-                judge.id ||
-                judge.judge_id ||
-                judge.code ||
-                ""
-            ).trim();
-
-    }
-    catch (
-    error
+    if (
+        !Array.isArray(works) ||
+        works.length === 0
     ) {
 
-        console.warn(
-            "REFRESH SCORE: อ่านข้อมูลกรรมการไม่ได้",
-            error
-        );
-
-        return;
+        return Array.isArray(works)
+            ? works
+            : [];
 
     }
+
+
+    judgeId =
+        String(
+            judgeId || ""
+        ).trim();
 
 
     if (!judgeId) {
 
-        console.warn(
-            "REFRESH SCORE: ไม่พบรหัสกรรมการ"
+        throw new Error(
+            "ไม่พบรหัสกรรมการสำหรับตรวจสอบคะแนน"
         );
-
-        return;
 
     }
 
 
     /* -----------------------------------------------
-       ตรวจคะแนนทุกผลงาน
+       ตั้งค่าเริ่มต้น
+
+       ทุกผลงานถือว่ายังไม่ประเมิน
+       จนกว่าจะตรวจเจอในชีทจริง
        ----------------------------------------------- */
 
-    await Promise.all(
+    works.forEach(
+        function (work) {
 
-        works.map(
+            if (work) {
 
-            async function (
-                work
-            ) {
+                work.hasSubmitted =
+                    false;
+
+            }
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       โหลดสถานะคะแนนจาก GAS
+       ----------------------------------------------- */
+
+    const controller =
+        new AbortController();
+
+
+    const timeout =
+        setTimeout(
+            function () {
+
+                controller.abort();
+
+            },
+            12000
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                GAS_URL +
+                "?action=scoreStatusByJudge" +
+                "&judge=" +
+                encodeURIComponent(
+                    judgeId
+                ) +
+                "&_t=" +
+                Date.now(),
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store",
+
+                    signal:
+                        controller.signal
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "โหลดสถานะคะแนนไม่สำเร็จ"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "SCORE STATUS RESULT =",
+            result
+        );
+
+
+        /* -----------------------------------------------
+           ตรวจ Response
+           ----------------------------------------------- */
+
+        if (
+            !result ||
+            result.success === false
+        ) {
+
+            throw new Error(
+                result &&
+                    result.message
+                    ? result.message
+                    : "โหลดสถานะคะแนนไม่สำเร็จ"
+            );
+
+        }
+
+
+        /* -----------------------------------------------
+           สร้าง Set ของผลงานที่กรรมการ
+           ส่งคะแนนแล้วจริงในชีท
+           ----------------------------------------------- */
+
+        const submittedSet =
+            new Set(
+
+                Array.isArray(
+                    result.work_ids
+                )
+                    ? result.work_ids
+                        .map(
+                            function (id) {
+
+                                return String(
+                                    id
+                                ).trim();
+
+                            }
+                        )
+                        .filter(
+                            Boolean
+                        )
+                    : []
+
+            );
+
+
+        console.log(
+            "SUBMITTED WORK IDS =",
+            Array.from(
+                submittedSet
+            )
+        );
+
+
+        /* -----------------------------------------------
+           ผูกสถานะเข้ากับแต่ละผลงาน
+           ----------------------------------------------- */
+
+        works.forEach(
+            function (work) {
+
+                if (!work) {
+
+                    return;
+
+                }
+
 
                 const workId =
                     String(
@@ -3887,255 +4032,72 @@ async function refreshScoreButtons(
                     ).trim();
 
 
-                if (!workId) {
-
-                    work.hasSubmitted =
-                        false;
-
-                    return;
-
-                }
-
-
-                try {
-
-                    const response =
-                        await fetch(
-                            GAS_URL +
-                            "?action=getScoreForEdit" +
-                            "&judge=" +
-                            encodeURIComponent(
-                                judgeId
-                            ) +
-                            "&work_id=" +
-                            encodeURIComponent(
-                                workId
-                            ) +
-                            "&_t=" +
-                            Date.now(),
-                            {
-                                method:
-                                    "GET",
-
-                                cache:
-                                    "no-store"
-                            }
-                        );
-
-
-                    if (!response.ok) {
-
-                        work.hasSubmitted =
-                            false;
-
-                        return;
-
-                    }
-
-
-                    const result =
-                        await response.json();
-
-
-                    let score =
-                        null;
-
-
-                    /* -----------------------------------
-                       หา Object คะแนนจาก Response
-                       รองรับจำนวนเกณฑ์แบบ Dynamic
-                       ----------------------------------- */
-
-                    if (
-                        result &&
-                        result.success === false
-                    ) {
-
-                        score =
-                            null;
-
-                    }
-                    else if (
-                        result &&
-                        result.data &&
-                        typeof result.data === "object"
-                    ) {
-
-                        score =
-                            result.data;
-
-                    }
-                    else if (
-                        result &&
-                        result.score &&
-                        typeof result.score === "object"
-                    ) {
-
-                        score =
-                            result.score;
-
-                    }
-                    else if (
-                        result &&
-                        typeof result === "object"
-                    ) {
-
-                        const hasScoreKey =
-                            Object.keys(
-                                result
-                            ).some(
-                                function (
-                                    key
-                                ) {
-
-                                    return /^c\d+$/.test(
-                                        key
-                                    );
-
-                                }
-                            );
-
-
-                        if (
-                            hasScoreKey
-                        ) {
-
-                            score =
-                                result;
-
-                        }
-
-                    }
-
-
-                    /* -----------------------------------
-                       ตรวจว่ามีคะแนนจริงอย่างน้อย 1 ช่อง
-                    
-                       รองรับ c1, c2, c3 ... cN
-                       ไม่ล็อกจำนวนเกณฑ์
-                       ----------------------------------- */
-
-                    let hasRealScore =
-                        false;
-
-
-                    if (
-                        score &&
-                        typeof score === "object"
-                    ) {
-
-                        hasRealScore =
-                            Object.keys(
-                                score
-                            ).some(
-                                function (
-                                    key
-                                ) {
-
-                                    if (
-                                        !/^c\d+$/.test(
-                                            key
-                                        )
-                                    ) {
-
-                                        return false;
-
-                                    }
-
-
-                                    const value =
-                                        score[key];
-
-
-                                    return (
-                                        value !== undefined &&
-                                        value !== null &&
-                                        value !== ""
-                                    );
-
-                                }
-                            );
-
-                    }
-
-
-                    work.hasSubmitted =
-                        hasRealScore;
-
-                }
-                catch (
-                error
-                ) {
-
-                    console.warn(
-                        "ตรวจคะแนนไม่ได้:",
-                        workId,
-                        error
+                work.hasSubmitted =
+                    submittedSet.has(
+                        workId
                     );
 
-
-                    work.hasSubmitted =
-                        false;
-
-                }
-
             }
-
-        )
-
-    );
+        );
 
 
-    /* -----------------------------------------------
-       เก็บสถานะล่าสุด
-       ----------------------------------------------- */
-
-    sessionStorage.setItem(
-        "works",
-        JSON.stringify(
+        console.log(
+            "WORKS SCORE STATUS =",
             works
-        )
-    );
+        );
 
-}
 
-document.addEventListener(
-    "fullscreenchange",
-    function () {
+        /* -----------------------------------------------
+           สำคัญ:
+           ต้อง Return กลับไปให้ loadCategoryData()
+           ----------------------------------------------- */
 
-        const poster =
-            document.getElementById(
-                "workFilePoster"
-            );
+        return works;
 
+    }
+    catch (
+    error
+    ) {
+
+        console.error(
+            "ตรวจสอบสถานะคะแนนไม่ได้:",
+            error
+        );
+
+
+        /*
+         * หน้านี้ออกแบบให้ต้องรู้สถานะคะแนนจริง
+         * ก่อนแสดงรายการ
+         *
+         * เพราะฉะนั้นถ้าตรวจไม่ได้
+         * ให้ส่ง Error กลับไป
+         * ไม่ควรแสดงสถานะเดา ๆ
+         */
 
         if (
-            !document.fullscreenElement
+            error &&
+            error.name === "AbortError"
         ) {
 
-            resetPosterZoom(
-                poster
+            throw new Error(
+                "ตรวจสอบสถานะคะแนนใช้เวลานานเกินไป กรุณาลองใหม่อีกครั้ง"
             );
-
-            const fullscreen =
-                document.getElementById(
-                    "workFileFullscreen"
-                );
-
-
-            if (
-                fullscreen
-            ) {
-
-                fullscreen.textContent =
-                    "⛶ ดูเต็มจอ";
-
-            }
 
         }
 
+
+        throw error;
+
     }
-);
+    finally {
+
+        clearTimeout(
+            timeout
+        );
+
+    }
+
+}
 
 /* =====================================================
    iPAD — LOCK PAGE ZOOM
