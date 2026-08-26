@@ -3448,6 +3448,16 @@ async function openWorkFileModal(
             isIPad
         ) {
 
+            /* =================================================
+               iPAD ABSTRACT
+        
+               1. ลองใช้ PDF.js ก่อน
+               2. ถ้า PDF.js ไม่สำเร็จ
+                  fallback ไป Google Drive Preview
+        
+               ไม่เกี่ยวกับระบบ Poster
+               ================================================= */
+
             pdf.hidden =
                 true;
 
@@ -3468,62 +3478,160 @@ async function openWorkFileModal(
                 false;
 
 
-            if (
-                driveMatch &&
-                driveMatch[1]
+            /* -----------------------------------------------
+               ลอง PDF.js ก่อน
+               ----------------------------------------------- */
+
+            try {
+
+                if (
+                    driveMatch &&
+                    driveMatch[1]
+                ) {
+
+                    rendered =
+                        await renderPdfForIPad({
+
+                            fileId:
+                                driveMatch[1]
+
+                        });
+
+                }
+                else {
+
+                    rendered =
+                        await renderPdfForIPad({
+
+                            url:
+                                pdfUrl
+
+                        });
+
+                }
+
+            }
+            catch (
+            error
             ) {
 
-                rendered =
-                    await renderPdfForIPad({
+                console.warn(
+                    "iPad PDF.js ไม่สำเร็จ:",
+                    error
+                );
 
-                        fileId:
-                            driveMatch[1]
-
-                    });
-
-            }
-            else {
 
                 rendered =
-                    await renderPdfForIPad({
-
-                        url:
-                            pdfUrl
-
-                    });
+                    false;
 
             }
 
 
-            loading.hidden =
-                true;
-
+            /* -----------------------------------------------
+               PDF.js สำเร็จ
+               ----------------------------------------------- */
 
             if (
                 rendered
             ) {
 
+                loading.hidden =
+                    true;
+
+
                 pdfViewer.hidden =
                     false;
+
+
+                pdf.hidden =
+                    true;
 
 
                 resetPdfZoom(
                     pdfPages
                 );
 
-            }
-            else {
 
-                pdfViewer.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty,
-                    "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-                );
+                return;
 
             }
+
+
+            /* =================================================
+               PDF.js ไม่สำเร็จ
+        
+               FALLBACK:
+               ใช้ Google Drive Preview แทน
+        
+               สำคัญ:
+               แก้เฉพาะบทคัดย่อ
+               ไม่แตะระบบ Poster
+               ================================================= */
+
+            console.warn(
+                "ใช้ Google Drive Preview สำหรับ iPad"
+            );
+
+
+            let previewUrl =
+                pdfUrl;
+
+
+            if (
+                driveMatch &&
+                driveMatch[1]
+            ) {
+
+                previewUrl =
+                    "https://drive.google.com/file/d/" +
+                    driveMatch[1] +
+                    "/preview";
+
+            }
+
+
+            pdfViewer.hidden =
+                true;
+
+
+            pdfPages.innerHTML =
+                "";
+
+
+            pdf.hidden =
+                false;
+
+
+            pdf.onload =
+                function () {
+
+                    loading.hidden =
+                        true;
+
+                };
+
+
+            pdf.onerror =
+                function () {
+
+                    loading.hidden =
+                        true;
+
+
+                    pdf.hidden =
+                        true;
+
+
+                    showWorkFileEmpty(
+                        empty,
+                        "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+                    );
+
+                };
+
+
+            pdf.src =
+                previewUrl;
 
 
             return;
