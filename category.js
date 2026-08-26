@@ -24,12 +24,6 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        /*
-         * แสดงตัววิ่งทุกครั้ง
-         */
-
-        showCategoryLoading();
-
 
         /*
          * โหลดข้อมูลใหม่จาก GAS
@@ -102,27 +96,6 @@ function showCategoryLoading() {
 
 function hideCategoryLoading() {
 
-    const loading =
-        document.getElementById(
-            "categoryLoading"
-        );
-
-
-    if (!loading) {
-        return;
-    }
-
-
-    loading.classList.add(
-        "hide"
-    );
-
-
-    /*
-     * รอให้ตัววิ่งเริ่มหายก่อน
-     * แล้วค่อยให้เนื้อหาเลื่อนขึ้น
-     */
-
     const workList =
         document.getElementById(
             "workList"
@@ -130,32 +103,19 @@ function hideCategoryLoading() {
 
 
     if (!workList) {
+
         return;
+
     }
 
-
-    /*
-     * เอา animation เดิมออกก่อน
-     * กันกรณีเรียกฟังก์ชันซ้ำ
-     */
 
     workList.classList.remove(
         "content-enter"
     );
 
 
-    /*
-     * บังคับให้ Browser วาดรอบใหม่
-     * ก่อนเริ่ม Animation
-     */
-
     void workList.offsetWidth;
 
-
-    /*
-     * รอให้ตัววิ่งเริ่มยุบ
-     * แล้วค่อยปล่อย Content ขึ้นมา
-     */
 
     setTimeout(
         function () {
@@ -165,7 +125,7 @@ function hideCategoryLoading() {
             );
 
         },
-        600
+        80
     );
 
 }
@@ -231,13 +191,15 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           3. โหลดผลงานจาก GAS
-           ----------------------------------------------- */
+   3. โหลดผลงานจาก Static JSON
+
+   ไม่ยิง GAS
+   ไม่อ่าน Google Sheet
+   ----------------------------------------------- */
 
         const response =
             await fetch(
-                GAS_URL +
-                "?action=works&_t=" +
+                "./data/works.json?_t=" +
                 Date.now(),
                 {
                     method:
@@ -252,43 +214,28 @@ async function loadCategoryData() {
         if (!response.ok) {
 
             throw new Error(
-                "ไม่สามารถเชื่อมต่อระบบข้อมูลผลงานได้"
+                "ไม่สามารถโหลดข้อมูลผลงานได้"
             );
 
         }
 
+
+        /* -----------------------------------------------
+           4. อ่าน JSON
+           ----------------------------------------------- */
 
         const result =
             await response.json();
 
 
         console.log(
-            "WORKS API RESULT =",
+            "STATIC WORKS RESULT =",
             result
         );
 
 
         /* -----------------------------------------------
-           4. ตรวจ Response
-           ----------------------------------------------- */
-
-        if (
-            !result ||
-            result.success === false
-        ) {
-
-            throw new Error(
-                result &&
-                    result.message
-                    ? result.message
-                    : "ไม่สามารถโหลดผลงานได้"
-            );
-
-        }
-
-
-        /* -----------------------------------------------
-           5. ดึง Array ผลงาน
+           5. ตรวจข้อมูล Works
            ----------------------------------------------- */
 
         let allWorks =
@@ -306,6 +253,7 @@ async function loadCategoryData() {
 
         }
         else if (
+            result &&
             Array.isArray(
                 result.works
             )
@@ -315,17 +263,19 @@ async function loadCategoryData() {
                 result.works;
 
         }
-        else if (
-            Array.isArray(
-                result.data
+
+
+        if (
+            !Array.isArray(
+                allWorks
             )
         ) {
 
-            allWorks =
-                result.data;
+            throw new Error(
+                "รูปแบบข้อมูล works.json ไม่ถูกต้อง"
+            );
 
         }
-
 
         /* -----------------------------------------------
            6. หา ID กรรมการ
@@ -458,45 +408,31 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           9. ตรวจคะแนนจริงจากชีท
+    9. ตั้งค่าเริ่มต้น
 
-           ต้องรอให้ตรวจเสร็จก่อน
-           จึงค่อยแสดงรายการผลงาน
+    รายชื่อผลงานแสดงทันที
+    ส่วนจำนวน "ประเมินแล้ว"
+    โหลดสถานะคะแนนเบื้องหลัง
+    ----------------------------------------------- */
 
-           เพื่อป้องกัน:
-           - สถานะประเมินแล้วขึ้นช้า
-           - หน้าเว็บกระพริบ
-           - จำนวนประเมินแล้วคลาดเคลื่อน
-           ----------------------------------------------- */
+        works.forEach(
+            function (
+                work
+            ) {
 
-        works =
-            await checkExistingScores(
-                judgeId,
-                works
-            );
+                if (work) {
 
+                    work.hasSubmitted =
+                        false;
 
-        /* -----------------------------------------------
-           9.1 ตรวจผลลัพธ์จาก checkExistingScores
+                }
 
-           ป้องกันกรณีฟังก์ชันไม่ได้ return Array
-           ----------------------------------------------- */
-
-        if (
-            !Array.isArray(
-                works
-            )
-        ) {
-
-            throw new Error(
-                "ไม่สามารถตรวจสอบสถานะคะแนนได้"
-            );
-
-        }
+            }
+        );
 
 
         /* -----------------------------------------------
-           10. เก็บ Works หลังตรวจสถานะคะแนนแล้ว
+           10. เก็บ Works ลง Session ก่อน
            ----------------------------------------------- */
 
         sessionStorage.setItem(
@@ -514,10 +450,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           11. อัปเดตข้อมูล Login ใน Session
-
-           ให้ข้อมูล works ใน judge session
-           เป็นชุดเดียวกับที่ตรวจคะแนนแล้ว
+           11. อัปเดตข้อมูล Login
            ----------------------------------------------- */
 
         const updatedSession = {
@@ -550,8 +483,7 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           12. ข้อมูลพร้อมแล้ว
-           ค่อยแสดงทุกอย่างพร้อมกัน
+           12. แสดงรายชื่อผลงานทันที
            ----------------------------------------------- */
 
         displayWorks(
@@ -564,15 +496,136 @@ async function loadCategoryData() {
         );
 
 
-        displayEvaluatedCount();
+        /* -----------------------------------------------
+           จำนวน "ประเมินแล้ว"
+           แสดง ... ระหว่างรอ GAS
+           ----------------------------------------------- */
+
+        const evaluatedElement =
+            document.getElementById(
+                "evaluatedCount"
+            );
+
+
+        if (
+            evaluatedElement
+        ) {
+
+            evaluatedElement.textContent =
+                "...";
+
+        }
 
 
         /* -----------------------------------------------
-           13. ทุกอย่างเสร็จแล้ว
-           ค่อยซ่อน Loading
+           เล่น Animation รายการ
            ----------------------------------------------- */
 
         hideCategoryLoading();
+
+
+        /* -----------------------------------------------
+           13. ตรวจคะแนนเบื้องหลัง
+
+           สำคัญ:
+           ไม่มี await
+           จึงไม่บล็อกรายชื่อผลงาน
+           ----------------------------------------------- */
+
+        checkExistingScores(
+            judgeId,
+            works
+        )
+            .then(
+                function (
+                    checkedWorks
+                ) {
+
+                    if (
+                        !Array.isArray(
+                            checkedWorks
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    /* ---------------------------------------
+                       เก็บ Works ที่มีสถานะคะแนนจริง
+                       --------------------------------------- */
+
+                    sessionStorage.setItem(
+                        "works",
+                        JSON.stringify(
+                            checkedWorks
+                        )
+                    );
+
+
+                    /* ---------------------------------------
+                       อัปเดต Judge Session
+                       --------------------------------------- */
+
+                    const currentSession =
+                        JSON.parse(
+                            sessionStorage.getItem(
+                                "judge"
+                            ) ||
+                            "{}"
+                        );
+
+
+                    currentSession.works =
+                        checkedWorks;
+
+
+                    sessionStorage.setItem(
+                        "judge",
+                        JSON.stringify(
+                            currentSession
+                        )
+                    );
+
+
+                    /* ---------------------------------------
+                       อัปเดตเฉพาะเลขประเมินแล้ว
+                       ไม่ Render รายการผลงานใหม่
+                       --------------------------------------- */
+
+                    displayEvaluatedCount();
+
+
+                    console.log(
+                        "SCORE STATUS READY =",
+                        checkedWorks
+                    );
+
+                }
+            )
+            .catch(
+                function (
+                    error
+                ) {
+
+                    console.warn(
+                        "ตรวจสถานะคะแนนเบื้องหลังไม่สำเร็จ:",
+                        error
+                    );
+
+
+                    if (
+                        evaluatedElement
+                    ) {
+
+                        evaluatedElement.textContent =
+                            "-";
+
+                    }
+
+                }
+            );
 
 
         /* -----------------------------------------------
@@ -598,12 +651,6 @@ async function loadCategoryData() {
 
 
         console.log(
-            "WORKS AFTER SCORE CHECK =",
-            works
-        );
-
-
-        console.log(
             "CATEGORY READY"
         );
 
@@ -618,12 +665,11 @@ async function loadCategoryData() {
         );
 
 
-        hideCategoryLoading();
-
-
         showCategoryError(
-            error.message ||
-            "เกิดข้อผิดพลาดในการโหลดข้อมูล"
+            error &&
+                error.message
+                ? error.message
+                : "เกิดข้อผิดพลาดในการโหลดข้อมูล"
         );
 
     }
@@ -1556,7 +1602,8 @@ document.addEventListener(
 
 /* =====================================================
    PRELOAD WORK FILES
-   โหลดไฟล์รอเบื้องหลัง
+   ใช้ไฟล์ Local จากเว็บโดยตรง
+   ไม่ผ่าน GAS / Google Drive
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1564,7 +1611,9 @@ function preloadWorkFiles(
 ) {
 
     if (
-        !Array.isArray(works) ||
+        !Array.isArray(
+            works
+        ) ||
         works.length === 0
     ) {
 
@@ -1574,8 +1623,8 @@ function preloadWorkFiles(
 
 
     /*
-     * รอให้หน้า Category แสดงเสร็จก่อน
-     * ไม่แย่งเน็ตตอนกำลังโหลดรายชื่อ/คะแนน
+     * รอให้หน้า Category แสดงก่อน
+     * แล้วค่อย preload เบื้องหลัง
      */
 
     setTimeout(
@@ -1586,8 +1635,54 @@ function preloadWorkFiles(
                     work
                 ) {
 
+                    if (!work) {
+
+                        return;
+
+                    }
+
+
                     /* =========================================
-                       PRELOAD POSTER
+                       ABSTRACT PDF
+                       ========================================= */
+
+                    if (
+                        work.pdf_url
+                    ) {
+
+                        const abstractUrl =
+                            String(
+                                work.pdf_url
+                            ).trim();
+
+
+                        const abstractLink =
+                            document.createElement(
+                                "link"
+                            );
+
+
+                        abstractLink.rel =
+                            "prefetch";
+
+
+                        abstractLink.as =
+                            "fetch";
+
+
+                        abstractLink.href =
+                            abstractUrl;
+
+
+                        document.head.appendChild(
+                            abstractLink
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       POSTER PDF
                        ========================================= */
 
                     if (
@@ -1600,92 +1695,26 @@ function preloadWorkFiles(
                             ).trim();
 
 
-                        const driveMatch =
-                            posterUrl.match(
-                                /\/file\/d\/([^/]+)/
-                            );
-
-
-                        let imageUrl =
-                            posterUrl;
-
-
-                        if (
-                            driveMatch &&
-                            driveMatch[1]
-                        ) {
-
-                            imageUrl =
-                                "https://drive.google.com/thumbnail?id=" +
-                                driveMatch[1] +
-                                "&sz=w2000";
-
-                        }
-
-
-                        const image =
-                            new Image();
-
-
-                        image.src =
-                            imageUrl;
-
-                    }
-
-
-                    /* =========================================
-                       PRELOAD PDF
-                       ========================================= */
-
-                    if (
-                        work.pdf_url
-                    ) {
-
-                        const pdfUrl =
-                            String(
-                                work.pdf_url
-                            ).trim();
-
-
-                        const driveMatch =
-                            pdfUrl.match(
-                                /\/file\/d\/([^/]+)/
-                            );
-
-
-                        let previewUrl =
-                            pdfUrl;
-
-
-                        if (
-                            driveMatch &&
-                            driveMatch[1]
-                        ) {
-
-                            previewUrl =
-                                "https://drive.google.com/file/d/" +
-                                driveMatch[1] +
-                                "/preview";
-
-                        }
-
-
-                        const link =
+                        const posterLink =
                             document.createElement(
                                 "link"
                             );
 
 
-                        link.rel =
+                        posterLink.rel =
                             "prefetch";
 
 
-                        link.href =
-                            previewUrl;
+                        posterLink.as =
+                            "fetch";
+
+
+                        posterLink.href =
+                            posterUrl;
 
 
                         document.head.appendChild(
-                            link
+                            posterLink
                         );
 
                     }
@@ -1694,15 +1723,18 @@ function preloadWorkFiles(
             );
 
         },
-        1200
+        800
     );
 
 }
 
 /* =====================================================
    POSTER ZOOM + PAN
+ 
    iPad pinch zoom + drag
    Desktop mouse wheel zoom
+ 
+   แยก State จาก PDF โดยสมบูรณ์
    ===================================================== */
 
 let posterScale = 1;
@@ -1711,73 +1743,16 @@ let posterTranslateX = 0;
 let posterTranslateY = 0;
 
 let posterPinchDistance = 0;
-let posterPinchMidX = 0;
-let posterPinchMidY = 0;
 
 let posterDragX = 0;
 let posterDragY = 0;
 
 
-/* -----------------------------------------
-   Apply Transform
-   ----------------------------------------- */
+/* =====================================================
+   POSTER — ระยะระหว่าง 2 นิ้ว
+   ===================================================== */
 
-function applyPosterTransform(
-    poster
-) {
-
-    if (!poster) {
-        return;
-    }
-
-    poster.style.transform =
-        "translate3d(" +
-        posterTranslateX +
-        "px, " +
-        posterTranslateY +
-        "px, 0) scale(" +
-        posterScale +
-        ")";
-
-}
-
-
-/* -----------------------------------------
-   Reset
-   ----------------------------------------- */
-
-function resetPosterZoom(
-    poster
-) {
-
-    posterScale = 1;
-
-    posterTranslateX = 0;
-    posterTranslateY = 0;
-
-    posterPinchDistance = 0;
-    posterPinchMidX = 0;
-    posterPinchMidY = 0;
-
-    posterDragX = 0;
-    posterDragY = 0;
-
-
-    if (poster) {
-
-        poster.style.transform =
-            "translate3d(0, 0, 0) scale(1)";
-
-    }
-
-}
-
-
-/* -----------------------------------------
-   ระยะระหว่าง 2 นิ้ว
-   ----------------------------------------- */
-
-function getTouchDistance(
+function getPosterTouchDistance(
     touches
 ) {
 
@@ -1785,7 +1760,9 @@ function getTouchDistance(
         !touches ||
         touches.length < 2
     ) {
+
         return 0;
+
     }
 
 
@@ -1807,11 +1784,11 @@ function getTouchDistance(
 }
 
 
-/* -----------------------------------------
-   จุดกึ่งกลางระหว่าง 2 นิ้ว
-   ----------------------------------------- */
+/* =====================================================
+   POSTER — จุดกึ่งกลางระหว่าง 2 นิ้ว
+   ===================================================== */
 
-function getTouchMidpoint(
+function getPosterTouchMidpoint(
     touches
 ) {
 
@@ -1834,6 +1811,87 @@ function getTouchMidpoint(
 }
 
 
+/* =====================================================
+   APPLY POSTER TRANSFORM
+   ===================================================== */
+
+function applyPosterTransform(
+    poster
+) {
+
+    if (!poster) {
+
+        return;
+
+    }
+
+
+    poster.style.transform =
+        "translate3d(" +
+        posterTranslateX +
+        "px, " +
+        posterTranslateY +
+        "px, 0) scale(" +
+        posterScale +
+        ")";
+
+
+    poster.style.transformOrigin =
+        "center center";
+
+}
+
+
+/* =====================================================
+   RESET POSTER
+   ===================================================== */
+
+function resetPosterZoom(
+    poster
+) {
+
+    posterScale =
+        1;
+
+
+    posterTranslateX =
+        0;
+
+
+    posterTranslateY =
+        0;
+
+
+    posterPinchDistance =
+        0;
+
+
+    posterDragX =
+        0;
+
+
+    posterDragY =
+        0;
+
+
+    if (poster) {
+
+        poster.style.transform =
+            "translate3d(0, 0, 0) scale(1)";
+
+
+        poster.style.transformOrigin =
+            "center center";
+
+    }
+
+}
+
+
+/* =====================================================
+   ZOOM POSTER AT POINT
+   ===================================================== */
+
 function zoomPosterAtPoint(
     poster,
     newScale,
@@ -1842,7 +1900,9 @@ function zoomPosterAtPoint(
 ) {
 
     if (!poster) {
+
         return;
+
     }
 
 
@@ -1860,10 +1920,9 @@ function zoomPosterAtPoint(
         );
 
 
-    /* =================================================
-       กลับมาที่ 1x
-       = ภาพรวมตรงกลาง
-       ================================================= */
+    /* -----------------------------------------
+       กลับถึง 1x
+       ----------------------------------------- */
 
     if (
         newScale <= 1
@@ -1879,9 +1938,9 @@ function zoomPosterAtPoint(
     }
 
 
-    /* =================================================
-       ตำแหน่งรูปปัจจุบัน
-       ================================================= */
+    /* -----------------------------------------
+       ตำแหน่ง Poster ปัจจุบัน
+       ----------------------------------------- */
 
     const rect =
         poster.getBoundingClientRect();
@@ -1897,10 +1956,6 @@ function zoomPosterAtPoint(
         rect.height / 2;
 
 
-    /*
-     * ตำแหน่งนิ้วเทียบกับกลางรูป
-     */
-
     const offsetX =
         pointX -
         centerX;
@@ -1911,19 +1966,14 @@ function zoomPosterAtPoint(
         centerY;
 
 
-    /*
-     * อัตราการเปลี่ยน Scale
-     */
-
     const scaleRatio =
         newScale /
         oldScale;
 
 
-    /*
-     * ชดเชยตำแหน่ง
-     * เพื่อให้ขยายจากบริเวณระหว่างสองนิ้ว
-     */
+    /* -----------------------------------------
+       ขยายจากตำแหน่งนิ้ว
+       ----------------------------------------- */
 
     posterTranslateX -=
         offsetX *
@@ -1950,6 +2000,10 @@ function zoomPosterAtPoint(
 }
 
 
+/* =====================================================
+   SETUP POSTER ZOOM
+   ===================================================== */
+
 function setupPosterZoom(
     poster,
     modal
@@ -1971,8 +2025,71 @@ function setupPosterZoom(
 
 
     /* =================================================
-       อนุญาต Zoom เฉพาะตอน Popup เปิดอยู่
-       และ Poster กำลังแสดงจริง
+       ป้องกัน Safari Native Zoom
+       เฉพาะ Poster
+       ================================================= */
+
+    poster.style.touchAction =
+        "none";
+
+
+    poster.addEventListener(
+        "gesturestart",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    poster.addEventListener(
+        "gesturechange",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    poster.addEventListener(
+        "gestureend",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       อนุญาต Zoom เฉพาะตอน
+       Popup เปิด + Poster แสดงอยู่
        ================================================= */
 
     function canZoom() {
@@ -1986,7 +2103,7 @@ function setupPosterZoom(
 
 
     /* =================================================
-       DESKTOP — MOUSE WHEEL ZOOM
+       DESKTOP — MOUSE WHEEL
        ================================================= */
 
     poster.addEventListener(
@@ -2029,7 +2146,7 @@ function setupPosterZoom(
 
 
     /* =================================================
-       iPAD — TOUCH START
+       TOUCH START
        ================================================= */
 
     poster.addEventListener(
@@ -2048,7 +2165,7 @@ function setupPosterZoom(
 
 
             /* -----------------------------------------
-               2 นิ้ว = เริ่ม Pinch Zoom
+               2 นิ้ว = เริ่ม Pinch
                ----------------------------------------- */
 
             if (
@@ -2057,25 +2174,13 @@ function setupPosterZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 posterPinchDistance =
-                    getTouchDistance(
+                    getPosterTouchDistance(
                         event.touches
                     );
-
-
-                const midpoint =
-                    getTouchMidpoint(
-                        event.touches
-                    );
-
-
-                posterPinchMidX =
-                    midpoint.x;
-
-
-                posterPinchMidY =
-                    midpoint.y;
 
 
                 return;
@@ -2084,8 +2189,8 @@ function setupPosterZoom(
 
 
             /* -----------------------------------------
-               1 นิ้ว = เริ่มลาก
-               แต่ลากได้เมื่อ Zoom > 1
+               1 นิ้ว = Drag
+               เฉพาะเมื่อ Zoom > 1
                ----------------------------------------- */
 
             if (
@@ -2094,6 +2199,8 @@ function setupPosterZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 posterDragX =
@@ -2114,7 +2221,7 @@ function setupPosterZoom(
 
 
     /* =================================================
-       iPAD — TOUCH MOVE
+       TOUCH MOVE
        ================================================= */
 
     poster.addEventListener(
@@ -2142,9 +2249,11 @@ function setupPosterZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 const newDistance =
-                    getTouchDistance(
+                    getPosterTouchDistance(
                         event.touches
                     );
 
@@ -2163,7 +2272,7 @@ function setupPosterZoom(
 
 
                 const midpoint =
-                    getTouchMidpoint(
+                    getPosterTouchMidpoint(
                         event.touches
                     );
 
@@ -2185,14 +2294,6 @@ function setupPosterZoom(
                     newDistance;
 
 
-                posterPinchMidX =
-                    midpoint.x;
-
-
-                posterPinchMidY =
-                    midpoint.y;
-
-
                 return;
 
             }
@@ -2208,6 +2309,8 @@ function setupPosterZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 const touch =
@@ -2285,11 +2388,6 @@ function setupPosterZoom(
             }
 
 
-            /*
-             * ถ้าหุบกลับถึง 1x
-             * ให้รูปกลับตรงกลาง
-             */
-
             if (
                 posterScale <= 1
             ) {
@@ -2300,260 +2398,47 @@ function setupPosterZoom(
 
             }
 
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH CANCEL
+       ================================================= */
+
+    poster.addEventListener(
+        "touchcancel",
+        function () {
+
+            posterPinchDistance =
+                0;
+
+
+            posterDragX =
+                0;
+
+
+            posterDragY =
+                0;
+
+        },
+        {
+            passive:
+                false
         }
     );
 
 }
 
 /* =====================================================
-   iPad PDF CANVAS VIEWER
-   Render ทุกหน้า
-   ===================================================== */
-
-async function renderPdfForIPad(
-    source
-) {
-
-    const viewer =
-        document.getElementById(
-            "workFilePdfViewer"
-        );
-
-
-    const pages =
-        document.getElementById(
-            "workFilePdfPages"
-        );
-
-
-    if (
-        !viewer ||
-        !pages ||
-        !window.pdfjsLib
-    ) {
-
-        return false;
-
-    }
-
-
-    try {
-
-        pages.innerHTML =
-            "";
-
-
-        let loadingTask;
-
-
-        /*
-         * Google Drive
-         * ให้ GAS ดึงไฟล์แทน
-         */
-
-        if (
-            source &&
-            source.fileId
-        ) {
-
-            const response =
-                await fetch(
-                    GAS_URL +
-                    "?action=pdfFile" +
-                    "&file_id=" +
-                    encodeURIComponent(
-                        source.fileId
-                    ) +
-                    "&_t=" +
-                    Date.now(),
-                    {
-                        method:
-                            "GET",
-
-                        cache:
-                            "no-store"
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "โหลด PDF จากระบบไม่สำเร็จ"
-                );
-
-            }
-
-
-            const result =
-                await response.json();
-
-
-            if (
-                !result ||
-                result.success === false ||
-                !result.base64
-            ) {
-
-                throw new Error(
-                    result?.message ||
-                    "ไม่พบข้อมูล PDF"
-                );
-
-            }
-
-
-            const binary =
-                atob(
-                    result.base64
-                );
-
-
-            const bytes =
-                new Uint8Array(
-                    binary.length
-                );
-
-
-            for (
-                let i = 0;
-                i < binary.length;
-                i++
-            ) {
-
-                bytes[i] =
-                    binary.charCodeAt(
-                        i
-                    );
-
-            }
-
-
-            loadingTask =
-                window.pdfjsLib.getDocument({
-
-                    data:
-                        bytes
-
-                });
-
-        }
-        else if (
-            source &&
-            source.url
-        ) {
-
-            loadingTask =
-                window.pdfjsLib.getDocument(
-                    source.url
-                );
-
-        }
-        else {
-
-            return false;
-
-        }
-
-
-        const pdfDocument =
-            await loadingTask.promise;
-
-
-        for (
-            let pageNumber = 1;
-            pageNumber <= pdfDocument.numPages;
-            pageNumber++
-        ) {
-
-            const page =
-                await pdfDocument.getPage(
-                    pageNumber
-                );
-
-
-            const viewport =
-                page.getViewport({
-
-                    scale: 2
-
-                });
-
-
-            const canvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            canvas.className =
-                "work-file-pdf-page";
-
-
-            canvas.width =
-                Math.floor(
-                    viewport.width
-                );
-
-
-            canvas.height =
-                Math.floor(
-                    viewport.height
-                );
-
-
-            const context =
-                canvas.getContext(
-                    "2d"
-                );
-
-
-            pages.appendChild(
-                canvas
-            );
-
-
-            await page.render({
-
-                canvasContext:
-                    context,
-
-                viewport:
-                    viewport
-
-            }).promise;
-
-        }
-
-
-        viewer.hidden =
-            false;
-
-
-        return true;
-
-    }
-    catch (error) {
-
-        console.error(
-            "PDF Canvas Error:",
-            error
-        );
-
-
-        pages.innerHTML =
-            "";
-
-
-        return false;
-
-    }
-
-}
-
-/* =====================================================
    PDF ZOOM + PAN
-   iPad pinch zoom + drag
+   Adapt จากระบบ Poster
+   แยกทำงานเฉพาะบทคัดย่อ
+   ไม่กระทบระบบ Poster
    ===================================================== */
 
 let pdfScale = 1;
@@ -2562,23 +2447,88 @@ let pdfTranslateX = 0;
 let pdfTranslateY = 0;
 
 let pdfPinchDistance = 0;
-let pdfPinchMidX = 0;
-let pdfPinchMidY = 0;
 
 let pdfDragX = 0;
 let pdfDragY = 0;
 
 
-/* -----------------------------------------
-   Apply Transform
-   ----------------------------------------- */
+/* =====================================================
+   PDF — ระยะระหว่าง 2 นิ้ว
+   แยกจาก Poster โดยเฉพาะ
+   ===================================================== */
+
+function getPdfTouchDistance(
+    touches
+) {
+
+    if (
+        !touches ||
+        touches.length < 2
+    ) {
+
+        return 0;
+
+    }
+
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+
+    return Math.hypot(
+        dx,
+        dy
+    );
+
+}
+
+
+/* =====================================================
+   PDF — จุดกึ่งกลางระหว่าง 2 นิ้ว
+   แยกจาก Poster โดยเฉพาะ
+   ===================================================== */
+
+function getPdfTouchMidpoint(
+    touches
+) {
+
+    return {
+
+        x:
+            (
+                touches[0].clientX +
+                touches[1].clientX
+            ) / 2,
+
+        y:
+            (
+                touches[0].clientY +
+                touches[1].clientY
+            ) / 2
+
+    };
+
+}
+
+
+/* =====================================================
+   APPLY PDF TRANSFORM
+   ===================================================== */
 
 function applyPdfTransform(
     pages
 ) {
 
     if (!pages) {
+
         return;
+
     }
 
 
@@ -2591,28 +2541,43 @@ function applyPdfTransform(
         pdfScale +
         ")";
 
+
+    pages.style.transformOrigin =
+        "center center";
+
 }
 
 
-/* -----------------------------------------
-   Reset
-   ----------------------------------------- */
+/* =====================================================
+   RESET PDF ZOOM
+   ===================================================== */
 
 function resetPdfZoom(
     pages
 ) {
 
-    pdfScale = 1;
+    pdfScale =
+        1;
 
-    pdfTranslateX = 0;
-    pdfTranslateY = 0;
 
-    pdfPinchDistance = 0;
-    pdfPinchMidX = 0;
-    pdfPinchMidY = 0;
+    pdfTranslateX =
+        0;
 
-    pdfDragX = 0;
-    pdfDragY = 0;
+
+    pdfTranslateY =
+        0;
+
+
+    pdfPinchDistance =
+        0;
+
+
+    pdfDragX =
+        0;
+
+
+    pdfDragY =
+        0;
 
 
     if (pages) {
@@ -2620,14 +2585,19 @@ function resetPdfZoom(
         pages.style.transform =
             "translate3d(0, 0, 0) scale(1)";
 
+
+        pages.style.transformOrigin =
+            "center center";
+
     }
 
 }
 
 
-/* -----------------------------------------
-   ซูมตรงตำแหน่งนิ้ว
-   ----------------------------------------- */
+/* =====================================================
+   ZOOM PDF AT POINT
+   ใช้หลักเดียวกับ Poster
+   ===================================================== */
 
 function zoomPdfAtPoint(
     pages,
@@ -2637,8 +2607,14 @@ function zoomPdfAtPoint(
 ) {
 
     if (!pages) {
+
         return;
+
     }
+
+
+    const oldScale =
+        pdfScale;
 
 
     newScale =
@@ -2651,17 +2627,16 @@ function zoomPdfAtPoint(
         );
 
 
+    /* -----------------------------------------
+       หุบกลับถึง 1x
+       ให้กลับตรงกลาง
+       ----------------------------------------- */
+
     if (
         newScale <= 1
     ) {
 
-        pdfScale = 1;
-
-        pdfTranslateX = 0;
-        pdfTranslateY = 0;
-
-
-        applyPdfTransform(
+        resetPdfZoom(
             pages
         );
 
@@ -2671,51 +2646,63 @@ function zoomPdfAtPoint(
     }
 
 
+    /* -----------------------------------------
+       ตำแหน่ง PDF ปัจจุบัน
+       ----------------------------------------- */
+
     const rect =
         pages.getBoundingClientRect();
 
 
-    const imageX =
-        (
-            pointX -
-            rect.left
-        ) /
-        pdfScale;
+    const centerX =
+        rect.left +
+        rect.width / 2;
 
 
-    const imageY =
-        (
-            pointY -
-            rect.top
-        ) /
-        pdfScale;
+    const centerY =
+        rect.top +
+        rect.height / 2;
 
 
-    const baseLeft =
-        rect.left -
-        pdfTranslateX;
+    /* -----------------------------------------
+       ตำแหน่งนิ้วเทียบกับกลาง PDF
+       ----------------------------------------- */
 
-
-    const baseTop =
-        rect.top -
-        pdfTranslateY;
-
-
-    pdfTranslateX =
+    const offsetX =
         pointX -
-        baseLeft -
+        centerX;
+
+
+    const offsetY =
+        pointY -
+        centerY;
+
+
+    /* -----------------------------------------
+       อัตราการเปลี่ยน Scale
+       ----------------------------------------- */
+
+    const scaleRatio =
+        newScale /
+        oldScale;
+
+
+    /* -----------------------------------------
+       ชดเชยตำแหน่ง
+       ให้ขยายจากบริเวณระหว่างสองนิ้ว
+       ----------------------------------------- */
+
+    pdfTranslateX -=
+        offsetX *
         (
-            imageX *
-            newScale
+            scaleRatio - 1
         );
 
 
-    pdfTranslateY =
-        pointY -
-        baseTop -
+    pdfTranslateY -=
+        offsetY *
         (
-            imageY *
-            newScale
+            scaleRatio - 1
         );
 
 
@@ -2731,7 +2718,7 @@ function zoomPdfAtPoint(
 
 
 /* =====================================================
-   SETUP PDF ZOOM EVENTS
+   SETUP PDF ZOOM
    ===================================================== */
 
 function setupPdfZoom(
@@ -2757,9 +2744,84 @@ function setupPdfZoom(
 
 
     /* =================================================
-       อนุญาต Zoom เฉพาะตอน
-       - Popup เปิดอยู่
-       - PDF Viewer กำลังแสดงจริง
+       สำคัญมาก
+ 
+       กัน Safari ใช้ Native Zoom
+       เฉพาะพื้นที่ PDF
+       ================================================= */
+
+    viewer.style.touchAction =
+        "pan-x pan-y";
+
+    pages.style.touchAction =
+        "pan-x pan-y";
+
+
+    /* =================================================
+       Safari Gesture Events
+ 
+       กันการซูมทั้งหน้า / ทั้ง Popup
+       ================================================= */
+
+    viewer.addEventListener(
+        "gesturestart",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    viewer.addEventListener(
+        "gesturechange",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    viewer.addEventListener(
+        "gestureend",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       อนุญาต Custom Zoom เฉพาะเมื่อ
+ 
+       - Popup เปิด
+       - PDF Viewer แสดงอยู่
        ================================================= */
 
     function canZoom() {
@@ -2773,7 +2835,7 @@ function setupPdfZoom(
 
 
     /* =================================================
-       iPAD — TOUCH START
+       TOUCH START
        ================================================= */
 
     viewer.addEventListener(
@@ -2801,25 +2863,13 @@ function setupPdfZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 pdfPinchDistance =
-                    getTouchDistance(
+                    getPdfTouchDistance(
                         event.touches
                     );
-
-
-                const midpoint =
-                    getTouchMidpoint(
-                        event.touches
-                    );
-
-
-                pdfPinchMidX =
-                    midpoint.x;
-
-
-                pdfPinchMidY =
-                    midpoint.y;
 
 
                 return;
@@ -2828,8 +2878,8 @@ function setupPdfZoom(
 
 
             /* -----------------------------------------
-               1 นิ้ว = เตรียมลาก
-               เมื่อ PDF ถูก Zoom แล้ว
+               1 นิ้ว = เริ่มลาก
+               ลากได้เมื่อขยายเกิน 1x
                ----------------------------------------- */
 
             if (
@@ -2838,6 +2888,8 @@ function setupPdfZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 pdfDragX =
@@ -2858,7 +2910,7 @@ function setupPdfZoom(
 
 
     /* =================================================
-       iPAD — TOUCH MOVE
+       TOUCH MOVE
        ================================================= */
 
     viewer.addEventListener(
@@ -2886,9 +2938,11 @@ function setupPdfZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 const newDistance =
-                    getTouchDistance(
+                    getPdfTouchDistance(
                         event.touches
                     );
 
@@ -2907,7 +2961,7 @@ function setupPdfZoom(
 
 
                 const midpoint =
-                    getTouchMidpoint(
+                    getPdfTouchMidpoint(
                         event.touches
                     );
 
@@ -2929,21 +2983,13 @@ function setupPdfZoom(
                     newDistance;
 
 
-                pdfPinchMidX =
-                    midpoint.x;
-
-
-                pdfPinchMidY =
-                    midpoint.y;
-
-
                 return;
 
             }
 
 
             /* -----------------------------------------
-               1 นิ้ว = ลาก PDF
+               1 นิ้ว = Drag
                ----------------------------------------- */
 
             if (
@@ -2952,6 +2998,8 @@ function setupPdfZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 const touch =
@@ -3004,6 +3052,11 @@ function setupPdfZoom(
                 0;
 
 
+            /* -----------------------------------------
+               เหลือ 1 นิ้วหลัง Pinch
+               ให้ต่อเป็น Drag ได้เลย
+               ----------------------------------------- */
+
             if (
                 event.touches.length === 1 &&
                 pdfScale > 1
@@ -3029,10 +3082,10 @@ function setupPdfZoom(
             }
 
 
-            /*
-             * หุบกลับจนถึง 1x
-             * ให้ PDF กลับมาตรงกลาง
-             */
+            /* -----------------------------------------
+               กลับถึง 1x
+               Reset ให้อยู่กลางเหมือน Poster
+               ----------------------------------------- */
 
             if (
                 pdfScale <= 1
@@ -3044,14 +3097,565 @@ function setupPdfZoom(
 
             }
 
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH CANCEL
+ 
+       กันนิ้วหลุด / Safari ยกเลิก Gesture
+       แล้ว State ค้าง
+       ================================================= */
+
+    viewer.addEventListener(
+        "touchcancel",
+        function () {
+
+            pdfPinchDistance =
+                0;
+
+
+            pdfDragX =
+                0;
+
+
+            pdfDragY =
+                0;
+
+        },
+        {
+            passive:
+                false
         }
     );
 
 }
 
 /* =====================================================
-   LOCK NATIVE PINCH ZOOM INSIDE FILE POPUP
+   PDF.JS LOADER FOR iPAD ABSTRACT
+   ===================================================== */
 
+const PDFJS_FALLBACK_VERSION =
+    "3.11.174";
+
+
+function setupPdfJsWorker(
+    lib
+) {
+
+    if (
+        !lib ||
+        !lib.GlobalWorkerOptions
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        lib.GlobalWorkerOptions.workerSrc
+    ) {
+
+        return;
+
+    }
+
+
+    const version =
+        String(
+            lib.version ||
+            PDFJS_FALLBACK_VERSION
+        ).trim();
+
+
+    lib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+        version +
+        "/pdf.worker.min.js";
+
+}
+
+
+async function ensurePdfJsForIPad() {
+
+    if (
+        window.pdfjsLib
+    ) {
+
+        setupPdfJsWorker(
+            window.pdfjsLib
+        );
+
+
+        return true;
+
+    }
+
+
+    if (
+        window.__pdfJsLoadingPromise
+    ) {
+
+        return window.__pdfJsLoadingPromise;
+
+    }
+
+
+    window.__pdfJsLoadingPromise =
+        new Promise(
+            function (
+                resolve
+            ) {
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
+                    PDFJS_FALLBACK_VERSION +
+                    "/pdf.min.js";
+
+
+                script.async =
+                    true;
+
+
+                script.onload =
+                    function () {
+
+                        if (
+                            window.pdfjsLib
+                        ) {
+
+                            setupPdfJsWorker(
+                                window.pdfjsLib
+                            );
+
+
+                            resolve(
+                                true
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        resolve(
+                            false
+                        );
+
+                    };
+
+
+                script.onerror =
+                    function () {
+
+                        resolve(
+                            false
+                        );
+
+                    };
+
+
+                document.head.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    return window.__pdfJsLoadingPromise;
+
+}
+
+/* =====================================================
+   LOCAL PDF CANVAS VIEWER
+   ใช้ได้ทั้งบทคัดย่อ + โปสเตอร์
+
+   สำคัญ:
+   Browser โหลดไฟล์ก่อน
+   แล้วส่ง ArrayBuffer ให้ PDF.js
+
+   แก้ Safari / iPad Missing PDF
+   ===================================================== */
+
+async function renderPdfForIPad(
+    source
+) {
+
+    const viewer =
+        document.getElementById(
+            "workFilePdfViewer"
+        );
+
+
+    const pages =
+        document.getElementById(
+            "workFilePdfPages"
+        );
+
+
+    if (
+        !viewer ||
+        !pages
+    ) {
+
+        return false;
+
+    }
+
+
+    const pdfJsReady =
+        await ensurePdfJsForIPad();
+
+
+    if (
+        !pdfJsReady ||
+        !window.pdfjsLib
+    ) {
+
+        throw new Error(
+            "ไม่สามารถโหลด PDF Viewer ได้"
+        );
+
+    }
+
+
+    if (
+        !source ||
+        !source.url
+    ) {
+
+        throw new Error(
+            "ไม่พบที่อยู่ไฟล์ PDF"
+        );
+
+    }
+
+
+    try {
+
+        pages.innerHTML =
+            "";
+
+
+        /* =============================================
+           สร้าง URL แบบสมบูรณ์
+
+           new URL จะจัดการ:
+           - ภาษาไทย
+           - space
+           - วงเล็บ
+           - smart quote
+           - relative path
+           ============================================= */
+
+        const fileUrl =
+            new URL(
+                String(
+                    source.url
+                ).trim(),
+                window.location.href
+            );
+
+
+        console.log(
+            "LOCAL PDF FETCH =",
+            fileUrl.href
+        );
+
+
+        /* =============================================
+           โหลด PDF ด้วย Browser ก่อน
+
+           ไม่ให้ PDF.js fetch URL เอง
+           ============================================= */
+
+        const response =
+            await fetch(
+                fileUrl.href,
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "default"
+                }
+            );
+
+
+        console.log(
+            "PDF RESPONSE =",
+            response.status,
+            response.url
+        );
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                "หาไฟล์ PDF ไม่เจอ" +
+                " | HTTP " +
+                response.status
+            );
+
+        }
+
+
+        /* =============================================
+           ตรวจว่าได้ PDF จริง
+           ============================================= */
+
+        const contentType =
+            String(
+                response.headers.get(
+                    "content-type"
+                ) ||
+                ""
+            ).toLowerCase();
+
+
+        console.log(
+            "PDF CONTENT TYPE =",
+            contentType
+        );
+
+
+        /*
+         * ไม่บังคับ application/pdf
+         * เพราะ GitHub / Cloudflare บางครั้งส่ง
+         * application/octet-stream ได้
+         */
+
+
+        /* =============================================
+           อ่านไฟล์เข้า Memory
+           ============================================= */
+
+        const arrayBuffer =
+            await response.arrayBuffer();
+
+
+        if (
+            !arrayBuffer ||
+            arrayBuffer.byteLength === 0
+        ) {
+
+            throw new Error(
+                "ไฟล์ PDF ว่างเปล่า"
+            );
+
+        }
+
+
+        console.log(
+            "PDF SIZE =",
+            arrayBuffer.byteLength
+        );
+
+
+        /* =============================================
+           ส่งข้อมูลให้ PDF.js โดยตรง
+
+           PDF.js ไม่ต้องยิง Network เองอีก
+           ============================================= */
+
+        const loadingTask =
+            window.pdfjsLib.getDocument({
+
+                data:
+                    new Uint8Array(
+                        arrayBuffer
+                    )
+
+            });
+
+
+        const pdfDocument =
+            await loadingTask.promise;
+
+
+        /* =============================================
+           iPad ใช้ Scale ต่ำกว่า
+           ลด Memory
+
+           Desktop ยังชัดเต็ม
+           ============================================= */
+
+        const isIPadDevice =
+            /iPad|Macintosh/.test(
+                navigator.userAgent
+            ) &&
+            navigator.maxTouchPoints > 1;
+
+
+        const renderScale =
+            isIPadDevice
+                ? 1.35
+                : 2;
+
+
+        /* =============================================
+           Render ทุกหน้า
+           ============================================= */
+
+        for (
+            let pageNumber = 1;
+            pageNumber <= pdfDocument.numPages;
+            pageNumber++
+        ) {
+
+            const page =
+                await pdfDocument.getPage(
+                    pageNumber
+                );
+
+
+            const viewport =
+                page.getViewport({
+
+                    scale:
+                        renderScale
+
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.className =
+                "work-file-pdf-page";
+
+
+            canvas.width =
+                Math.floor(
+                    viewport.width
+                );
+
+
+            canvas.height =
+                Math.floor(
+                    viewport.height
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d",
+                    {
+                        alpha:
+                            false
+                    }
+                );
+
+
+            pages.appendChild(
+                canvas
+            );
+
+
+            await page.render({
+
+                canvasContext:
+                    context,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+        }
+
+
+        /* =============================================
+           เปิด Viewer
+           ============================================= */
+
+        viewer.hidden =
+            false;
+
+
+        /* =============================================
+           ทุกไฟล์เริ่มบนสุด
+           ============================================= */
+
+        viewer.scrollTop =
+            0;
+
+
+        viewer.scrollLeft =
+            0;
+
+
+        requestAnimationFrame(
+            function () {
+
+                viewer.scrollTop =
+                    0;
+
+
+                viewer.scrollLeft =
+                    0;
+
+            }
+        );
+
+
+        console.log(
+            "LOCAL PDF READY =",
+            pdfDocument.numPages,
+            "pages"
+        );
+
+
+        return true;
+
+    }
+    catch (
+    error
+    ) {
+
+        console.error(
+            "LOCAL PDF ERROR =",
+            error
+        );
+
+
+        pages.innerHTML =
+            "";
+
+
+        throw new Error(
+            error &&
+                error.message
+                ? error.message
+                : "ไม่สามารถโหลด PDF ได้"
+        );
+
+    }
+
+}
+
+/* =====================================================
+   LOCK NATIVE PINCH ZOOM INSIDE FILE POPUP
+ 
    หน้าที่:
    - ห้าม Safari ซูมทั้งหน้า / ทั้ง popup
    - custom zoom ของ Poster / PDF ยังทำงานได้
@@ -3130,10 +3734,10 @@ function setupWorkFileModalZoomLock(
 
     /* =================================================
        Touch Pinch
-
+ 
        ถ้ามีมากกว่า 1 นิ้ว
        ห้าม Safari เอา gesture ไป Zoom หน้าเว็บ
-
+ 
        แต่ event ยังเดินผ่านระบบ custom zoom
        ของ Poster / PDF ตามปกติ
        ================================================= */
@@ -3205,6 +3809,13 @@ function showWorkFileEmpty(
 
 }
 
+/* =====================================================
+   OPEN WORK FILE MODAL
+   Local PDF Only
+   - Abstract = PDF หลายหน้า
+   - Poster   = PDF
+   ===================================================== */
+
 async function openWorkFileModal(
     work,
     type
@@ -3268,10 +3879,6 @@ async function openWorkFileModal(
         );
 
 
-    /* =================================================
-       CHECK
-       ================================================= */
-
     if (
         !modal ||
         !title ||
@@ -3295,31 +3902,10 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       DEVICE
-       ================================================= */
-
-    const isIPad =
-        /iPad|Macintosh/.test(
-            navigator.userAgent
-        ) &&
-        navigator.maxTouchPoints > 1;
-
-
-    /* =================================================
-       เตรียมระบบ Gesture
-
-       สำคัญ:
-       Lock native Safari zoom ก่อน
-       แล้วค่อยให้ custom viewer จัดการไฟล์
+       SETUP
        ================================================= */
 
     setupWorkFileModalZoomLock(
-        modal
-    );
-
-
-    setupPosterZoom(
-        poster,
         modal
     );
 
@@ -3335,26 +3921,40 @@ async function openWorkFileModal(
        RESET
        ================================================= */
 
-    resetPosterZoom(
-        poster
-    );
-
-
     resetPdfZoom(
         pdfPages
     );
+
+    pdfViewer.scrollTop =
+        0;
+
+
+    pdfViewer.scrollLeft =
+        0;
 
 
     pdf.hidden =
         true;
 
 
-    pdfViewer.hidden =
-        true;
+    pdf.src =
+        "";
 
 
     poster.hidden =
         true;
+
+
+    poster.src =
+        "";
+
+
+    pdfViewer.hidden =
+        true;
+
+
+    pdfPages.innerHTML =
+        "";
 
 
     hideWorkFileEmpty(
@@ -3364,18 +3964,6 @@ async function openWorkFileModal(
 
     loading.hidden =
         false;
-
-
-    pdfPages.innerHTML =
-        "";
-
-
-    pdf.src =
-        "";
-
-
-    poster.src =
-        "";
 
 
     /* =================================================
@@ -3389,7 +3977,7 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       เปิด Popup ก่อน
+       OPEN MODAL
        ================================================= */
 
     modal.hidden =
@@ -3416,330 +4004,177 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       ABSTRACT
+       หา URL
        ================================================= */
 
+    let fileUrl =
+        "";
+
+
     if (
-        type === "abstract" &&
-        work.pdf_url
+        type === "abstract"
     ) {
 
-        const pdfUrl =
+        fileUrl =
             String(
-                work.pdf_url
+                work &&
+                    work.pdf_url
+                    ? work.pdf_url
+                    : ""
             ).trim();
 
+    }
+    else if (
+        type === "poster"
+    ) {
 
-        const driveMatch =
-            pdfUrl.match(
-                /\/file\/d\/([^/]+)/
-            );
+        fileUrl =
+            String(
+                work &&
+                    work.poster_url
+                    ? work.poster_url
+                    : ""
+            ).trim();
 
-
-        /* =================================================
-   iPAD
-   ใช้ PDF.js Canvas Viewer เท่านั้น
-
-   ห้าม fallback ไป Google Drive iframe
-   เพราะจะกลับมาคุม pinch ไม่ได้
-   ================================================= */
-
-        if (
-            isIPad
-        ) {
-
-            /* =================================================
-               iPAD ABSTRACT
-        
-               1. ลองใช้ PDF.js ก่อน
-               2. ถ้า PDF.js ไม่สำเร็จ
-                  fallback ไป Google Drive Preview
-        
-               ไม่เกี่ยวกับระบบ Poster
-               ================================================= */
-
-            pdf.hidden =
-                true;
+    }
 
 
-            pdf.src =
-                "";
+    if (
+        !fileUrl
+    ) {
+
+        loading.hidden =
+            true;
 
 
-            pdfViewer.hidden =
-                true;
+        showWorkFileEmpty(
+            empty
+        );
 
 
-            pdfPages.innerHTML =
-                "";
+        return;
+
+    }
 
 
-            let rendered =
-                false;
+    /* =================================================
+       LOCAL PDF
+       ใช้ PDF.js เหมือนกันทั้ง Abstract / Poster
 
+       ไม่ผ่าน GAS
+       ไม่ผ่าน Google Drive
+       ================================================= */
 
-            /* -----------------------------------------------
-               ลอง PDF.js ก่อน
-               ----------------------------------------------- */
+    try {
 
-            try {
+        const rendered =
+            await renderPdfForIPad({
 
-                if (
-                    driveMatch &&
-                    driveMatch[1]
-                ) {
+                url:
+                    fileUrl
 
-                    rendered =
-                        await renderPdfForIPad({
-
-                            fileId:
-                                driveMatch[1]
-
-                        });
-
-                }
-                else {
-
-                    rendered =
-                        await renderPdfForIPad({
-
-                            url:
-                                pdfUrl
-
-                        });
-
-                }
-
-            }
-            catch (
-            error
-            ) {
-
-                console.warn(
-                    "iPad PDF.js ไม่สำเร็จ:",
-                    error
-                );
-
-
-                rendered =
-                    false;
-
-            }
-
-
-            /* -----------------------------------------------
-               PDF.js สำเร็จ
-               ----------------------------------------------- */
-
-            if (
-                rendered
-            ) {
-
-                loading.hidden =
-                    true;
-
-
-                pdfViewer.hidden =
-                    false;
-
-
-                pdf.hidden =
-                    true;
-
-
-                resetPdfZoom(
-                    pdfPages
-                );
-
-
-                return;
-
-            }
-
-
-            /* =================================================
-            PDF.js ไม่สำเร็จ
-
-   iPad ห้ามใช้ iframe
-   เพราะจะควบคุม pinch zoom ไม่ได้
-                ================================================= */
-
-            loading.hidden =
-                true;
-
-
-            pdfViewer.hidden =
-                true;
-
-
-            pdf.hidden =
-                true;
-
-
-            showWorkFileEmpty(
-                empty,
-                "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-            );
-
-
-            return;
-
-        }
-
-        /* =================================================
-           DESKTOP
-           ใช้ Google Drive Preview ได้เหมือนเดิม
-           ================================================= */
-
-        let previewUrl =
-            pdfUrl;
+            });
 
 
         if (
-            driveMatch &&
-            driveMatch[1]
+            !rendered
         ) {
 
-            previewUrl =
-                "https://drive.google.com/file/d/" +
-                driveMatch[1] +
-                "/preview";
+            throw new Error(
+                "ไม่สามารถแสดงไฟล์ได้"
+            );
 
         }
+
+
+        loading.hidden =
+            true;
+
+
+        pdfViewer.hidden =
+            false;
 
 
         pdf.hidden =
-            false;
+            true;
+
+
+        poster.hidden =
+            true;
+
+
+        resetPdfZoom(
+            pdfPages
+        );
+
+
+        /* -----------------------------------------------
+           ทุกไฟล์เริ่มจากบนสุดเสมอ
+           ----------------------------------------------- */
+
+        pdfViewer.scrollTop =
+            0;
+
+
+        pdfViewer.scrollLeft =
+            0;
+
+
+        requestAnimationFrame(
+            function () {
+
+                pdfViewer.scrollTop =
+                    0;
+
+
+                pdfViewer.scrollLeft =
+                    0;
+
+            }
+        );
+
+
+        return;
+
+    }
+    catch (
+    error
+    ) {
+
+        console.error(
+            "Local Work File Error:",
+            error
+        );
+
+
+        loading.hidden =
+            true;
 
 
         pdfViewer.hidden =
             true;
 
 
-        pdf.onload =
-            function () {
-
-                loading.hidden =
-                    true;
-
-            };
+        pdf.hidden =
+            true;
 
 
-        pdf.onerror =
-            function () {
-
-                loading.hidden =
-                    true;
+        poster.hidden =
+            true;
 
 
-                pdf.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty
-                );
-            };
-
-
-        pdf.src =
-            previewUrl;
-
-
-        return;
+        showWorkFileEmpty(
+            empty,
+            "โหลดไฟล์ไม่สำเร็จ: " +
+            (
+                error &&
+                    error.message
+                    ? error.message
+                    : "Unknown error"
+            )
+        );
 
     }
-
-
-    /* =================================================
-       POSTER
-       ================================================= */
-
-    if (
-        type === "poster" &&
-        work.poster_url
-    ) {
-
-        const posterUrl =
-            String(
-                work.poster_url
-            ).trim();
-
-
-        let imageUrl =
-            posterUrl;
-
-
-        const driveMatch =
-            posterUrl.match(
-                /\/file\/d\/([^/]+)/
-            );
-
-
-        if (
-            driveMatch &&
-            driveMatch[1]
-        ) {
-
-            imageUrl =
-                "https://drive.google.com/thumbnail?id=" +
-                driveMatch[1] +
-                "&sz=w2000";
-
-        }
-
-
-        poster.onload =
-            function () {
-
-                loading.hidden =
-                    true;
-
-
-                poster.hidden =
-                    false;
-
-            };
-
-
-        poster.onerror =
-            function () {
-
-                loading.hidden =
-                    true;
-
-
-                poster.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty
-                );
-
-            };
-
-
-        poster.src =
-            imageUrl;
-
-
-        return;
-
-    }
-
-
-    /* =================================================
-       EMPTY
-       ================================================= */
-
-    loading.hidden =
-        true;
-
-
-    showWorkFileEmpty(
-        empty
-    );
 
 }
 
@@ -3808,6 +4243,14 @@ document.addEventListener(
             if (
                 pdfViewer
             ) {
+
+                pdfViewer.scrollTop =
+                    0;
+
+
+                pdfViewer.scrollLeft =
+                    0;
+
 
                 pdfViewer.hidden =
                     true;
@@ -4115,7 +4558,7 @@ async function checkExistingScores(
 
         /* -----------------------------------------------
            สำคัญมาก
-
+ 
            เช็กคะแนนไม่ได้
            ห้ามทำให้ Category พัง
            ----------------------------------------------- */
