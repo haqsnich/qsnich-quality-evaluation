@@ -2645,43 +2645,60 @@ async function loadOldScore() {
 
 
             if (
-                lastSavedTime &&
-                score.updated_at
+                lastSavedTime
             ) {
 
-                const savedDate =
-                    new Date(
-                        score.updated_at
-                    );
+                const savedAt =
+                    score.updated_at ||
+                    score.timestamp ||
+                    "";
 
 
                 if (
-                    !Number.isNaN(
-                        savedDate.getTime()
-                    )
+                    savedAt
                 ) {
 
-                    lastSavedTime.textContent =
-                        "บันทึกล่าสุด : " +
-                        savedDate.toLocaleString(
-                            "th-TH",
-                            {
-                                dateStyle:
-                                    "short",
-
-                                timeStyle:
-                                    "short",
-
-                                timeZone:
-                                    "Asia/Bangkok"
-                            }
+                    const savedDate =
+                        new Date(
+                            savedAt
                         );
+
+
+                    if (
+                        !Number.isNaN(
+                            savedDate.getTime()
+                        )
+                    ) {
+
+                        lastSavedTime.textContent =
+                            "บันทึกล่าสุด : " +
+                            savedDate.toLocaleString(
+                                "th-TH",
+                                {
+                                    dateStyle:
+                                        "short",
+
+                                    timeStyle:
+                                        "short",
+
+                                    timeZone:
+                                        "Asia/Bangkok"
+                                }
+                            );
+
+                    }
+                    else {
+
+                        lastSavedTime.textContent =
+                            "มีคะแนนที่บันทึกไว้แล้ว";
+
+                    }
 
                 }
                 else {
 
                     lastSavedTime.textContent =
-                        "";
+                        "มีคะแนนที่บันทึกไว้แล้ว";
 
                 }
 
@@ -3410,12 +3427,6 @@ async function saveConfirmedScore(
 
         const result =
             await response.json();
-
-
-        console.log(
-            "SAVE SCORE RESULT =",
-            result
-        );
 
 
         if (

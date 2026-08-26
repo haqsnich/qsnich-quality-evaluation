@@ -2254,7 +2254,7 @@ function setupPosterZoom(
    ===================================================== */
 
 async function renderPdfForIPad(
-    pdfUrl
+    source
 ) {
 
     const viewer =
@@ -2282,31 +2282,126 @@ async function renderPdfForIPad(
 
     try {
 
-        /*
-         * ล้าง PDF งานก่อน
-         */
-
         pages.innerHTML =
             "";
 
 
+        let loadingTask;
+
+
         /*
-         * โหลด PDF
+         * Google Drive
+         * ให้ GAS ดึงไฟล์แทน
          */
 
-        const loadingTask =
-            window.pdfjsLib.getDocument(
-                pdfUrl
-            );
+        if (
+            source &&
+            source.fileId
+        ) {
+
+            const response =
+                await fetch(
+                    GAS_URL +
+                    "?action=pdfFile" +
+                    "&file_id=" +
+                    encodeURIComponent(
+                        source.fileId
+                    ) +
+                    "&_t=" +
+                    Date.now(),
+                    {
+                        method:
+                            "GET",
+
+                        cache:
+                            "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "โหลด PDF จากระบบไม่สำเร็จ"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (
+                !result ||
+                result.success === false ||
+                !result.base64
+            ) {
+
+                throw new Error(
+                    result?.message ||
+                    "ไม่พบข้อมูล PDF"
+                );
+
+            }
+
+
+            const binary =
+                atob(
+                    result.base64
+                );
+
+
+            const bytes =
+                new Uint8Array(
+                    binary.length
+                );
+
+
+            for (
+                let i = 0;
+                i < binary.length;
+                i++
+            ) {
+
+                bytes[i] =
+                    binary.charCodeAt(
+                        i
+                    );
+
+            }
+
+
+            loadingTask =
+                window.pdfjsLib.getDocument({
+
+                    data:
+                        bytes
+
+                });
+
+        }
+        else if (
+            source &&
+            source.url
+        ) {
+
+            loadingTask =
+                window.pdfjsLib.getDocument(
+                    source.url
+                );
+
+        }
+        else {
+
+            return false;
+
+        }
 
 
         const pdfDocument =
             await loadingTask.promise;
 
-
-        /*
-         * Render ทุกหน้า
-         */
 
         for (
             let pageNumber = 1;
@@ -2322,7 +2417,9 @@ async function renderPdfForIPad(
 
             const viewport =
                 page.getViewport({
+
                     scale: 2
+
                 });
 
 
@@ -2379,9 +2476,7 @@ async function renderPdfForIPad(
         return true;
 
     }
-    catch (
-    error
-    ) {
+    catch (error) {
 
         console.error(
             "PDF Canvas Error:",
@@ -3292,82 +3387,91 @@ async function openWorkFileModal(
    เพราะจะกลับมาคุม pinch ไม่ได้
    ================================================= */
 
-if (
-    isIPad
-) {
+        if (
+            isIPad
+        ) {
 
-    pdf.hidden =
-        true;
-
-
-    pdf.src =
-        "";
+            pdf.hidden =
+                true;
 
 
-    pdfViewer.hidden =
-        true;
+            pdf.src =
+                "";
 
 
-    pdfPages.innerHTML =
-        "";
+            pdfViewer.hidden =
+                true;
 
 
-    let directPdfUrl =
-        pdfUrl;
+            pdfPages.innerHTML =
+                "";
 
 
-    if (
-        driveMatch &&
-        driveMatch[1]
-    ) {
-
-        directPdfUrl =
-            "https://drive.google.com/uc?export=download&id=" +
-            driveMatch[1];
-
-    }
+            let rendered =
+                false;
 
 
-    const rendered =
-        await renderPdfForIPad(
-            directPdfUrl
-        );
+            if (
+                driveMatch &&
+                driveMatch[1]
+            ) {
+
+                rendered =
+                    await renderPdfForIPad({
+
+                        fileId:
+                            driveMatch[1]
+
+                    });
+
+            }
+            else {
+
+                rendered =
+                    await renderPdfForIPad({
+
+                        url:
+                            pdfUrl
+
+                    });
+
+            }
 
 
-    loading.hidden =
-        true;
+            loading.hidden =
+                true;
 
 
-    if (
-        rendered
-    ) {
+            if (
+                rendered
+            ) {
 
-        pdfViewer.hidden =
-            false;
-
-
-        resetPdfZoom(
-            pdfPages
-        );
-
-    }
-    else {
-
-        pdfViewer.hidden =
-            true;
+                pdfViewer.hidden =
+                    false;
 
 
-        showWorkFileEmpty(
-            empty,
-            "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-        );
+                resetPdfZoom(
+                    pdfPages
+                );
 
-    }
+            }
+            else {
+
+                pdfViewer.hidden =
+                    true;
 
 
-    return;
+                showWorkFileEmpty(
+                    empty,
+                    "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+                );
 
-}
+            }
+
+
+            return;
+
+        }
 
         /* =================================================
            DESKTOP
@@ -3834,125 +3938,125 @@ async function refreshScoreButtons(
 
 
                     let score =
-    null;
+                        null;
 
 
-/* -----------------------------------
-   หา Object คะแนนจาก Response
-   รองรับจำนวนเกณฑ์แบบ Dynamic
-   ----------------------------------- */
+                    /* -----------------------------------
+                       หา Object คะแนนจาก Response
+                       รองรับจำนวนเกณฑ์แบบ Dynamic
+                       ----------------------------------- */
 
-if (
-    result &&
-    result.success === false
-) {
+                    if (
+                        result &&
+                        result.success === false
+                    ) {
 
-    score =
-        null;
+                        score =
+                            null;
 
-}
-else if (
-    result &&
-    result.data &&
-    typeof result.data === "object"
-) {
+                    }
+                    else if (
+                        result &&
+                        result.data &&
+                        typeof result.data === "object"
+                    ) {
 
-    score =
-        result.data;
+                        score =
+                            result.data;
 
-}
-else if (
-    result &&
-    result.score &&
-    typeof result.score === "object"
-) {
+                    }
+                    else if (
+                        result &&
+                        result.score &&
+                        typeof result.score === "object"
+                    ) {
 
-    score =
-        result.score;
+                        score =
+                            result.score;
 
-}
-else if (
-    result &&
-    typeof result === "object"
-) {
+                    }
+                    else if (
+                        result &&
+                        typeof result === "object"
+                    ) {
 
-    const hasScoreKey =
-        Object.keys(
-            result
-        ).some(
-            function (
-                key
-            ) {
+                        const hasScoreKey =
+                            Object.keys(
+                                result
+                            ).some(
+                                function (
+                                    key
+                                ) {
 
-                return /^c\d+$/.test(
-                    key
-                );
+                                    return /^c\d+$/.test(
+                                        key
+                                    );
 
-            }
-        );
-
-
-    if (
-        hasScoreKey
-    ) {
-
-        score =
-            result;
-
-    }
-
-}
+                                }
+                            );
 
 
-/* -----------------------------------
-   ตรวจว่ามีคะแนนจริงอย่างน้อย 1 ช่อง
+                        if (
+                            hasScoreKey
+                        ) {
 
-   รองรับ c1, c2, c3 ... cN
-   ไม่ล็อกจำนวนเกณฑ์
-   ----------------------------------- */
+                            score =
+                                result;
 
-let hasRealScore =
-    false;
+                        }
 
-
-if (
-    score &&
-    typeof score === "object"
-) {
-
-    hasRealScore =
-        Object.keys(
-            score
-        ).some(
-            function (
-                key
-            ) {
-
-                if (
-                    !/^c\d+$/.test(
-                        key
-                    )
-                ) {
-
-                    return false;
-
-                }
+                    }
 
 
-                const value =
-                    score[key];
+                    /* -----------------------------------
+                       ตรวจว่ามีคะแนนจริงอย่างน้อย 1 ช่อง
+                    
+                       รองรับ c1, c2, c3 ... cN
+                       ไม่ล็อกจำนวนเกณฑ์
+                       ----------------------------------- */
+
+                    let hasRealScore =
+                        false;
 
 
-                return (
-                    value !== undefined &&
-                    value !== null &&
-                    value !== ""
-                );
+                    if (
+                        score &&
+                        typeof score === "object"
+                    ) {
 
-            }
-        );
+                        hasRealScore =
+                            Object.keys(
+                                score
+                            ).some(
+                                function (
+                                    key
+                                ) {
 
-}
+                                    if (
+                                        !/^c\d+$/.test(
+                                            key
+                                        )
+                                    ) {
+
+                                        return false;
+
+                                    }
+
+
+                                    const value =
+                                        score[key];
+
+
+                                    return (
+                                        value !== undefined &&
+                                        value !== null &&
+                                        value !== ""
+                                    );
+
+                                }
+                            );
+
+                    }
 
 
                     work.hasSubmitted =
