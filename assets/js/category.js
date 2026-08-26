@@ -1701,8 +1701,9 @@ function preloadWorkFiles(
 
 /* =====================================================
    PDF ZOOM + PAN
-   Adapt จากระบบ Poster โดยตรง
-   iPad pinch zoom + drag
+   Adapt จากระบบ Poster
+   แยกทำงานเฉพาะบทคัดย่อ
+   ไม่กระทบระบบ Poster
    ===================================================== */
 
 let pdfScale = 1;
@@ -1711,23 +1712,88 @@ let pdfTranslateX = 0;
 let pdfTranslateY = 0;
 
 let pdfPinchDistance = 0;
-let pdfPinchMidX = 0;
-let pdfPinchMidY = 0;
 
 let pdfDragX = 0;
 let pdfDragY = 0;
 
 
-/* -----------------------------------------
-   Apply Transform
-   ----------------------------------------- */
+/* =====================================================
+   PDF — ระยะระหว่าง 2 นิ้ว
+   แยกจาก Poster โดยเฉพาะ
+   ===================================================== */
+
+function getPdfTouchDistance(
+    touches
+) {
+
+    if (
+        !touches ||
+        touches.length < 2
+    ) {
+
+        return 0;
+
+    }
+
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+
+    return Math.hypot(
+        dx,
+        dy
+    );
+
+}
+
+
+/* =====================================================
+   PDF — จุดกึ่งกลางระหว่าง 2 นิ้ว
+   แยกจาก Poster โดยเฉพาะ
+   ===================================================== */
+
+function getPdfTouchMidpoint(
+    touches
+) {
+
+    return {
+
+        x:
+            (
+                touches[0].clientX +
+                touches[1].clientX
+            ) / 2,
+
+        y:
+            (
+                touches[0].clientY +
+                touches[1].clientY
+            ) / 2
+
+    };
+
+}
+
+
+/* =====================================================
+   APPLY PDF TRANSFORM
+   ===================================================== */
 
 function applyPdfTransform(
     pages
 ) {
 
     if (!pages) {
+
         return;
+
     }
 
 
@@ -1740,28 +1806,43 @@ function applyPdfTransform(
         pdfScale +
         ")";
 
+
+    pages.style.transformOrigin =
+        "center center";
+
 }
 
 
-/* -----------------------------------------
-   Reset
-   ----------------------------------------- */
+/* =====================================================
+   RESET PDF ZOOM
+   ===================================================== */
 
 function resetPdfZoom(
     pages
 ) {
 
-    pdfScale = 1;
+    pdfScale =
+        1;
 
-    pdfTranslateX = 0;
-    pdfTranslateY = 0;
 
-    pdfPinchDistance = 0;
-    pdfPinchMidX = 0;
-    pdfPinchMidY = 0;
+    pdfTranslateX =
+        0;
 
-    pdfDragX = 0;
-    pdfDragY = 0;
+
+    pdfTranslateY =
+        0;
+
+
+    pdfPinchDistance =
+        0;
+
+
+    pdfDragX =
+        0;
+
+
+    pdfDragY =
+        0;
 
 
     if (pages) {
@@ -1769,15 +1850,19 @@ function resetPdfZoom(
         pages.style.transform =
             "translate3d(0, 0, 0) scale(1)";
 
+
+        pages.style.transformOrigin =
+            "center center";
+
     }
 
 }
 
 
-/* -----------------------------------------
-   Zoom ตรงตำแหน่งนิ้ว
-   Adapt จาก Poster
-   ----------------------------------------- */
+/* =====================================================
+   ZOOM PDF AT POINT
+   ใช้หลักเดียวกับ Poster
+   ===================================================== */
 
 function zoomPdfAtPoint(
     pages,
@@ -1787,7 +1872,9 @@ function zoomPdfAtPoint(
 ) {
 
     if (!pages) {
+
         return;
+
     }
 
 
@@ -1805,10 +1892,10 @@ function zoomPdfAtPoint(
         );
 
 
-    /* =================================================
-       กลับมาที่ 1x
-       = ภาพรวมตรงกลาง
-       ================================================= */
+    /* -----------------------------------------
+       หุบกลับถึง 1x
+       ให้กลับตรงกลาง
+       ----------------------------------------- */
 
     if (
         newScale <= 1
@@ -1824,9 +1911,9 @@ function zoomPdfAtPoint(
     }
 
 
-    /* =================================================
+    /* -----------------------------------------
        ตำแหน่ง PDF ปัจจุบัน
-       ================================================= */
+       ----------------------------------------- */
 
     const rect =
         pages.getBoundingClientRect();
@@ -1842,9 +1929,9 @@ function zoomPdfAtPoint(
         rect.height / 2;
 
 
-    /*
-     * ตำแหน่งนิ้วเทียบกับกลาง PDF
-     */
+    /* -----------------------------------------
+       ตำแหน่งนิ้วเทียบกับกลาง PDF
+       ----------------------------------------- */
 
     const offsetX =
         pointX -
@@ -1856,19 +1943,19 @@ function zoomPdfAtPoint(
         centerY;
 
 
-    /*
-     * อัตราการเปลี่ยน Scale
-     */
+    /* -----------------------------------------
+       อัตราการเปลี่ยน Scale
+       ----------------------------------------- */
 
     const scaleRatio =
         newScale /
         oldScale;
 
 
-    /*
-     * ชดเชยตำแหน่ง
-     * เพื่อให้ขยายจากบริเวณระหว่างสองนิ้ว
-     */
+    /* -----------------------------------------
+       ชดเชยตำแหน่ง
+       ให้ขยายจากบริเวณระหว่างสองนิ้ว
+       ----------------------------------------- */
 
     pdfTranslateX -=
         offsetX *
@@ -1896,8 +1983,7 @@ function zoomPdfAtPoint(
 
 
 /* =====================================================
-   SETUP PDF ZOOM EVENTS
-   Adapt จาก Poster
+   SETUP PDF ZOOM
    ===================================================== */
 
 function setupPdfZoom(
@@ -1923,9 +2009,85 @@ function setupPdfZoom(
 
 
     /* =================================================
-       อนุญาต Zoom เฉพาะตอน
-       - Popup เปิดอยู่
-       - PDF Viewer กำลังแสดงจริง
+       สำคัญมาก
+
+       กัน Safari ใช้ Native Zoom
+       เฉพาะพื้นที่ PDF
+       ================================================= */
+
+    viewer.style.touchAction =
+        "none";
+
+
+    pages.style.touchAction =
+        "none";
+
+
+    /* =================================================
+       Safari Gesture Events
+
+       กันการซูมทั้งหน้า / ทั้ง Popup
+       ================================================= */
+
+    viewer.addEventListener(
+        "gesturestart",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    viewer.addEventListener(
+        "gesturechange",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    viewer.addEventListener(
+        "gestureend",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       อนุญาต Custom Zoom เฉพาะเมื่อ
+
+       - Popup เปิด
+       - PDF Viewer แสดงอยู่
        ================================================= */
 
     function canZoom() {
@@ -1939,7 +2101,7 @@ function setupPdfZoom(
 
 
     /* =================================================
-       iPAD — TOUCH START
+       TOUCH START
        ================================================= */
 
     viewer.addEventListener(
@@ -1958,7 +2120,7 @@ function setupPdfZoom(
 
 
             /* -----------------------------------------
-               2 นิ้ว = เริ่ม Pinch Zoom
+               2 นิ้ว = เริ่ม Pinch
                ----------------------------------------- */
 
             if (
@@ -1967,25 +2129,13 @@ function setupPdfZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 pdfPinchDistance =
-                    getTouchDistance(
+                    getPdfTouchDistance(
                         event.touches
                     );
-
-
-                const midpoint =
-                    getTouchMidpoint(
-                        event.touches
-                    );
-
-
-                pdfPinchMidX =
-                    midpoint.x;
-
-
-                pdfPinchMidY =
-                    midpoint.y;
 
 
                 return;
@@ -1995,7 +2145,7 @@ function setupPdfZoom(
 
             /* -----------------------------------------
                1 นิ้ว = เริ่มลาก
-               แต่ลากได้เมื่อ Zoom > 1
+               ลากได้เมื่อขยายเกิน 1x
                ----------------------------------------- */
 
             if (
@@ -2004,6 +2154,8 @@ function setupPdfZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 pdfDragX =
@@ -2024,7 +2176,7 @@ function setupPdfZoom(
 
 
     /* =================================================
-       iPAD — TOUCH MOVE
+       TOUCH MOVE
        ================================================= */
 
     viewer.addEventListener(
@@ -2052,9 +2204,11 @@ function setupPdfZoom(
 
                 event.preventDefault();
 
+                event.stopPropagation();
+
 
                 const newDistance =
-                    getTouchDistance(
+                    getPdfTouchDistance(
                         event.touches
                     );
 
@@ -2073,7 +2227,7 @@ function setupPdfZoom(
 
 
                 const midpoint =
-                    getTouchMidpoint(
+                    getPdfTouchMidpoint(
                         event.touches
                     );
 
@@ -2095,14 +2249,6 @@ function setupPdfZoom(
                     newDistance;
 
 
-                pdfPinchMidX =
-                    midpoint.x;
-
-
-                pdfPinchMidY =
-                    midpoint.y;
-
-
                 return;
 
             }
@@ -2118,6 +2264,8 @@ function setupPdfZoom(
             ) {
 
                 event.preventDefault();
+
+                event.stopPropagation();
 
 
                 const touch =
@@ -2170,6 +2318,11 @@ function setupPdfZoom(
                 0;
 
 
+            /* -----------------------------------------
+               เหลือ 1 นิ้วหลัง Pinch
+               ให้ต่อเป็น Drag ได้เลย
+               ----------------------------------------- */
+
             if (
                 event.touches.length === 1 &&
                 pdfScale > 1
@@ -2195,10 +2348,10 @@ function setupPdfZoom(
             }
 
 
-            /*
-             * ถ้าหุบกลับถึง 1x
-             * ให้ PDF กลับตรงกลาง
-             */
+            /* -----------------------------------------
+               กลับถึง 1x
+               Reset ให้อยู่กลางเหมือน Poster
+               ----------------------------------------- */
 
             if (
                 pdfScale <= 1
@@ -2210,6 +2363,40 @@ function setupPdfZoom(
 
             }
 
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH CANCEL
+
+       กันนิ้วหลุด / Safari ยกเลิก Gesture
+       แล้ว State ค้าง
+       ================================================= */
+
+    viewer.addEventListener(
+        "touchcancel",
+        function () {
+
+            pdfPinchDistance =
+                0;
+
+
+            pdfDragX =
+                0;
+
+
+            pdfDragY =
+                0;
+
+        },
+        {
+            passive:
+                false
         }
     );
 
