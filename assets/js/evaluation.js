@@ -3088,34 +3088,6 @@ async function submitScore() {
     scoreData.total =
         total;
 
-    console.log(
-        "===== SCORE DEBUG ====="
-    );
-
-    console.log(
-        "criteria.length =",
-        criteria.length
-    );
-
-    console.log(
-        "criteria =",
-        criteria
-    );
-
-    console.log(
-        "scoreData =",
-        scoreData
-    );
-
-    console.log(
-        "total =",
-        total
-    );
-
-    console.log(
-        "======================="
-    );
-
 
     /*
      * Popup
@@ -3404,17 +3376,6 @@ async function saveConfirmedScore(
 
 
     try {
-
-        console.log(
-            "POST API URL =",
-            APP_CONFIG.API_URL
-        );
-
-        console.log(
-            "POST SCORE DATA =",
-            scoreData
-        );
-
 
         const response =
             await fetch(

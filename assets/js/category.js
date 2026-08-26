@@ -3285,83 +3285,89 @@ async function openWorkFileModal(
 
 
         /* =================================================
-           iPAD
-           ใช้ PDF.js เท่านั้น
+   iPAD
+   ใช้ PDF.js Canvas Viewer เท่านั้น
 
-           ห้าม fallback ไป Google Drive iframe
-           เพราะจะกลับมาคุม pinch ไม่ได้
-           ================================================= */
+   ห้าม fallback ไป Google Drive iframe
+   เพราะจะกลับมาคุม pinch ไม่ได้
+   ================================================= */
 
-        if (
-            isIPad
-        ) {
+if (
+    isIPad
+) {
 
-            let previewUrl =
-                pdfUrl;
-
-
-            if (
-                driveMatch &&
-                driveMatch[1]
-            ) {
-
-                previewUrl =
-                    "https://drive.google.com/file/d/" +
-                    driveMatch[1] +
-                    "/preview";
-
-            }
+    pdf.hidden =
+        true;
 
 
-            /*
-             * iPad ใช้ Drive Preview ภายใน Popup
-             * ไม่เปิดแท็บใหม่
-             * ไม่เด้งเข้า Google Drive App
-             */
-
-            pdfViewer.hidden =
-                true;
+    pdf.src =
+        "";
 
 
-            pdf.hidden =
-                false;
+    pdfViewer.hidden =
+        true;
 
 
-            pdf.onload =
-                function () {
-
-                    loading.hidden =
-                        true;
-
-                };
+    pdfPages.innerHTML =
+        "";
 
 
-            pdf.onerror =
-                function () {
-
-                    loading.hidden =
-                        true;
+    let directPdfUrl =
+        pdfUrl;
 
 
-                    pdf.hidden =
-                        true;
+    if (
+        driveMatch &&
+        driveMatch[1]
+    ) {
+
+        directPdfUrl =
+            "https://drive.google.com/uc?export=download&id=" +
+            driveMatch[1];
+
+    }
 
 
-                    showWorkFileEmpty(
-                        empty,
-                        "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
-                    );
-
-                };
+    const rendered =
+        await renderPdfForIPad(
+            directPdfUrl
+        );
 
 
-            pdf.src =
-                previewUrl;
+    loading.hidden =
+        true;
 
 
-            return;
+    if (
+        rendered
+    ) {
 
-        }
+        pdfViewer.hidden =
+            false;
+
+
+        resetPdfZoom(
+            pdfPages
+        );
+
+    }
+    else {
+
+        pdfViewer.hidden =
+            true;
+
+
+        showWorkFileEmpty(
+            empty,
+            "ไม่สามารถโหลดบทคัดย่อได้ กรุณาลองใหม่อีกครั้ง"
+        );
+
+    }
+
+
+    return;
+
+}
 
         /* =================================================
            DESKTOP
