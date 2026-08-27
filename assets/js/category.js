@@ -4367,19 +4367,6 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       OPEN MODAL
-       ================================================= */
-
-    modal.hidden =
-        false;
-
-
-    document.body.classList.add(
-        "work-file-modal-open"
-    );
-
-
-    /* =================================================
        SCORE BUTTON
        ================================================= */
 
@@ -4437,86 +4424,6 @@ async function openWorkFileModal(
             ).trim();
 
     }
-
-
-    /* -----------------------------------------------
-       ไม่มีไฟล์
-       ----------------------------------------------- */
-
-    if (
-        !driveFileId
-    ) {
-
-        loading.hidden =
-            true;
-
-
-        showWorkFileEmpty(
-            empty
-        );
-
-
-        return;
-
-    }
-
-
-    /* =================================================
-       Google Drive Preview URL
-       ================================================= */
-
-    const fileUrl =
-        "https://drive.google.com/file/d/" +
-        encodeURIComponent(
-            driveFileId
-        ) +
-        "/preview";
-
-
-    /* -----------------------------------------------
-       ไม่มีไฟล์
-       ----------------------------------------------- */
-
-    if (
-        !fileUrl
-    ) {
-
-        loading.hidden =
-            true;
-
-
-        showWorkFileEmpty(
-            empty
-        );
-
-
-        return;
-
-    }
-
-    /* =================================================
-   GOOGLE DRIVE — OPEN DIRECT
-   ================================================= */
-
-    window.open(
-        fileUrl,
-        "_blank"
-    );
-
-
-    /* ปิด popup ที่เพิ่งเปิด */
-    modal.hidden =
-        true;
-
-
-    document.body.classList.remove(
-        "work-file-modal-open"
-    );
-
-
-    return;
-
-}
 
 /* =====================================================
    WORK FILE POPUP — CLOSE
