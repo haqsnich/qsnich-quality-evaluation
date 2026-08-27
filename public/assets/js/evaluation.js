@@ -1345,10 +1345,6 @@ async function loadCriteriaFromAPI() {
 
 }
 
-/* =====================================================
-   RENDER CRITERIA
-   ===================================================== */
-
 function renderCriteria() {
 
     const container =
@@ -1430,14 +1426,15 @@ function renderCriteria() {
                 <div class="criterion-score">
 
                     <input
-                        type="number"
+                        type="text"
                         class="score-input"
                         id="score${index + 1}"
-                        min="0"
-                        max="${maxScore}"
                         data-max="${maxScore}"
                         placeholder="0"
                         inputmode="numeric"
+                        pattern="[0-9]*"
+                        autocomplete="off"
+                        enterkeyhint="next"
                     >
 
                     <span>
@@ -1458,42 +1455,55 @@ function renderCriteria() {
 
     bindScoreInputs();
 
-    /*
-     * ยังไม่โหลด Draft ตรงนี้
-     *
-     * ต้องรอ loadOldScore() ตรวจชีทก่อน
-     * แล้วค่อยตัดสินว่าจะใช้
-     * คะแนนจริง หรือ Draft
-     */
 
     updateTotalScore();
+
     updateCriteriaProgress();
 
 }
 
 
-/* =====================================================
-   BIND SCORE INPUTS
-   ===================================================== */
-
 function bindScoreInputs() {
 
-    document
-        .querySelectorAll(
-            ".score-input"
-        )
-        .forEach(
-            function (input) {
+    const inputs =
+        Array.from(
+            document.querySelectorAll(
+                ".score-input"
+            )
+        );
 
 
-                input.addEventListener(
-                    "input",
-                    function () {
+    inputs.forEach(
+        function (
+            input,
+            index
+        ) {
 
-                        normalizeScoreInput(
-                            input
+            input.addEventListener(
+                "input",
+                function () {
+
+                    /* -----------------------------------------
+                       รับเฉพาะตัวเลข
+                       ----------------------------------------- */
+
+                    input.value =
+                        String(
+                            input.value ||
+                            ""
+                        ).replace(
+                            /[^0-9]/g,
+                            ""
                         );
 
+
+                    /* -----------------------------------------
+                       ยังไม่กรอก
+                       ----------------------------------------- */
+
+                    if (
+                        input.value === ""
+                    ) {
 
                         updateTotalScore();
 
@@ -1501,30 +1511,136 @@ function bindScoreInputs() {
 
                         saveScoreDraftDebounced();
 
-                    }
-                );
-
-
-                input.addEventListener(
-                    "change",
-                    function () {
-
-                        normalizeScoreInput(
-                            input
-                        );
-
-
-                        updateTotalScore();
-
-                        updateCriteriaProgress();
-
-                        saveScoreDraft();
+                        return;
 
                     }
-                );
 
-            }
-        );
+
+                    /* -----------------------------------------
+                       จำกัดคะแนนไม่ให้เกิน Max
+                       ----------------------------------------- */
+
+                    normalizeScoreInput(
+                        input
+                    );
+
+
+                    updateTotalScore();
+
+                    updateCriteriaProgress();
+
+                    saveScoreDraftDebounced();
+
+
+                    /* -----------------------------------------
+                       กรอกแล้ว → ไปช่องถัดไปอัตโนมัติ
+
+                       สำหรับคะแนน 0–9
+                       เมื่อพิมพ์เลข 1 ตัวจะเลื่อนไปเลย
+                       ----------------------------------------- */
+
+                    if (
+                        input.value.length >= 1
+                    ) {
+
+                        const nextInput =
+                            inputs[
+                            index + 1
+                            ];
+
+
+                        if (
+                            nextInput
+                        ) {
+
+                            nextInput.focus();
+
+                            nextInput.select();
+
+                        }
+                        else {
+
+                            /* ช่องสุดท้าย
+                               ปิดคีย์บอร์ด */
+
+                            input.blur();
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            input.addEventListener(
+                "change",
+                function () {
+
+                    normalizeScoreInput(
+                        input
+                    );
+
+
+                    updateTotalScore();
+
+                    updateCriteriaProgress();
+
+                    saveScoreDraft();
+
+                }
+            );
+
+
+            /* -----------------------------------------
+               กด Enter / Next
+               ไปช่องถัดไปด้วย
+               ----------------------------------------- */
+
+            input.addEventListener(
+                "keydown",
+                function (
+                    event
+                ) {
+
+                    if (
+                        event.key !== "Enter"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    event.preventDefault();
+
+
+                    const nextInput =
+                        inputs[
+                        index + 1
+                        ];
+
+
+                    if (
+                        nextInput
+                    ) {
+
+                        nextInput.focus();
+
+                        nextInput.select();
+
+                    }
+                    else {
+
+                        input.blur();
+
+                    }
+
+                }
+            );
+
+        }
+    );
 
 
     const comment =
