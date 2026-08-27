@@ -4200,189 +4200,28 @@ function showWorkFileEmpty(
 }
 
 /* =====================================================
-   OPEN WORK FILE MODAL
-   Local PDF Only
-   - Abstract = PDF หลายหน้า
-   - Poster   = PDF
+   OPEN WORK FILE
+   เปิด Google Drive โดยตรง
+   ไม่มี Popup / iframe / PDF.js
    ===================================================== */
 
-async function openWorkFileModal(
+function openWorkFileModal(
     work,
     type
 ) {
 
-    /* =================================================
-       ELEMENTS
-       ================================================= */
-
-    const modal =
-        document.getElementById(
-            "workFileModal"
-        );
-
-
-    const title =
-        document.getElementById(
-            "workFileModalTitle"
-        );
-
-
-    const pdf =
-        document.getElementById(
-            "workFilePdf"
-        );
-
-
-    const pdfViewer =
-        document.getElementById(
-            "workFilePdfViewer"
-        );
-
-
-    const pdfPages =
-        document.getElementById(
-            "workFilePdfPages"
-        );
-
-
-    const poster =
-        document.getElementById(
-            "workFilePoster"
-        );
-
-
-    const empty =
-        document.getElementById(
-            "workFileModalEmpty"
-        );
-
-
-    const loading =
-        document.getElementById(
-            "workFileLoading"
-        );
-
-
-    const score =
-        document.getElementById(
-            "workFileScore"
-        );
-
-
     if (
-        !modal ||
-        !title ||
-        !pdf ||
-        !pdfViewer ||
-        !pdfPages ||
-        !poster ||
-        !empty ||
-        !loading ||
-        !score
+        !work
     ) {
 
-        console.error(
-            "WORK FILE MODAL: ไม่พบ Element ที่จำเป็น"
+        alert(
+            "ไม่พบข้อมูลผลงาน"
         );
-
 
         return;
 
     }
 
-
-    /* =================================================
-       SETUP
-       ================================================= */
-
-    setupWorkFileModalZoomLock(
-        modal
-    );
-
-
-    setupPdfZoom(
-        pdfViewer,
-        pdfPages,
-        modal
-    );
-
-
-    /* =================================================
-       RESET
-       ================================================= */
-
-    resetPdfZoom(
-        pdfPages
-    );
-
-    pdfViewer.scrollTop =
-        0;
-
-
-    pdfViewer.scrollLeft =
-        0;
-
-
-    pdf.hidden =
-        true;
-
-
-    pdf.src =
-        "";
-
-
-    poster.hidden =
-        true;
-
-
-    poster.src =
-        "";
-
-
-    pdfViewer.hidden =
-        true;
-
-
-    pdfPages.innerHTML =
-        "";
-
-
-    hideWorkFileEmpty(
-        empty
-    );
-
-
-    loading.hidden =
-        false;
-
-
-    /* =================================================
-       TITLE
-       ================================================= */
-
-    title.textContent =
-        type === "poster"
-            ? "ดูโปสเตอร์"
-            : "ดูบทคัดย่อ";
-
-
-    /* =================================================
-       SCORE BUTTON
-       ================================================= */
-
-    score.onclick =
-        function () {
-
-            selectWork(
-                work
-            );
-
-        };
-
-
-    /* =================================================
-   หา Google Drive File ID จาก works.json
-   ================================================= */
 
     let driveFileId =
         "";
@@ -4398,10 +4237,8 @@ async function openWorkFileModal(
 
         driveFileId =
             String(
-                work &&
-                    work.abstract_file_id
-                    ? work.abstract_file_id
-                    : ""
+                work.abstract_file_id ||
+                ""
             ).trim();
 
     }
@@ -4417,17 +4254,16 @@ async function openWorkFileModal(
 
         driveFileId =
             String(
-                work &&
-                    work.poster_file_id
-                    ? work.poster_file_id
-                    : ""
+                work.poster_file_id ||
+                ""
             ).trim();
 
     }
 
+
     /* -----------------------------------------------
-   ไม่มีไฟล์
-   ----------------------------------------------- */
+       ไม่มีไฟล์
+       ----------------------------------------------- */
 
     if (
         !driveFileId
@@ -4437,15 +4273,14 @@ async function openWorkFileModal(
             "ไม่พบไฟล์สำหรับผลงานนี้"
         );
 
-
         return;
 
     }
 
 
-    /* =================================================
-       GOOGLE DRIVE DIRECT
-       ================================================= */
+    /* -----------------------------------------------
+       เปิด Google Drive โดยตรง
+       ----------------------------------------------- */
 
     const fileUrl =
         "https://drive.google.com/file/d/" +
@@ -4455,165 +4290,11 @@ async function openWorkFileModal(
         "/view";
 
 
-    window.location.href =
-        fileUrl;
-
-
-    return;
+    window.location.assign(
+        fileUrl
+    );
 
 }
-
-/* =====================================================
-   WORK FILE POPUP — CLOSE
-   ===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const modal =
-            document.getElementById(
-                "workFileModal"
-            );
-
-        const closeButton =
-            document.getElementById(
-                "workFileModalClose"
-            );
-
-        if (!modal) {
-            return;
-        }
-
-
-        function closeWorkFileModal() {
-
-            modal.hidden = true;
-
-            modal.classList.remove(
-                "is-ipad-fullscreen"
-            );
-
-            const pdf =
-                document.getElementById(
-                    "workFilePdf"
-                );
-
-            const poster =
-                document.getElementById(
-                    "workFilePoster"
-                );
-
-            resetPosterZoom(
-                poster
-            );
-
-            const pdfViewer =
-                document.getElementById(
-                    "workFilePdfViewer"
-                );
-
-
-            const pdfPages =
-                document.getElementById(
-                    "workFilePdfPages"
-                );
-
-
-            resetPdfZoom(
-                pdfPages
-            );
-
-
-            if (
-                pdfViewer
-            ) {
-
-                pdfViewer.scrollTop =
-                    0;
-
-
-                pdfViewer.scrollLeft =
-                    0;
-
-
-                pdfViewer.hidden =
-                    true;
-
-            }
-
-
-            if (
-                pdfPages
-            ) {
-
-                pdfPages.innerHTML =
-                    "";
-
-            }
-
-            if (pdf) {
-                pdf.src = "";
-            }
-
-            if (poster) {
-                poster.src = "";
-            }
-
-            document.body.classList.remove(
-                "work-file-modal-open"
-            );
-        }
-
-
-        if (closeButton) {
-
-            closeButton.addEventListener(
-                "click",
-                closeWorkFileModal
-            );
-
-        }
-
-
-        modal.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    event.target.hasAttribute(
-                        "data-modal-close"
-                    )
-                ) {
-
-                    closeWorkFileModal();
-
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Escape" &&
-                    !modal.hidden
-                ) {
-
-                    closeWorkFileModal();
-
-                }
-
-            }
-        );
-
-    }
-);
-
-
 /* =====================================================
    CHECK EXISTING SCORES
    ตรวจคะแนนจริงจากชีทก่อนแสดง Category
