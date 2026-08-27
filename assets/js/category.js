@@ -3465,14 +3465,15 @@ async function cachePdfFile(
 }
 
 /* =====================================================
-   LOCAL PDF CANVAS VIEWER
-   ใช้ได้ทั้งบทคัดย่อ + โปสเตอร์
+   LOCAL PDF CANVAS VIEWER — FAST FIRST PAGE
 
-   สำคัญ:
-   Browser โหลดไฟล์ก่อน
-   แล้วส่ง ArrayBuffer ให้ PDF.js
+   หลักการ:
+   1. โหลด PDF
+   2. Render หน้า 1 ก่อน
+   3. แสดงให้กรรมการดูทันที
+   4. หน้า 2 เป็นต้นไปค่อย Render เบื้องหลัง
 
-   แก้ Safari / iPad Missing PDF
+   ใช้ได้ทั้ง Abstract + Poster
    ===================================================== */
 
 async function renderPdfForIPad(
@@ -3531,19 +3532,24 @@ async function renderPdfForIPad(
 
     try {
 
+        /* =============================================
+           RESET
+           ============================================= */
+
         pages.innerHTML =
             "";
 
 
-        /* =============================================
-           สร้าง URL แบบสมบูรณ์
+        viewer.scrollTop =
+            0;
 
-           new URL จะจัดการ:
-           - ภาษาไทย
-           - space
-           - วงเล็บ
-           - smart quote
-           - relative path
+
+        viewer.scrollLeft =
+            0;
+
+
+        /* =============================================
+           URL
            ============================================= */
 
         const fileUrl =
@@ -3555,6 +3561,23 @@ async function renderPdfForIPad(
             );
 
 
+        /*
+         * ใช้ Token ป้องกันไฟล์เก่า
+         * Render แทรกเข้ามาหลังเปลี่ยนไฟล์
+         */
+
+        const renderToken =
+            String(
+                Date.now()
+            ) +
+            "-" +
+            Math.random();
+
+
+        viewer.dataset.pdfRenderToken =
+            renderToken;
+
+
         console.log(
             "LOCAL PDF FETCH =",
             fileUrl.href
@@ -3562,17 +3585,8 @@ async function renderPdfForIPad(
 
 
         /* =============================================
-           โหลด PDF ด้วย Browser ก่อน
-
-           ไม่ให้ PDF.js fetch URL เอง
+           MEMORY CACHE
            ============================================= */
-
-        /* =============================================
-   โหลดไฟล์จาก Cache ก่อน
-
-   ถ้ายังไม่มีใน Memory
-   ค่อย Fetch จาก Server
-   ============================================= */
 
         let arrayBuffer =
             pdfFileCache.get(
@@ -3617,38 +3631,21 @@ async function renderPdfForIPad(
             }
 
 
-            /* =============================================
-               ตรวจ Content-Type
-               ============================================= */
-
-            const contentType =
-                String(
-                    response.headers.get(
-                        "content-type"
-                    ) ||
-                    ""
-                ).toLowerCase();
-
-
-            console.log(
-                "PDF CONTENT TYPE =",
-                contentType
-            );
-
-
-            /* =============================================
-               อ่านไฟล์เข้า Memory
-               ============================================= */
-
             arrayBuffer =
                 await response.arrayBuffer();
 
 
-            /* =============================================
-               เก็บลง Cache
-        
-               รอบถัดไปไม่ต้อง Fetch ใหม่
-               ============================================= */
+            if (
+                !arrayBuffer ||
+                arrayBuffer.byteLength === 0
+            ) {
+
+                throw new Error(
+                    "ไฟล์ PDF ว่างเปล่า"
+                );
+
+            }
+
 
             setPdfCache(
                 fileUrl.href,
@@ -3672,28 +3669,8 @@ async function renderPdfForIPad(
         }
 
 
-        if (
-            !arrayBuffer ||
-            arrayBuffer.byteLength === 0
-        ) {
-
-            throw new Error(
-                "ไฟล์ PDF ว่างเปล่า"
-            );
-
-        }
-
-
-        console.log(
-            "PDF SIZE =",
-            arrayBuffer.byteLength
-        );
-
-
         /* =============================================
-           ส่งข้อมูลให้ PDF.js โดยตรง
-
-           PDF.js ไม่ต้องยิง Network เองอีก
+           PDF.JS
            ============================================= */
 
         const loadingTask =
@@ -3712,10 +3689,7 @@ async function renderPdfForIPad(
 
 
         /* =============================================
-           iPad ใช้ Scale ต่ำกว่า
-           ลด Memory
-
-           Desktop ยังชัดเต็ม
+           Render Scale
            ============================================= */
 
         const isIPadDevice =
@@ -3727,24 +3701,47 @@ async function renderPdfForIPad(
 
         const renderScale =
             isIPadDevice
-                ? 1.35
+                ? 1.25
                 : 2;
 
 
         /* =============================================
-           Render ทุกหน้า
+           ฟังก์ชัน Render ทีละหน้า
            ============================================= */
 
-        for (
-            let pageNumber = 1;
-            pageNumber <= pdfDocument.numPages;
-            pageNumber++
+        async function renderPage(
+            pageNumber
         ) {
+
+            /*
+             * ถ้ามีการเปิด PDF ตัวใหม่แล้ว
+             * หยุด Render ตัวเก่าทันที
+             */
+
+            if (
+                viewer.dataset.pdfRenderToken !==
+                renderToken
+            ) {
+
+                return false;
+
+            }
+
 
             const page =
                 await pdfDocument.getPage(
                     pageNumber
                 );
+
+
+            if (
+                viewer.dataset.pdfRenderToken !==
+                renderToken
+            ) {
+
+                return false;
+
+            }
 
 
             const viewport =
@@ -3803,20 +3800,38 @@ async function renderPdfForIPad(
 
             }).promise;
 
+
+            return true;
+
         }
 
 
         /* =============================================
-           เปิด Viewer
+           หน้า 1 — Render ก่อนทันที
+           ============================================= */
+
+        const firstPageReady =
+            await renderPage(
+                1
+            );
+
+
+        if (
+            !firstPageReady
+        ) {
+
+            return false;
+
+        }
+
+
+        /* =============================================
+           เปิด Viewer ทันทีหลังหน้าแรกเสร็จ
            ============================================= */
 
         viewer.hidden =
             false;
 
-
-        /* =============================================
-           ทุกไฟล์เริ่มบนสุด
-           ============================================= */
 
         viewer.scrollTop =
             0;
@@ -3841,11 +3856,97 @@ async function renderPdfForIPad(
 
 
         console.log(
-            "LOCAL PDF READY =",
-            pdfDocument.numPages,
-            "pages"
+            "PDF FIRST PAGE READY"
         );
 
+
+        /* =============================================
+           หน้า 2 เป็นต้นไป
+           Render เบื้องหลัง
+
+           ไม่ await ตรงนี้
+           เพื่อให้ Popup แสดงหน้าแรกได้ทันที
+           ============================================= */
+
+        if (
+            pdfDocument.numPages > 1
+        ) {
+
+            (
+                async function () {
+
+                    for (
+                        let pageNumber = 2;
+                        pageNumber <= pdfDocument.numPages;
+                        pageNumber++
+                    ) {
+
+                        /*
+                         * ถ้าปิด / เปิดไฟล์อื่น
+                         * หยุดงานเก่า
+                         */
+
+                        if (
+                            viewer.dataset.pdfRenderToken !==
+                            renderToken
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const rendered =
+                            await renderPage(
+                                pageNumber
+                            );
+
+
+                        if (
+                            !rendered
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * คืนเวลาให้ Safari
+                         * ไม่ให้ Render รัวจน UI ค้าง
+                         */
+
+                        await new Promise(
+                            function (
+                                resolve
+                            ) {
+
+                                requestAnimationFrame(
+                                    resolve
+                                );
+
+                            }
+                        );
+
+                    }
+
+
+                    console.log(
+                        "PDF ALL PAGES READY =",
+                        pdfDocument.numPages
+                    );
+
+                }
+            )();
+
+        }
+
+
+        /*
+         * สำคัญ:
+         * Return ตั้งแต่หน้าแรกพร้อม
+         * openWorkFileModal จะซ่อน Loading ได้เลย
+         */
 
         return true;
 
