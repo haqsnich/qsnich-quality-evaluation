@@ -483,10 +483,19 @@ async function loadCategoryData() {
 
 
         /* -----------------------------------------------
-           12. แสดงรายชื่อผลงานทันที
-           ----------------------------------------------- */
+   12. แสดงรายชื่อผลงานทันที
+   ----------------------------------------------- */
 
         displayWorks(
+            works
+        );
+
+
+        /* -----------------------------------------------
+           Preload ไฟล์ของกรรมการเบื้องหลัง
+           ----------------------------------------------- */
+
+        preloadWorkFiles(
             works
         );
 
@@ -1602,8 +1611,15 @@ document.addEventListener(
 
 /* =====================================================
    PRELOAD WORK FILES
-   โหลดไฟล์ Local รอเบื้องหลัง
-   ใช้รหัสผลงานเป็นชื่อไฟล์
+   โหลดไฟล์จาก URL ที่กำหนดใน works.json โดยตรง
+
+   Abstract:
+   ./abstracts/O1.pdf
+
+   Poster:
+   ./Poster CQI/P1.pdf
+   ./Poster Digital/D1.pdf
+   ./Poster KM/K1.pdf
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1623,8 +1639,8 @@ function preloadWorkFiles(
 
 
     /*
-     * รอให้หน้า Category แสดงก่อน
-     * ไม่แย่งโหลดตอนรายชื่อกำลังขึ้น
+     * ให้หน้า Category ขึ้นก่อน
+     * แล้วค่อยโหลดไฟล์เบื้องหลัง
      */
 
     setTimeout(
@@ -1635,18 +1651,7 @@ function preloadWorkFiles(
                     work
                 ) {
 
-                    const workId =
-                        String(
-                            work &&
-                                work.id
-                                ? work.id
-                                : ""
-                        ).trim();
-
-
-                    if (
-                        !workId
-                    ) {
+                    if (!work) {
 
                         return;
 
@@ -1657,50 +1662,54 @@ function preloadWorkFiles(
                        PRELOAD ABSTRACT
                        ========================================= */
 
-                    const abstractLink =
-                        document.createElement(
-                            "link"
+                    const abstractUrl =
+                        String(
+                            work.pdf_url ||
+                            ""
+                        ).trim();
+
+
+                    if (
+                        abstractUrl
+                    ) {
+
+                        const abstractLink =
+                            document.createElement(
+                                "link"
+                            );
+
+
+                        abstractLink.rel =
+                            "prefetch";
+
+
+                        abstractLink.href =
+                            abstractUrl;
+
+
+                        document.head.appendChild(
+                            abstractLink
                         );
 
-
-                    abstractLink.rel =
-                        "prefetch";
-
-
-                    abstractLink.href =
-                        "./files/abstracts/" +
-                        workId +
-                        ".pdf";
-
-
-                    document.head.appendChild(
-                        abstractLink
-                    );
+                    }
 
 
                     /* =========================================
                        PRELOAD POSTER
-                       เฉพาะหมวดที่มีโปสเตอร์
+
+                       ไม่ต้องแยกหมวดใน JS
+                       เพราะ works.json บอก path มาแล้ว
                        ========================================= */
 
-                    const posterCategories = [
-
-                        "CQI Poster Presentation",
-
-                        "CQI Digital Poster presentation",
-
-                        "KM"
-
-                    ];
+                    const posterUrl =
+                        String(
+                            work.poster_url ||
+                            ""
+                        ).trim();
 
 
                     if (
-                        posterCategories.includes(
-                            String(
-                                work.category ||
-                                ""
-                            ).trim()
-                        )
+                        posterUrl
                     ) {
 
                         const posterLink =
@@ -1714,9 +1723,7 @@ function preloadWorkFiles(
 
 
                         posterLink.href =
-                            "./files/posters/" +
-                            workId +
-                            ".pdf";
+                            posterUrl;
 
 
                         document.head.appendChild(
@@ -4010,16 +4017,16 @@ async function openWorkFileModal(
 
 
     /* =================================================
-       หา URL
-       ================================================= */
-
-    /* =================================================
-   หา URL ไฟล์จาก works.json
+   หา URL ไฟล์จาก works.json โดยตรง
    ================================================= */
 
     let fileUrl =
         "";
 
+
+    /* -----------------------------------------------
+       บทคัดย่อ
+       ----------------------------------------------- */
 
     if (
         type === "abstract"
@@ -4034,6 +4041,12 @@ async function openWorkFileModal(
             ).trim();
 
     }
+
+
+    /* -----------------------------------------------
+       โปสเตอร์
+       ----------------------------------------------- */
+
     else if (
         type === "poster"
     ) {
@@ -4049,55 +4062,9 @@ async function openWorkFileModal(
     }
 
 
-    if (
-        !fileUrl
-    ) {
-
-        loading.hidden =
-            true;
-
-
-        showWorkFileEmpty(
-            empty
-        );
-
-
-        return;
-
-    }
-
-
-    /* =================================================
-       ABSTRACT
-       ================================================= */
-
-    if (
-        type === "abstract"
-    ) {
-
-        fileUrl =
-            "./files/abstracts/" +
-            workId +
-            ".pdf";
-
-    }
-
-
-    /* =================================================
-       POSTER
-       ================================================= */
-
-    else if (
-        type === "poster"
-    ) {
-
-        fileUrl =
-            "./files/posters/" +
-            workId +
-            ".pdf";
-
-    }
-
+    /* -----------------------------------------------
+       ไม่มีไฟล์
+       ----------------------------------------------- */
 
     if (
         !fileUrl
@@ -4115,7 +4082,6 @@ async function openWorkFileModal(
         return;
 
     }
-
 
     /* =================================================
        LOCAL PDF

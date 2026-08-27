@@ -7,7 +7,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาววิชชุลดา เครือเทศ, นางสาววิมลสิริ เหล่าภักดี",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กเล็ก (ส 6 เอ)",
-    "pdf_url": "./files/abstracts/O1.pdf",
+    "pdf_url": "./abstracts/O1.pdf",
     "poster_url": "",
     "active": true
   },
@@ -19,7 +19,7 @@
     "judge_ids": "1,2,3",
     "presenter": "ภญ.ดร.รวิวรรณ วิทวัสสำราญกุล",
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
-    "pdf_url": "./files/abstracts/O2.pdf",
+    "pdf_url": "./abstracts/O2.pdf",
     "poster_url": "",
     "active": true
   },
@@ -31,7 +31,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวสุวรรณา ศรีอินคำ, นางสาวสุพัตรา ทาอ้อ",
     "department": "หอผู้ป่วยทารกแรกเกิดกึ่งวิกฤต (ส 10)",
-    "pdf_url": "./files/abstracts/O3.pdf",
+    "pdf_url": "./abstracts/O3.pdf",
     "poster_url": "",
     "active": true
   },
@@ -43,7 +43,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวพัชรี ดารินทร์",
     "department": "งานการพยาบาลผู้ป่วยนอกกุมารเวชกรรมเฉพาะโรค",
-    "pdf_url": "./files/abstracts/O4.pdf",
+    "pdf_url": "./abstracts/O4.pdf",
     "poster_url": "",
     "active": true
   },
@@ -55,7 +55,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นายสิปปกร ไชยสม​​, นางสาวพัชนี สุขลาภวิทยาคุณ",
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
-    "pdf_url": "./files/abstracts/O5.pdf",
+    "pdf_url": "./abstracts/O5.pdf",
     "poster_url": "",
     "active": true
   },
@@ -67,7 +67,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวอิงครัตน์ วีระธนินทร์ชาติ, นางสาวธันณพัชญ์ สังข์เกิดศิริกุล",
     "department": "กลุ่มงานทันตกรรม",
-    "pdf_url": "./files/abstracts/O6.pdf",
+    "pdf_url": "./abstracts/O6.pdf",
     "poster_url": "",
     "active": true
   },
@@ -79,7 +79,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวปิยธิดา เดชะบุญ",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
-    "pdf_url": "./files/abstracts/O7.pdf",
+    "pdf_url": "./abstracts/O7.pdf",
     "poster_url": "",
     "active": true
   },
@@ -91,7 +91,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวชนิกานต์ สุทธิปัญโญ, นางสาวนารี หินนาง",
     "department": "งานการพยาบาลส่งเสริมคุณภาพชีวิต",
-    "pdf_url": "./files/abstracts/O8.pdf",
+    "pdf_url": "./abstracts/O8.pdf",
     "poster_url": "",
     "active": true
   },
@@ -103,7 +103,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวสกาวรัตน์ เมืองแมน",
     "department": "กลุ่มงานวิชาการพยาบาล",
-    "pdf_url": "./files/abstracts/O10.pdf",
+    "pdf_url": "./abstracts/O10.pdf",
     "poster_url": "",
     "active": true
   },
@@ -115,7 +115,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวสุนิศา ขุมทอง",
     "department": "งานการพยาบาลป้องกันและควบคุมการติดเชื้อ",
-    "pdf_url": "./files/abstracts/O11.pdf",
+    "pdf_url": "./abstracts/O11.pdf",
     "poster_url": "",
     "active": true
   },
@@ -127,7 +127,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นายพงศธร คุ้มทอง",
     "department": "งานชีวเคมี",
-    "pdf_url": "./files/abstracts/O12.pdf",
+    "pdf_url": "./abstracts/O12.pdf",
     "poster_url": "",
     "active": true
   },
@@ -139,7 +139,7 @@
     "judge_ids": "1,2,3",
     "presenter": "นางสาวสปัณฐ์รุ้ง อุดมนวลสกุล",
     "department": "งานการพยาบาลวิสัญญี",
-    "pdf_url": "./files/abstracts/O13.pdf",
+    "pdf_url": "./abstracts/O13.pdf",
     "poster_url": "",
     "active": true
   },
@@ -151,8 +151,8 @@
     "judge_ids": "6,9,14",
     "presenter": "ภญ.กันยากร คงสมบูรณ์, ภญ.วริศรา ศรีสระหลวง",
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
-    "pdf_url": "./files/abstracts/P1.pdf",
-    "poster_url": "./files/posters/P1.pdf",
+    "pdf_url": "./abstracts/P1.pdf",
+    "poster_url": "./Poster CQI/P1.pdf",
     "active": true
   },
   {
@@ -163,8 +163,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวอมรวดี จุแดง, นางสาวอัจฉรา พันธุ์เจริญ",
     "department": "งานภูมิคุ้มกันวิทยา",
-    "pdf_url": "./files/abstracts/P2.pdf",
-    "poster_url": "./files/posters/P2.pdf",
+    "pdf_url": "./abstracts/P2.pdf",
+    "poster_url": "./Poster CQI/P2.pdf",
     "active": true
   },
   {
@@ -175,8 +175,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวนวพรรษ เทียมสุขสม, นางสาวเพียงฤทัย สิทธิสระ",
     "department": "งานคลังยา กลุ่มงานเภสัชกรรม",
-    "pdf_url": "./files/abstracts/P3.pdf",
-    "poster_url": "./files/posters/P3.pdf",
+    "pdf_url": "./abstracts/P3.pdf",
+    "poster_url": "./Poster CQI/P3.pdf",
     "active": true
   },
   {
@@ -187,8 +187,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวมัณฑิตา บัวสุวรรณ, นางสาวณิชกานต์ โพธิ์สง่า",
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
-    "pdf_url": "./files/abstracts/P4.pdf",
-    "poster_url": "./files/posters/P4.pdf",
+    "pdf_url": "./abstracts/P4.pdf",
+    "poster_url": "./Poster CQI/P4.pdf",
     "active": true
   },
   {
@@ -199,8 +199,8 @@
     "judge_ids": "6,9,14",
     "presenter": "ภญ.ธภัสส์ธรณ์ นิโครธานนท์, ภญ.กนกวลี สิงห์รุ่งเรืองกิจ",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
-    "pdf_url": "./files/abstracts/P5.pdf",
-    "poster_url": "./files/posters/P5.pdf",
+    "pdf_url": "./abstracts/P5.pdf",
+    "poster_url": "./Poster CQI/P5.pdf",
     "active": true
   },
   {
@@ -211,8 +211,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวปนัดดา มาที",
     "department": "ศูนย์ประสานงาน Telemedicine",
-    "pdf_url": "./files/abstracts/P6.pdf",
-    "poster_url": "./files/posters/P6.pdf",
+    "pdf_url": "./abstracts/P6.pdf",
+    "poster_url": "./Poster CQI/P6.pdf",
     "active": true
   },
   {
@@ -223,8 +223,8 @@
     "judge_ids": "6,9,14",
     "presenter": "ภญ.พรพรรณ ศรีสุภาพ, ภญ.สุพิชชา พรหมฉิม",
     "department": "งานผลิตยาทั่วไปและยาปราศจากเชื้อ",
-    "pdf_url": "./files/abstracts/P7.pdf",
-    "poster_url": "./files/posters/P7.pdf",
+    "pdf_url": "./abstracts/P7.pdf",
+    "poster_url": "./Poster CQI/P7.pdf",
     "active": true
   },
   {
@@ -235,8 +235,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวสุภาวดี บุญรอด, นางสาวมัณฑิตา บัวสุวรรณ",
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
-    "pdf_url": "./files/abstracts/P8.pdf",
-    "poster_url": "./files/posters/P8.pdf",
+    "pdf_url": "./abstracts/P8.pdf",
+    "poster_url": "./Poster CQI/P8.pdf",
     "active": true
   },
   {
@@ -247,8 +247,8 @@
     "judge_ids": "6,9,14",
     "presenter": "ภญ.อุรารัตน์ อริยวังโส",
     "department": "งานผลิตยาทั่วไปและยาปราศจากเชื้อ",
-    "pdf_url": "./files/abstracts/P9.pdf",
-    "poster_url": "./files/posters/P9.pdf",
+    "pdf_url": "./abstracts/P9.pdf",
+    "poster_url": "./Poster CQI/P9.pdf",
     "active": true
   },
   {
@@ -259,8 +259,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวดรุณี ธรรมศิริ, นางสาวประภัสสร โฉมเฉลา",
     "department": "กลุ่มงานทันตกรรม",
-    "pdf_url": "./files/abstracts/P10.pdf",
-    "poster_url": "./files/posters/P10.pdf",
+    "pdf_url": "./abstracts/P10.pdf",
+    "poster_url": "./Poster CQI/P10.pdf",
     "active": true
   },
   {
@@ -271,8 +271,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวนาถกมล อภิชัย, นางศศิวิมล ขันกา",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
-    "pdf_url": "./files/abstracts/P11.pdf",
-    "poster_url": "./files/posters/P11.pdf",
+    "pdf_url": "./abstracts/P11.pdf",
+    "poster_url": "./Poster CQI/P11.pdf",
     "active": true
   },
   {
@@ -283,8 +283,8 @@
     "judge_ids": "6,9,14",
     "presenter": "นางสาวนิลาวัณย์ อินทสร, นางสาวณัฐญาณี บัวแดง",
     "department": "กลุ่มงานทันตกรรม",
-    "pdf_url": "./files/abstracts/P12.pdf",
-    "poster_url": "./files/posters/P12.pdf",
+    "pdf_url": "./abstracts/P12.pdf",
+    "poster_url": "./Poster CQI/P12.pdf",
     "active": true
   },
   {
@@ -295,8 +295,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวอิงครัตน์ วีระธนินทร์ชาติ",
     "department": "กลุ่มงานทันตกรรม",
-    "pdf_url": "./files/abstracts/D1.pdf",
-    "poster_url": "./files/posters/D1.pdf",
+    "pdf_url": "./abstracts/D1.pdf",
+    "poster_url": "./Poster Digital/D1.pdf",
     "active": true
   },
   {
@@ -307,8 +307,8 @@
     "judge_ids": "5,10,13",
     "presenter": "ภก.ธีรภัทร เพชโรทัย",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
-    "pdf_url": "./files/abstracts/D2.pdf",
-    "poster_url": "./files/posters/D2.pdf",
+    "pdf_url": "./abstracts/D2.pdf",
+    "poster_url": "./Poster Digital/D2.pdf",
     "active": true
   },
   {
@@ -319,8 +319,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวรสกร แสงมาก, นางสาวปณัชชา จันทร์สอน",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
-    "pdf_url": "./files/abstracts/D3.pdf",
-    "poster_url": "./files/posters/D3.pdf",
+    "pdf_url": "./abstracts/D3.pdf",
+    "poster_url": "./Poster Digital/D3.pdf",
     "active": true
   },
   {
@@ -331,8 +331,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาววราภรณ์ จันโพพันธ์, นางสาวกรรณิการ์ เฟื้อแก้ว",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
-    "pdf_url": "./files/abstracts/D4.pdf",
-    "poster_url": "./files/posters/D4.pdf",
+    "pdf_url": "./abstracts/D4.pdf",
+    "poster_url": "./Poster Digital/D4.pdf",
     "active": true
   },
   {
@@ -343,8 +343,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวกรกนก แพรกทอง, นางสาวสุนันท์ทิสา วงค์ลาวัลย์",
     "department": "คลินิกศัลยกรรมกระดูกและข้อ",
-    "pdf_url": "./files/abstracts/D5.pdf",
-    "poster_url": "./files/posters/D5.pdf",
+    "pdf_url": "./abstracts/D5.pdf",
+    "poster_url": "./Poster Digital/D5.pdf",
     "active": true
   },
   {
@@ -355,8 +355,8 @@
     "judge_ids": "5,10,13",
     "presenter": "ภญ.รมิดา ย้อยแก้ว",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
-    "pdf_url": "./files/abstracts/D6.pdf",
-    "poster_url": "./files/posters/D6.pdf",
+    "pdf_url": "./abstracts/D6.pdf",
+    "poster_url": "./Poster Digital/D6.pdf",
     "active": true
   },
   {
@@ -367,8 +367,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นายกรวิทย์ มีสุขสกุล",
     "department": "งานเวชนิทัศน์",
-    "pdf_url": "./files/abstracts/D7.pdf",
-    "poster_url": "./files/posters/D7.pdf",
+    "pdf_url": "./abstracts/D7.pdf",
+    "poster_url": "./Poster Digital/D7.pdf",
     "active": true
   },
   {
@@ -379,8 +379,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวมยุรินทร์ อินทร์บำรุง, นางสาวศิริพร ศรีโสม",
     "department": "งานประชาสัมพันธ์และการสื่อสาร",
-    "pdf_url": "./files/abstracts/D8.pdf",
-    "poster_url": "./files/posters/D8.pdf",
+    "pdf_url": "./abstracts/D8.pdf",
+    "poster_url": "./Poster Digital/D8.pdf",
     "active": true
   },
   {
@@ -391,8 +391,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวไพลิน พึ่งทอง",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
-    "pdf_url": "./files/abstracts/D9.pdf",
-    "poster_url": "./files/posters/D9.pdf",
+    "pdf_url": "./abstracts/D9.pdf",
+    "poster_url": "./Poster Digital/D9.pdf",
     "active": true
   },
   {
@@ -403,8 +403,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวปิญชาน์ณัฐ ทองทุ่ง, นางสาวตฤมปตี นวคุณมณี",
     "department": "งานประชาสัมพันธ์และการสื่อสาร",
-    "pdf_url": "./files/abstracts/D10.pdf",
-    "poster_url": "./files/posters/D10.pdf",
+    "pdf_url": "./abstracts/D10.pdf",
+    "poster_url": "./Poster Digital/D10.pdf",
     "active": true
   },
   {
@@ -415,8 +415,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวเพ็ญพักตร์ คงกุลทอง",
     "department": "หอผู้ป่วยศัลยกรรมทารกแรกเกิด (ส 5 เอ)",
-    "pdf_url": "./files/abstracts/D11.pdf",
-    "poster_url": "./files/posters/D11.pdf",
+    "pdf_url": "./abstracts/D11.pdf",
+    "poster_url": "./Poster Digital/D11.pdf",
     "active": true
   },
   {
@@ -427,8 +427,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวรัณม์ณริณ ศิวพรไพศาล",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กเล็ก (ส 6 เอ)",
-    "pdf_url": "./files/abstracts/D12.pdf",
-    "poster_url": "./files/posters/D12.pdf",
+    "pdf_url": "./abstracts/D12.pdf",
+    "poster_url": "./Poster Digital/D12.pdf",
     "active": true
   },
   {
@@ -439,8 +439,8 @@
     "judge_ids": "5,10,13",
     "presenter": "ภญ.จิรินทร์ วิริยะวารี, ภญ.วีรียา วรรลยางกูร",
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
-    "pdf_url": "./files/abstracts/D13.pdf",
-    "poster_url": "./files/posters/D13.pdf",
+    "pdf_url": "./abstracts/D13.pdf",
+    "poster_url": "./Poster Digital/D13.pdf",
     "active": true
   },
   {
@@ -451,8 +451,8 @@
     "judge_ids": "5,10,13",
     "presenter": "นางสาวณฐกร ชัยศร, นางสาวจารุวรรณ ดาแหม็ง",
     "department": "หอผู้ป่วยวิกฤตกุมารเวชกรรม (PICU)",
-    "pdf_url": "./files/abstracts/D14.pdf",
-    "poster_url": "./files/posters/D14.pdf",
+    "pdf_url": "./abstracts/D14.pdf",
+    "poster_url": "./Poster Digital/D14.pdf",
     "active": true
   },
   {
@@ -463,8 +463,8 @@
     "judge_ids": "7,8,15",
     "presenter": "นางสาวศุภลักษณ์ โชควิทยา",
     "department": "งานชีวโมเลกุลและพันธุศาสตร์",
-    "pdf_url": "./files/abstracts/K1.pdf",
-    "poster_url": "./files/posters/K1.pdf",
+    "pdf_url": "./abstracts/K1.pdf",
+    "poster_url": "./Poster KM/K1.pdf",
     "active": true
   },
   {
@@ -475,8 +475,8 @@
     "judge_ids": "7,8,15",
     "presenter": "ภญ.กมลวรรณ พ่อค้า",
     "department": "งานบริการเภสัชกรรมคลินิก และ PICU",
-    "pdf_url": "./files/abstracts/K2.pdf",
-    "poster_url": "./files/posters/K2.pdf",
+    "pdf_url": "./abstracts/K2.pdf",
+    "poster_url": "./Poster KM/K2.pdf",
     "active": true
   },
   {
@@ -487,8 +487,8 @@
     "judge_ids": "7,8,15",
     "presenter": "ภญ.เพ็ญนภา ม่วงศรี",
     "department": "งานเคมีบำบัด กลุ่มงานเภสัชกรรม",
-    "pdf_url": "./files/abstracts/K3.pdf",
-    "poster_url": "./files/posters/K3.pdf",
+    "pdf_url": "./abstracts/K3.pdf",
+    "poster_url": "./Poster KM/K3.pdf",
     "active": true
   },
   {
@@ -499,8 +499,8 @@
     "judge_ids": "7,8,15",
     "presenter": "ภญ.นีลกมล ภูมิภมร",
     "department": "งานบริการเภสัชกรรมคลินิก",
-    "pdf_url": "./files/abstracts/K4.pdf",
-    "poster_url": "./files/posters/K4.pdf",
+    "pdf_url": "./abstracts/K4.pdf",
+    "poster_url": "./Poster KM/K4.pdf",
     "active": true
   },
   {
@@ -511,8 +511,8 @@
     "judge_ids": "7,8,15",
     "presenter": "นางสาวธนิษฐา อาษาศรี, นางสาวมาริสา สมศรีใส",
     "department": "หอผู้ป่วยกุมารเวชกรรมระบบทางเดินอาหาร (ม 7 ก)",
-    "pdf_url": "./files/abstracts/K5.pdf",
-    "poster_url": "./files/posters/K5.pdf",
+    "pdf_url": "./abstracts/K5.pdf",
+    "poster_url": "./Poster KM/K5.pdf",
     "active": true
   },
   {
@@ -523,8 +523,8 @@
     "judge_ids": "7,8,15",
     "presenter": "นางศุภลักษณ์ สวัสดิ์ชัย, นางสาวกัญญาพัชร พจนานุภาพ",
     "department": "งานการพยาบาลผู้ป่วยอุบัติเหตุและฉุกเฉิน",
-    "pdf_url": "./files/abstracts/K6.pdf",
-    "poster_url": "./files/posters/K6.pdf",
+    "pdf_url": "./abstracts/K6.pdf",
+    "poster_url": "./Poster KM/K6.pdf",
     "active": true
   },
   {
@@ -535,7 +535,7 @@
     "judge_ids": "1,7",
     "presenter": "นางสาวผาณิตา ปานเงิน",
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
-    "pdf_url": "./files/abstracts/R1.pdf",
+    "pdf_url": "./abstracts/R1.pdf",
     "poster_url": "",
     "active": true
   },
@@ -547,7 +547,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวขวัญนุช พชระวรางกูร, นางสาวทรายทิพย์ ฤกษ์ยาม",
     "department": "หอผู้ป่วยทารกแรกเกิดกึ่งวิกฤต (ส 10)",
-    "pdf_url": "./files/abstracts/M1.pdf",
+    "pdf_url": "./abstracts/M1.pdf",
     "poster_url": "",
     "active": true
   },
@@ -559,7 +559,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวเบญจรัตน์ มหัทธนวงศ์วาน, นางสาวเสาวภาคย์ หาระสุข",
     "department": "งานกายอุปกรณ์",
-    "pdf_url": "./files/abstracts/M2.pdf",
+    "pdf_url": "./abstracts/M2.pdf",
     "poster_url": "",
     "active": true
   },
@@ -571,7 +571,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวพิชชาภัทร์ ชัยสาด",
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
-    "pdf_url": "./files/abstracts/M3.pdf",
+    "pdf_url": "./abstracts/M3.pdf",
     "poster_url": "",
     "active": true
   },
@@ -583,7 +583,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวประเทือง บำรุงเมือง",
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
-    "pdf_url": "./files/abstracts/M4.pdf",
+    "pdf_url": "./abstracts/M4.pdf",
     "poster_url": "",
     "active": true
   },
@@ -595,7 +595,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวอนงค์พร สงวนสัตย์",
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
-    "pdf_url": "./files/abstracts/M5.pdf",
+    "pdf_url": "./abstracts/M5.pdf",
     "poster_url": "",
     "active": true
   },
@@ -607,7 +607,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวสาวิตรี ไชยเสน",
     "department": "หอผู้ป่วยพิเศษ 2 (ม 7 ข)",
-    "pdf_url": "./files/abstracts/M6.pdf",
+    "pdf_url": "./abstracts/M6.pdf",
     "poster_url": "",
     "active": true
   },
@@ -619,7 +619,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวสุภาพร​ แก้วเหลา",
     "department": "หอผู้ป่วยวิกฤตศัลยกรรมทารกแรกเกิด (NSICU)",
-    "pdf_url": "./files/abstracts/M7.pdf",
+    "pdf_url": "./abstracts/M7.pdf",
     "poster_url": "",
     "active": true
   },
@@ -631,7 +631,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวอภิญญา พรมศรี, นางสาวชัชชฏา งามพลแสน",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
-    "pdf_url": "./files/abstracts/M8.pdf",
+    "pdf_url": "./abstracts/M8.pdf",
     "poster_url": "",
     "active": true
   },
@@ -643,7 +643,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวสุพงษ์พร แก้วก่อง, นางสาวเมตตา สีมาวงษ์",
     "department": "หอผู้ป่วยพิเศษ 1 (ม 6 ข)",
-    "pdf_url": "./files/abstracts/M9.pdf",
+    "pdf_url": "./abstracts/M9.pdf",
     "poster_url": "",
     "active": true
   },
@@ -655,7 +655,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวชไมพร งามตรง, นางสาวนุจิรา รักชาติ",
     "department": "หอผู้ป่วยกุมารเวชกรรมโรคสมองและโรคหัวใจ (ส 8 บี)",
-    "pdf_url": "./files/abstracts/M10.pdf",
+    "pdf_url": "./abstracts/M10.pdf",
     "poster_url": "",
     "active": true
   },
@@ -667,7 +667,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวชมพูนุท กรรณเทพ, นางสาวเกษร บำรุงกลาง",
     "department": "หอผู้ป่วยวิกฤตกุมารเวชกรรม (PICU)",
-    "pdf_url": "./files/abstracts/M11.pdf",
+    "pdf_url": "./abstracts/M11.pdf",
     "poster_url": "",
     "active": true
   },
@@ -679,7 +679,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นายบัญชา กระแสพิตร, นางสาวอาภาภรณ์ กระแสพิตร",
     "department": "งานตรวจการได้ยิน กลุ่มงานโสต ศอ นาสิก",
-    "pdf_url": "./files/abstracts/M12.pdf",
+    "pdf_url": "./abstracts/M12.pdf",
     "poster_url": "",
     "active": true
   },
@@ -691,7 +691,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวสวรรค์ ธรรมวงค์",
     "department": "งานกิจกรรมบำบัด",
-    "pdf_url": "./files/abstracts/M13.pdf",
+    "pdf_url": "./abstracts/M13.pdf",
     "poster_url": "",
     "active": true
   },
@@ -703,7 +703,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวรัตนาวดี ศรีคลัง",
     "department": "หอผู้ป่วยกุมารศัลยกรรมกระดูก (ม 6 ก)",
-    "pdf_url": "./files/abstracts/M14.pdf",
+    "pdf_url": "./abstracts/M14.pdf",
     "poster_url": "",
     "active": true
   },
@@ -715,7 +715,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสาวมะลิวัลย์ เหหาสุข, นางสาวมาลี สุดเส้นผม",
     "department": "คลินิกโรคเลือดและมะเร็ง",
-    "pdf_url": "./files/abstracts/M15.pdf",
+    "pdf_url": "./abstracts/M15.pdf",
     "poster_url": "",
     "active": true
   },
@@ -727,7 +727,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นางสุภัค วงศ์หล้า, นางสาวปกรณ์ ผดุงศิลป์",
     "department": "งานการพยาบาลผู้ป่วยอุบัติเหตุและฉุกเฉิน",
-    "pdf_url": "./files/abstracts/M16.pdf",
+    "pdf_url": "./abstracts/M16.pdf",
     "poster_url": "",
     "active": true
   },
@@ -739,7 +739,7 @@
     "judge_ids": "4,11,12",
     "presenter": "นายวชิรชล พิมาทัย",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
-    "pdf_url": "./files/abstracts/M17.pdf",
+    "pdf_url": "./abstracts/M17.pdf",
     "poster_url": "",
     "active": true
   }
