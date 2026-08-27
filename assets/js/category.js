@@ -1611,15 +1611,8 @@ document.addEventListener(
 
 /* =====================================================
    PRELOAD WORK FILES
-   โหลดไฟล์จาก URL ที่กำหนดใน works.json โดยตรง
-
-   Abstract:
-   ./abstracts/O1.pdf
-
-   Poster:
-   ./Poster CQI/P1.pdf
-   ./Poster Digital/D1.pdf
-   ./Poster KM/K1.pdf
+   โหลดไฟล์เข้า Browser Cache + Memory Cache ทีละไฟล์
+   กัน iPad ยิงหลาย PDF พร้อมกัน
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1638,102 +1631,92 @@ function preloadWorkFiles(
     }
 
 
-    /*
-     * ให้หน้า Category ขึ้นก่อน
-     * แล้วค่อยโหลดไฟล์เบื้องหลัง
-     */
-
     setTimeout(
-        function () {
+        async function () {
 
-            works.forEach(
-                function (
-                    work
-                ) {
-
-                    if (!work) {
-
-                        return;
-
-                    }
+            const preloadQueue =
+                [];
 
 
-                    /* =========================================
-                       PRELOAD ABSTRACT
-                       ========================================= */
+            for (
+                const work of works
+            ) {
 
-                    const abstractUrl =
-                        String(
-                            work.pdf_url ||
-                            ""
-                        ).trim();
+                if (!work) {
 
-
-                    if (
-                        abstractUrl
-                    ) {
-
-                        const abstractLink =
-                            document.createElement(
-                                "link"
-                            );
-
-
-                        abstractLink.rel =
-                            "prefetch";
-
-
-                        abstractLink.href =
-                            abstractUrl;
-
-
-                        document.head.appendChild(
-                            abstractLink
-                        );
-
-                    }
-
-
-                    /* =========================================
-                       PRELOAD POSTER
-
-                       ไม่ต้องแยกหมวดใน JS
-                       เพราะ works.json บอก path มาแล้ว
-                       ========================================= */
-
-                    const posterUrl =
-                        String(
-                            work.poster_url ||
-                            ""
-                        ).trim();
-
-
-                    if (
-                        posterUrl
-                    ) {
-
-                        const posterLink =
-                            document.createElement(
-                                "link"
-                            );
-
-
-                        posterLink.rel =
-                            "prefetch";
-
-
-                        posterLink.href =
-                            posterUrl;
-
-
-                        document.head.appendChild(
-                            posterLink
-                        );
-
-                    }
+                    continue;
 
                 }
-            );
+
+
+                const abstractUrl =
+                    String(
+                        work.pdf_url ||
+                        ""
+                    ).trim();
+
+
+                const posterUrl =
+                    String(
+                        work.poster_url ||
+                        ""
+                    ).trim();
+
+
+                if (
+                    abstractUrl
+                ) {
+
+                    preloadQueue.push(
+                        abstractUrl
+                    );
+
+                }
+
+
+                if (
+                    posterUrl
+                ) {
+
+                    preloadQueue.push(
+                        posterUrl
+                    );
+
+                }
+
+            }
+
+
+            const limitedQueue =
+                preloadQueue.slice(
+                    0,
+                    3
+                );
+
+
+            for (
+                const fileUrl of limitedQueue
+            ) {
+
+                await cachePdfFile(
+                    fileUrl
+                );
+
+
+                await new Promise(
+                    function (
+                        resolve
+                    ) {
+
+                        setTimeout(
+                            resolve,
+                            80
+                        );
+
+                    }
+                );
+
+            }
 
         },
         800
@@ -3294,6 +3277,194 @@ async function ensurePdfJsForIPad() {
 }
 
 /* =====================================================
+   PDF FILE CACHE
+   เก็บ PDF ที่โหลดแล้วไว้ใน Memory
+   ===================================================== */
+
+const PDF_CACHE_LIMIT =
+    3;
+
+
+const pdfFileCache =
+    new Map();
+
+
+function setPdfCache(
+    key,
+    arrayBuffer
+) {
+
+    if (
+        !key ||
+        !arrayBuffer
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * ถ้ามีไฟล์นี้อยู่แล้ว
+     * ลบก่อนแล้วใส่ใหม่
+     * เพื่อเลื่อนไปเป็นไฟล์ล่าสุด
+     */
+
+    if (
+        pdfFileCache.has(
+            key
+        )
+    ) {
+
+        pdfFileCache.delete(
+            key
+        );
+
+    }
+
+
+    pdfFileCache.set(
+        key,
+        arrayBuffer
+    );
+
+
+    /*
+     * เก็บใน Memory สูงสุด 3 ไฟล์
+     */
+
+    while (
+        pdfFileCache.size >
+        PDF_CACHE_LIMIT
+    ) {
+
+        const oldestKey =
+            pdfFileCache.keys()
+                .next()
+                .value;
+
+
+        pdfFileCache.delete(
+            oldestKey
+        );
+
+    }
+
+}
+
+/* =====================================================
+LOAD PDF INTO MEMORY CACHE
+
+โหลด PDF ไว้ล่วงหน้า
+เมื่อกดเปิดจะไม่ต้องรอ Download ใหม่
+===================================================== */
+
+async function cachePdfFile(
+    url
+) {
+
+    if (
+        !url
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const fileUrl =
+            new URL(
+                String(
+                    url
+                ).trim(),
+                window.location.href
+            ).href;
+
+
+        /* มีอยู่แล้ว ไม่ต้องโหลดซ้ำ */
+
+        if (
+            pdfFileCache.has(
+                fileUrl
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                fileUrl,
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "force-cache"
+                }
+            );
+
+
+        if (
+            !response.ok
+        ) {
+
+            return;
+
+        }
+
+
+        const arrayBuffer =
+            await response.arrayBuffer();
+
+
+        if (
+            !arrayBuffer ||
+            arrayBuffer.byteLength === 0
+        ) {
+
+            return;
+
+        }
+
+
+        setPdfCache(
+            fileUrl,
+            arrayBuffer
+        );
+
+
+        console.log(
+            "PDF PRELOADED TO CACHE =",
+            fileUrl
+        );
+
+    }
+    catch (
+    error
+    ) {
+
+        /*
+         * preload พลาดไม่ทำให้หน้าเว็บพัง
+         * ตอนกดเปิด renderPdfForIPad()
+         * จะลองโหลดอีกครั้งเอง
+         */
+
+        console.warn(
+            "PDF PRELOAD FAILED =",
+            url,
+            error
+        );
+
+    }
+
+}
+
+/* =====================================================
    LOCAL PDF CANVAS VIEWER
    ใช้ได้ทั้งบทคัดย่อ + โปสเตอร์
 
@@ -3396,71 +3567,109 @@ async function renderPdfForIPad(
            ไม่ให้ PDF.js fetch URL เอง
            ============================================= */
 
-        const response =
-            await fetch(
-                fileUrl.href,
-                {
-                    method:
-                        "GET",
+        /* =============================================
+   โหลดไฟล์จาก Cache ก่อน
 
-                    cache:
-                        "default"
-                }
+   ถ้ายังไม่มีใน Memory
+   ค่อย Fetch จาก Server
+   ============================================= */
+
+        let arrayBuffer =
+            pdfFileCache.get(
+                fileUrl.href
             );
-
-
-        console.log(
-            "PDF RESPONSE =",
-            response.status,
-            response.url
-        );
 
 
         if (
-            !response.ok
+            !arrayBuffer
         ) {
 
-            throw new Error(
-                "หาไฟล์ PDF ไม่เจอ" +
-                " | HTTP " +
-                response.status
+            const response =
+                await fetch(
+                    fileUrl.href,
+                    {
+                        method:
+                            "GET",
+
+                        cache:
+                            "force-cache"
+                    }
+                );
+
+
+            console.log(
+                "PDF RESPONSE =",
+                response.status,
+                response.url
+            );
+
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    "หาไฟล์ PDF ไม่เจอ" +
+                    " | HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            /* =============================================
+               ตรวจ Content-Type
+               ============================================= */
+
+            const contentType =
+                String(
+                    response.headers.get(
+                        "content-type"
+                    ) ||
+                    ""
+                ).toLowerCase();
+
+
+            console.log(
+                "PDF CONTENT TYPE =",
+                contentType
+            );
+
+
+            /* =============================================
+               อ่านไฟล์เข้า Memory
+               ============================================= */
+
+            arrayBuffer =
+                await response.arrayBuffer();
+
+
+            /* =============================================
+               เก็บลง Cache
+        
+               รอบถัดไปไม่ต้อง Fetch ใหม่
+               ============================================= */
+
+            setPdfCache(
+                fileUrl.href,
+                arrayBuffer
+            );
+
+
+            console.log(
+                "PDF STORED IN CACHE =",
+                fileUrl.href
             );
 
         }
+        else {
 
+            console.log(
+                "PDF FROM CACHE =",
+                fileUrl.href
+            );
 
-        /* =============================================
-           ตรวจว่าได้ PDF จริง
-           ============================================= */
-
-        const contentType =
-            String(
-                response.headers.get(
-                    "content-type"
-                ) ||
-                ""
-            ).toLowerCase();
-
-
-        console.log(
-            "PDF CONTENT TYPE =",
-            contentType
-        );
-
-
-        /*
-         * ไม่บังคับ application/pdf
-         * เพราะ GitHub / Cloudflare บางครั้งส่ง
-         * application/octet-stream ได้
-         */
-
-
-        /* =============================================
-           อ่านไฟล์เข้า Memory
-           ============================================= */
-
-        const arrayBuffer =
-            await response.arrayBuffer();
+        }
 
 
         if (
