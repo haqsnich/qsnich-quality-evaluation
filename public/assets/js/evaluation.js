@@ -1426,16 +1426,18 @@ function renderCriteria() {
                 <div class="criterion-score">
 
                     <input
-                        type="text"
-                        class="score-input"
-                        id="score${index + 1}"
-                        data-max="${maxScore}"
-                        placeholder="0"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        autocomplete="off"
-                        enterkeyhint="next"
-                    >
+    type="number"
+    class="score-input"
+    id="score${index + 1}"
+    min="0"
+    max="${maxScore}"
+    step="1"
+    data-max="${maxScore}"
+    placeholder="0"
+    inputmode="numeric"
+    autocomplete="off"
+    enterkeyhint="next"
+>
 
                     <span>
                         / ${maxScore}
