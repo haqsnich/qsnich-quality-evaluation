@@ -4495,103 +4495,26 @@ async function openWorkFileModal(
     }
 
     /* =================================================
-   GOOGLE DRIVE PREVIEW
-   ใช้ iframe เดิมสำหรับแสดงทั้งบทคัดย่อและโปสเตอร์
+   GOOGLE DRIVE — OPEN DIRECT
    ================================================= */
 
-    try {
-
-        /* ซ่อนตัว viewer เก่า */
-
-        pdfViewer.hidden =
-            true;
+    window.open(
+        fileUrl,
+        "_blank"
+    );
 
 
-        pdfPages.innerHTML =
-            "";
+    /* ปิด popup ที่เพิ่งเปิด */
+    modal.hidden =
+        true;
 
 
-        poster.hidden =
-            true;
+    document.body.classList.remove(
+        "work-file-modal-open"
+    );
 
 
-        poster.src =
-            "";
-
-
-        /* ใช้ iframe เดิม */
-
-        pdf.hidden =
-            false;
-
-
-        pdf.onload =
-            function () {
-
-                loading.hidden =
-                    true;
-
-            };
-
-
-        pdf.onerror =
-            function () {
-
-                loading.hidden =
-                    true;
-
-
-                pdf.hidden =
-                    true;
-
-
-                showWorkFileEmpty(
-                    empty,
-                    "โหลดไฟล์จาก Google Drive ไม่สำเร็จ"
-                );
-
-            };
-
-
-        pdf.src =
-            fileUrl;
-
-
-        return;
-
-    }
-    catch (
-    error
-    ) {
-
-        console.error(
-            "Google Drive Preview Error:",
-            error
-        );
-
-
-        loading.hidden =
-            true;
-
-
-        pdf.hidden =
-            true;
-
-
-        pdfViewer.hidden =
-            true;
-
-
-        poster.hidden =
-            true;
-
-
-        showWorkFileEmpty(
-            empty,
-            "โหลดไฟล์ไม่สำเร็จ"
-        );
-
-    }
+    return;
 
 }
 
