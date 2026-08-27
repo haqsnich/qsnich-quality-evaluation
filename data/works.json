@@ -9,7 +9,9 @@
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กเล็ก (ส 6 เอ)",
     "pdf_url": "./abstracts/O1.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1F3NZoW_m8oqTSrThwc9Xemf08jHZZ_4B",
+    "poster_file_id": ""
   },
   {
     "id": "O2",
@@ -21,7 +23,9 @@
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
     "pdf_url": "./abstracts/O2.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "18Eaftxcyx9iH3-FEgdVMAeIu22KHejzA",
+    "poster_file_id": ""
   },
   {
     "id": "O3",
@@ -33,7 +37,9 @@
     "department": "หอผู้ป่วยทารกแรกเกิดกึ่งวิกฤต (ส 10)",
     "pdf_url": "./abstracts/O3.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1rrGCsITwrxdUOEhXcTQ6X4qyrHTCM2Bu",
+    "poster_file_id": ""
   },
   {
     "id": "O4",
@@ -45,7 +51,9 @@
     "department": "งานการพยาบาลผู้ป่วยนอกกุมารเวชกรรมเฉพาะโรค",
     "pdf_url": "./abstracts/O4.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1OQpVnKTr-2MCqfZJeoVeT9AKWR876qJp",
+    "poster_file_id": ""
   },
   {
     "id": "O5",
@@ -57,7 +65,9 @@
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
     "pdf_url": "./abstracts/O5.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1MlQljuSxNtfNeAYrrl2TDwwt3V9ROVOA",
+    "poster_file_id": ""
   },
   {
     "id": "O6",
@@ -69,7 +79,9 @@
     "department": "กลุ่มงานทันตกรรม",
     "pdf_url": "./abstracts/O6.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1GctueWPpTwMXQlgY9vviCmbOb7zskPEK",
+    "poster_file_id": ""
   },
   {
     "id": "O7",
@@ -81,7 +93,9 @@
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
     "pdf_url": "./abstracts/O7.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "19K1vP1e16GMbzH3-lBr4tDGs62o3Ad92",
+    "poster_file_id": ""
   },
   {
     "id": "O8",
@@ -93,7 +107,9 @@
     "department": "งานการพยาบาลส่งเสริมคุณภาพชีวิต",
     "pdf_url": "./abstracts/O8.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1AUqTSf2KhTf_V3T7TluW-5PJN15m75SG",
+    "poster_file_id": ""
   },
   {
     "id": "O10",
@@ -105,7 +121,9 @@
     "department": "กลุ่มงานวิชาการพยาบาล",
     "pdf_url": "./abstracts/O10.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1Nq9tYFJYT1d99zVdhal2reLT-TyjOC2c",
+    "poster_file_id": ""
   },
   {
     "id": "O11",
@@ -117,7 +135,9 @@
     "department": "งานการพยาบาลป้องกันและควบคุมการติดเชื้อ",
     "pdf_url": "./abstracts/O11.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1ZXWymsXCZcuW7blb1p-gxTH-iTMtCuVb",
+    "poster_file_id": ""
   },
   {
     "id": "O12",
@@ -129,7 +149,9 @@
     "department": "งานชีวเคมี",
     "pdf_url": "./abstracts/O12.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1bCQCfDAKBMDXEq_o-ltczqhPdPrDCk4C",
+    "poster_file_id": ""
   },
   {
     "id": "O13",
@@ -141,7 +163,9 @@
     "department": "งานการพยาบาลวิสัญญี",
     "pdf_url": "./abstracts/O13.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1fktOFMRuSgl2uuFtikvk3nkBI1IhQXm5",
+    "poster_file_id": ""
   },
   {
     "id": "P1",
@@ -152,8 +176,10 @@
     "presenter": "ภญ.กันยากร คงสมบูรณ์, ภญ.วริศรา ศรีสระหลวง",
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
     "pdf_url": "./abstracts/P1.pdf",
-    "poster_url": "./Poster CQI/P1.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P1.jpg",
+    "active": true,
+    "abstract_file_id": "1ErQUGnZrluDCHRc-3Ve-oHPZojbhpok8",
+    "poster_file_id": "1rruyfpT2pKMrDS2zfx5zV5UQI3qWA5ds"
   },
   {
     "id": "P2",
@@ -164,8 +190,10 @@
     "presenter": "นางสาวอมรวดี จุแดง, นางสาวอัจฉรา พันธุ์เจริญ",
     "department": "งานภูมิคุ้มกันวิทยา",
     "pdf_url": "./abstracts/P2.pdf",
-    "poster_url": "./Poster CQI/P2.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P2.jpg",
+    "active": true,
+    "abstract_file_id": "1CUD_6p_MnEUsbu3eug2lOm3uLtj_OnrD",
+    "poster_file_id": "1dl_45HkWQq6QkOxn-PsxsSG08qFlHWdL"
   },
   {
     "id": "P3",
@@ -176,8 +204,10 @@
     "presenter": "นางสาวนวพรรษ เทียมสุขสม, นางสาวเพียงฤทัย สิทธิสระ",
     "department": "งานคลังยา กลุ่มงานเภสัชกรรม",
     "pdf_url": "./abstracts/P3.pdf",
-    "poster_url": "./Poster CQI/P3.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P3.jpg",
+    "active": true,
+    "abstract_file_id": "1X_eOypNBTNPPZuH92mapHjQNmkzeCUhs",
+    "poster_file_id": "1DZhKHy8xUDWg8pxPt7_BXcWKdiqvCxXd"
   },
   {
     "id": "P4",
@@ -188,8 +218,10 @@
     "presenter": "นางสาวมัณฑิตา บัวสุวรรณ, นางสาวณิชกานต์ โพธิ์สง่า",
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
     "pdf_url": "./abstracts/P4.pdf",
-    "poster_url": "./Poster CQI/P4.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P4.jpg",
+    "active": true,
+    "abstract_file_id": "1-teuWpwOK4dbdLdzzjrRdIzp_3_tfFEK",
+    "poster_file_id": "1ksO6CW2MwZAbrlqBcU_3hLoCZiF-MW2H"
   },
   {
     "id": "P5",
@@ -200,8 +232,10 @@
     "presenter": "ภญ.ธภัสส์ธรณ์ นิโครธานนท์, ภญ.กนกวลี สิงห์รุ่งเรืองกิจ",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
     "pdf_url": "./abstracts/P5.pdf",
-    "poster_url": "./Poster CQI/P5.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P5.jpg",
+    "active": true,
+    "abstract_file_id": "1CE5I7_dayMiA16tfy-ukFfYfGquRWrUH",
+    "poster_file_id": "1Uvoc-5xTltCzANAHvZtGytySDQq3RXSt"
   },
   {
     "id": "P6",
@@ -212,8 +246,10 @@
     "presenter": "นางสาวปนัดดา มาที",
     "department": "ศูนย์ประสานงาน Telemedicine",
     "pdf_url": "./abstracts/P6.pdf",
-    "poster_url": "./Poster CQI/P6.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P6.jpg",
+    "active": true,
+    "abstract_file_id": "1SlL8KYqWyiV2x881iawXiDyLwexTvEJ0",
+    "poster_file_id": "1IoXuM5ihZ8dxdYnJ2jTUorAyIrk2a9Rt"
   },
   {
     "id": "P7",
@@ -224,8 +260,10 @@
     "presenter": "ภญ.พรพรรณ ศรีสุภาพ, ภญ.สุพิชชา พรหมฉิม",
     "department": "งานผลิตยาทั่วไปและยาปราศจากเชื้อ",
     "pdf_url": "./abstracts/P7.pdf",
-    "poster_url": "./Poster CQI/P7.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P7.jpg",
+    "active": true,
+    "abstract_file_id": "1SY4aHdeSHKl5USGNwdWZHIHM-qKWcnrT",
+    "poster_file_id": "1cnzkE1wTBeepTQccZYIorFWU4jHX1uce"
   },
   {
     "id": "P8",
@@ -236,8 +274,10 @@
     "presenter": "นางสาวสุภาวดี บุญรอด, นางสาวมัณฑิตา บัวสุวรรณ",
     "department": "กลุ่มงานสังคมสงเคราะห์ทางการแพทย์",
     "pdf_url": "./abstracts/P8.pdf",
-    "poster_url": "./Poster CQI/P8.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P8.jpg",
+    "active": true,
+    "abstract_file_id": "1fb9iFEy6NWMQYQAz4oeWjJo_ulx3-amI",
+    "poster_file_id": "1RCruy-GyuMo2yO1v7b9tHlToGoOEcgLu"
   },
   {
     "id": "P9",
@@ -248,8 +288,10 @@
     "presenter": "ภญ.อุรารัตน์ อริยวังโส",
     "department": "งานผลิตยาทั่วไปและยาปราศจากเชื้อ",
     "pdf_url": "./abstracts/P9.pdf",
-    "poster_url": "./Poster CQI/P9.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P9.jpg",
+    "active": true,
+    "abstract_file_id": "1fkNta1LtSyj8gO7BjfbZ0yzigOwthhis",
+    "poster_file_id": "1F4Uwfoqo0mFKjFMkyyalWhqk0u58fleZ"
   },
   {
     "id": "P10",
@@ -260,8 +302,10 @@
     "presenter": "นางสาวดรุณี ธรรมศิริ, นางสาวประภัสสร โฉมเฉลา",
     "department": "กลุ่มงานทันตกรรม",
     "pdf_url": "./abstracts/P10.pdf",
-    "poster_url": "./Poster CQI/P10.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P10.jpg",
+    "active": true,
+    "abstract_file_id": "1E0WOqZyTt5rWmnsk7LsNY2YtcSfFdp7R",
+    "poster_file_id": "1TgXfjN0f_Rt4UJfjL2U8fGyL3hmUAVpa"
   },
   {
     "id": "P11",
@@ -272,8 +316,10 @@
     "presenter": "นางสาวนาถกมล อภิชัย, นางศศิวิมล ขันกา",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
     "pdf_url": "./abstracts/P11.pdf",
-    "poster_url": "./Poster CQI/P11.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P11.jpg",
+    "active": true,
+    "abstract_file_id": "1qXJ0NAb4IZKA_JzLFF2o_FTyfcymUen4",
+    "poster_file_id": "1Zf2eSt6CWwjhPmT8Q3JC_RAvsFeG15WM"
   },
   {
     "id": "P12",
@@ -284,8 +330,10 @@
     "presenter": "นางสาวนิลาวัณย์ อินทสร, นางสาวณัฐญาณี บัวแดง",
     "department": "กลุ่มงานทันตกรรม",
     "pdf_url": "./abstracts/P12.pdf",
-    "poster_url": "./Poster CQI/P12.pdf",
-    "active": true
+    "poster_url": "./Poster CQI/P12.jpg",
+    "active": true,
+    "abstract_file_id": "1uhqfypuHzXOdQ-Kj_voZ3PqVluQEB_Mg",
+    "poster_file_id": "1SG0PexFT1tyqg7NLbG68V3-c5W5Y-uGt"
   },
   {
     "id": "D1",
@@ -296,8 +344,10 @@
     "presenter": "นางสาวอิงครัตน์ วีระธนินทร์ชาติ",
     "department": "กลุ่มงานทันตกรรม",
     "pdf_url": "./abstracts/D1.pdf",
-    "poster_url": "./Poster Digital/D1.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D1.jpg",
+    "active": true,
+    "abstract_file_id": "1M0W_J-MAT33XeSA-pV6UNZQvDLmH5YFu",
+    "poster_file_id": "1t4vOY-M9uuObXl9NairpmuQbTyDVl09_"
   },
   {
     "id": "D2",
@@ -308,8 +358,10 @@
     "presenter": "ภก.ธีรภัทร เพชโรทัย",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
     "pdf_url": "./abstracts/D2.pdf",
-    "poster_url": "./Poster Digital/D2.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D2.jpg",
+    "active": true,
+    "abstract_file_id": "1xWSXUbMlvKPOrUiY6Xavg7-vkMAXewG9",
+    "poster_file_id": "1bIvboyHJVErxtAtEHooZ6UiAGdJRrl0L"
   },
   {
     "id": "D3",
@@ -320,8 +372,10 @@
     "presenter": "นางสาวรสกร แสงมาก, นางสาวปณัชชา จันทร์สอน",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
     "pdf_url": "./abstracts/D3.pdf",
-    "poster_url": "./Poster Digital/D3.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D3.jpg",
+    "active": true,
+    "abstract_file_id": "1eAp1gsWMBk3RlVfIm8M98wFS0KGzjyJR",
+    "poster_file_id": "1nuvcJCVRkB_kmh_9TleNz8ggwFy_0KV2"
   },
   {
     "id": "D4",
@@ -332,8 +386,10 @@
     "presenter": "นางสาววราภรณ์ จันโพพันธ์, นางสาวกรรณิการ์ เฟื้อแก้ว",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
     "pdf_url": "./abstracts/D4.pdf",
-    "poster_url": "./Poster Digital/D4.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D4.jpg",
+    "active": true,
+    "abstract_file_id": "1h8rqqa9PM11FIVRf1pRLYzzeul-yxTCI",
+    "poster_file_id": "1X1T6_xt2WRagKVoJLKDaFz0U9EOhhalg"
   },
   {
     "id": "D5",
@@ -344,8 +400,10 @@
     "presenter": "นางสาวกรกนก แพรกทอง, นางสาวสุนันท์ทิสา วงค์ลาวัลย์",
     "department": "คลินิกศัลยกรรมกระดูกและข้อ",
     "pdf_url": "./abstracts/D5.pdf",
-    "poster_url": "./Poster Digital/D5.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D5.jpg",
+    "active": true,
+    "abstract_file_id": "1QNfrRyH1gL8oNo6To0a2jZm_cQIzaj5-",
+    "poster_file_id": "14sz4N9usD3ZyFuPtYSWroiwgOp_mUSRc"
   },
   {
     "id": "D6",
@@ -356,8 +414,10 @@
     "presenter": "ภญ.รมิดา ย้อยแก้ว",
     "department": "งานบริการเภสัชกรรมผู้ป่วยนอก",
     "pdf_url": "./abstracts/D6.pdf",
-    "poster_url": "./Poster Digital/D6.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D6.jpg",
+    "active": true,
+    "abstract_file_id": "1qUOyC2nvn_uLxxUonUAjtFz4LZvVi-5e",
+    "poster_file_id": "1R6zyjTiUThQYqbl_XovVjPvs5UOKIBU_"
   },
   {
     "id": "D7",
@@ -368,8 +428,10 @@
     "presenter": "นายกรวิทย์ มีสุขสกุล",
     "department": "งานเวชนิทัศน์",
     "pdf_url": "./abstracts/D7.pdf",
-    "poster_url": "./Poster Digital/D7.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D7.jpg",
+    "active": true,
+    "abstract_file_id": "1seE3dXEHu37J2yTnN5KQZKEWO5xB2cCX",
+    "poster_file_id": "1BLnjlNEvzce6xWthbLPhwjaSHIOaAW0E"
   },
   {
     "id": "D8",
@@ -380,8 +442,10 @@
     "presenter": "นางสาวมยุรินทร์ อินทร์บำรุง, นางสาวศิริพร ศรีโสม",
     "department": "งานประชาสัมพันธ์และการสื่อสาร",
     "pdf_url": "./abstracts/D8.pdf",
-    "poster_url": "./Poster Digital/D8.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D8.jpg",
+    "active": true,
+    "abstract_file_id": "1R3Nk69SuNVnq2hOVuxhLQ7W--mwXWg3c",
+    "poster_file_id": "1W6OB5wfdzZYaLO_Zju5NS0EFQvpLm1e8"
   },
   {
     "id": "D9",
@@ -392,8 +456,10 @@
     "presenter": "นางสาวไพลิน พึ่งทอง",
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
     "pdf_url": "./abstracts/D9.pdf",
-    "poster_url": "./Poster Digital/D9.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D9.jpg",
+    "active": true,
+    "abstract_file_id": "1JSp5ShZyaOuD1xpd5F1uxMEEPm0Y52s3",
+    "poster_file_id": "1kH6qSDF2GvCUOaseui6SP49OWQZEsriL"
   },
   {
     "id": "D10",
@@ -404,8 +470,10 @@
     "presenter": "นางสาวปิญชาน์ณัฐ ทองทุ่ง, นางสาวตฤมปตี นวคุณมณี",
     "department": "งานประชาสัมพันธ์และการสื่อสาร",
     "pdf_url": "./abstracts/D10.pdf",
-    "poster_url": "./Poster Digital/D10.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D10.jpg",
+    "active": true,
+    "abstract_file_id": "1jHMAOkzap5AvF21FQqHZ_RRdY6v3RB36",
+    "poster_file_id": "1DDCRvwSL8lNWl3lcCAMpy88Nxjtnvp_9"
   },
   {
     "id": "D11",
@@ -416,8 +484,10 @@
     "presenter": "นางสาวเพ็ญพักตร์ คงกุลทอง",
     "department": "หอผู้ป่วยศัลยกรรมทารกแรกเกิด (ส 5 เอ)",
     "pdf_url": "./abstracts/D11.pdf",
-    "poster_url": "./Poster Digital/D11.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D11.jpg",
+    "active": true,
+    "abstract_file_id": "14pNBs6_JcftA0V15iwbVbl0-CdUsw0MU",
+    "poster_file_id": "1FAgnlua1yPOogyaVay_UZWMw9bvp9rLW"
   },
   {
     "id": "D12",
@@ -428,8 +498,10 @@
     "presenter": "นางสาวรัณม์ณริณ ศิวพรไพศาล",
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กเล็ก (ส 6 เอ)",
     "pdf_url": "./abstracts/D12.pdf",
-    "poster_url": "./Poster Digital/D12.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D12.jpg",
+    "active": true,
+    "abstract_file_id": "11MVQmIT5NugQWQjp930k9Ik14lGa3oIW",
+    "poster_file_id": "1RnS-o0jr0GgVPHQ4IsC1JnVI0y9LuTbr"
   },
   {
     "id": "D13",
@@ -440,8 +512,10 @@
     "presenter": "ภญ.จิรินทร์ วิริยะวารี, ภญ.วีรียา วรรลยางกูร",
     "department": "งานบริการเภสัชกรรมผู้ป่วยใน",
     "pdf_url": "./abstracts/D13.pdf",
-    "poster_url": "./Poster Digital/D13.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D13.jpg",
+    "active": true,
+    "abstract_file_id": "12YM011hXcFYFW1tc-pwBRKOHoJCDexcf",
+    "poster_file_id": "11JaeoMYqEkg90dDqUSzRMawSQEZKXikU"
   },
   {
     "id": "D14",
@@ -452,8 +526,10 @@
     "presenter": "นางสาวณฐกร ชัยศร, นางสาวจารุวรรณ ดาแหม็ง",
     "department": "หอผู้ป่วยวิกฤตกุมารเวชกรรม (PICU)",
     "pdf_url": "./abstracts/D14.pdf",
-    "poster_url": "./Poster Digital/D14.pdf",
-    "active": true
+    "poster_url": "./Poster Digital/D14.jpg",
+    "active": true,
+    "abstract_file_id": "1RczY3BDxBwh1q2DCl4nZZG2yoreEXWe0",
+    "poster_file_id": "1zhRzMzd3MFUFY60NJnO9BWK9NApbGpBO"
   },
   {
     "id": "K1",
@@ -464,8 +540,10 @@
     "presenter": "นางสาวศุภลักษณ์ โชควิทยา",
     "department": "งานชีวโมเลกุลและพันธุศาสตร์",
     "pdf_url": "./abstracts/K1.pdf",
-    "poster_url": "./Poster KM/K1.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K1.jpg",
+    "active": true,
+    "abstract_file_id": "1f81NosjW2o82cUGxvt6azB7hpXGQWSvg",
+    "poster_file_id": "1IXJbsl7vVEjyavPTDZcRgPxNeuURUmvu"
   },
   {
     "id": "K2",
@@ -476,8 +554,10 @@
     "presenter": "ภญ.กมลวรรณ พ่อค้า",
     "department": "งานบริการเภสัชกรรมคลินิก และ PICU",
     "pdf_url": "./abstracts/K2.pdf",
-    "poster_url": "./Poster KM/K2.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K2.jpg",
+    "active": true,
+    "abstract_file_id": "1DL2lwrr2mUB_v7IqUiKfDbgfed72fypj",
+    "poster_file_id": "1QvvoqyfSVbcbAsV2g5Ont6YiVq2huE4H"
   },
   {
     "id": "K3",
@@ -488,8 +568,10 @@
     "presenter": "ภญ.เพ็ญนภา ม่วงศรี",
     "department": "งานเคมีบำบัด กลุ่มงานเภสัชกรรม",
     "pdf_url": "./abstracts/K3.pdf",
-    "poster_url": "./Poster KM/K3.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K3.jpg",
+    "active": true,
+    "abstract_file_id": "1oooH3STGO21yUXM3q6MpHQTiGPbp7yNZ",
+    "poster_file_id": "1mQkav7upRHf8pHep-nj4w0d_dbwiOZ9l"
   },
   {
     "id": "K4",
@@ -500,8 +582,10 @@
     "presenter": "ภญ.นีลกมล ภูมิภมร",
     "department": "งานบริการเภสัชกรรมคลินิก",
     "pdf_url": "./abstracts/K4.pdf",
-    "poster_url": "./Poster KM/K4.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K4.jpg",
+    "active": true,
+    "abstract_file_id": "1NcT0Dj4QjPVYtzI3dFDar1AIBPxC_SXs",
+    "poster_file_id": "1THtWHsd3FhgjC2w6yWi32_m7A-RpbRSA"
   },
   {
     "id": "K5",
@@ -512,8 +596,10 @@
     "presenter": "นางสาวธนิษฐา อาษาศรี, นางสาวมาริสา สมศรีใส",
     "department": "หอผู้ป่วยกุมารเวชกรรมระบบทางเดินอาหาร (ม 7 ก)",
     "pdf_url": "./abstracts/K5.pdf",
-    "poster_url": "./Poster KM/K5.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K5.jpg",
+    "active": true,
+    "abstract_file_id": "1tDrxbubB3Dnh2RMR9zNi71daIOUAjSon",
+    "poster_file_id": "1xUK9Tlgy3w6ZZZdMY2fxkf5AWBoJiHL5"
   },
   {
     "id": "K6",
@@ -524,8 +610,10 @@
     "presenter": "นางศุภลักษณ์ สวัสดิ์ชัย, นางสาวกัญญาพัชร พจนานุภาพ",
     "department": "งานการพยาบาลผู้ป่วยอุบัติเหตุและฉุกเฉิน",
     "pdf_url": "./abstracts/K6.pdf",
-    "poster_url": "./Poster KM/K6.pdf",
-    "active": true
+    "poster_url": "./Poster KM/K6.jpg",
+    "active": true,
+    "abstract_file_id": "1vpAJglrWufY4YAetfyHTFr-jku6Ounyx",
+    "poster_file_id": "1KhDYza_KQSRymetJ4jfNXVRHxdV8zgDg"
   },
   {
     "id": "R1",
@@ -537,7 +625,9 @@
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
     "pdf_url": "./abstracts/R1.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1u7kiiTIR9jndzwbg7lnKQaXYmSekBjqA",
+    "poster_file_id": ""
   },
   {
     "id": "M1",
@@ -549,7 +639,9 @@
     "department": "หอผู้ป่วยทารกแรกเกิดกึ่งวิกฤต (ส 10)",
     "pdf_url": "./abstracts/M1.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1rDbn4C7niY7Loj5PUEdBoVS7NHtQMsP1",
+    "poster_file_id": ""
   },
   {
     "id": "M2",
@@ -561,7 +653,9 @@
     "department": "งานกายอุปกรณ์",
     "pdf_url": "./abstracts/M2.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1-vAgYg2VChsfvckZ3I19R3T-M5M-D6fx",
+    "poster_file_id": ""
   },
   {
     "id": "M3",
@@ -573,7 +667,9 @@
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
     "pdf_url": "./abstracts/M3.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "18REVfQiRE_01y4ds3L0xxlzJxPQCVh9A",
+    "poster_file_id": ""
   },
   {
     "id": "M4",
@@ -585,7 +681,9 @@
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
     "pdf_url": "./abstracts/M4.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1e57aqG5-UNHyShyiqGhnDowlZOnLsipR",
+    "poster_file_id": ""
   },
   {
     "id": "M5",
@@ -597,7 +695,9 @@
     "department": "หอผู้ป่วยกุมารเวชกรรมไข้เลือดออกและโรคติดเชื้ออุบัติใหม่ (ม 9 ข)",
     "pdf_url": "./abstracts/M5.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1vW1NHi34JKn3z3mn1PG62XuBgJXD_nhn",
+    "poster_file_id": ""
   },
   {
     "id": "M6",
@@ -609,7 +709,9 @@
     "department": "หอผู้ป่วยพิเศษ 2 (ม 7 ข)",
     "pdf_url": "./abstracts/M6.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1M_6D-02tr2q2ApzyfgV55Tfd8VmyIznq",
+    "poster_file_id": ""
   },
   {
     "id": "M7",
@@ -621,7 +723,9 @@
     "department": "หอผู้ป่วยวิกฤตศัลยกรรมทารกแรกเกิด (NSICU)",
     "pdf_url": "./abstracts/M7.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1WQs1LKechwa5d802NDMoEwNUp3V_3kUC",
+    "poster_file_id": ""
   },
   {
     "id": "M8",
@@ -633,7 +737,9 @@
     "department": "หอผู้ป่วยกุมารศัลยกรรมเด็กโต (ส 7 บี)",
     "pdf_url": "./abstracts/M8.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "19objviwdmL6JLPhatwsTkNWzlG9BXATE",
+    "poster_file_id": ""
   },
   {
     "id": "M9",
@@ -645,7 +751,9 @@
     "department": "หอผู้ป่วยพิเศษ 1 (ม 6 ข)",
     "pdf_url": "./abstracts/M9.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1DiFaiKsOVqJAq0Jk1_1MGRVUHkEN9WzC",
+    "poster_file_id": ""
   },
   {
     "id": "M10",
@@ -657,7 +765,9 @@
     "department": "หอผู้ป่วยกุมารเวชกรรมโรคสมองและโรคหัวใจ (ส 8 บี)",
     "pdf_url": "./abstracts/M10.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1mX1emji_M7OQyUW8vtl1XNFwmNn_4TKV",
+    "poster_file_id": ""
   },
   {
     "id": "M11",
@@ -669,7 +779,9 @@
     "department": "หอผู้ป่วยวิกฤตกุมารเวชกรรม (PICU)",
     "pdf_url": "./abstracts/M11.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "15Z91E_FnTqPCIOIgmc8bsQ7CUJxlhiLg",
+    "poster_file_id": ""
   },
   {
     "id": "M12",
@@ -681,7 +793,9 @@
     "department": "งานตรวจการได้ยิน กลุ่มงานโสต ศอ นาสิก",
     "pdf_url": "./abstracts/M12.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "18_1Xp6bSC7c0M4FIfa9oP3ZUdZ8N00h0",
+    "poster_file_id": ""
   },
   {
     "id": "M13",
@@ -693,7 +807,9 @@
     "department": "งานกิจกรรมบำบัด",
     "pdf_url": "./abstracts/M13.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1d1j_hHcEolrX7TonbIoYb1_8ffobI0fW",
+    "poster_file_id": ""
   },
   {
     "id": "M14",
@@ -705,7 +821,9 @@
     "department": "หอผู้ป่วยกุมารศัลยกรรมกระดูก (ม 6 ก)",
     "pdf_url": "./abstracts/M14.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1PC8WZlVP-Srna700u4edq4SgRiT9EvKZ",
+    "poster_file_id": ""
   },
   {
     "id": "M15",
@@ -717,7 +835,9 @@
     "department": "คลินิกโรคเลือดและมะเร็ง",
     "pdf_url": "./abstracts/M15.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1ueyjb7AoY3QQlyJwtEzwMLB-OBSQLIid",
+    "poster_file_id": ""
   },
   {
     "id": "M16",
@@ -729,7 +849,9 @@
     "department": "งานการพยาบาลผู้ป่วยอุบัติเหตุและฉุกเฉิน",
     "pdf_url": "./abstracts/M16.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1FQ9kfVDM9hg5TEydVHeLsmerJpB3dCpf",
+    "poster_file_id": ""
   },
   {
     "id": "M17",
@@ -741,6 +863,8 @@
     "department": "งานการพยาบาลผู้ป่วยผ่าตัด",
     "pdf_url": "./abstracts/M17.pdf",
     "poster_url": "",
-    "active": true
+    "active": true,
+    "abstract_file_id": "1eq3snuCrgvWkd7RjGxYjoktDyoE8hHgh",
+    "poster_file_id": ""
   }
 ]

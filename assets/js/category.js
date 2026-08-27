@@ -490,16 +490,6 @@ async function loadCategoryData() {
             works
         );
 
-
-        /* -----------------------------------------------
-           Preload ไฟล์ของกรรมการเบื้องหลัง
-           ----------------------------------------------- */
-
-        preloadWorkFiles(
-            works
-        );
-
-
         displayWorkCount(
             works.length
         );
@@ -4404,10 +4394,10 @@ async function openWorkFileModal(
 
 
     /* =================================================
-   หา URL ไฟล์จาก works.json โดยตรง
+   หา Google Drive File ID จาก works.json
    ================================================= */
 
-    let fileUrl =
+    let driveFileId =
         "";
 
 
@@ -4419,11 +4409,11 @@ async function openWorkFileModal(
         type === "abstract"
     ) {
 
-        fileUrl =
+        driveFileId =
             String(
                 work &&
-                    work.pdf_url
-                    ? work.pdf_url
+                    work.abstract_file_id
+                    ? work.abstract_file_id
                     : ""
             ).trim();
 
@@ -4438,15 +4428,49 @@ async function openWorkFileModal(
         type === "poster"
     ) {
 
-        fileUrl =
+        driveFileId =
             String(
                 work &&
-                    work.poster_url
-                    ? work.poster_url
+                    work.poster_file_id
+                    ? work.poster_file_id
                     : ""
             ).trim();
 
     }
+
+
+    /* -----------------------------------------------
+       ไม่มีไฟล์
+       ----------------------------------------------- */
+
+    if (
+        !driveFileId
+    ) {
+
+        loading.hidden =
+            true;
+
+
+        showWorkFileEmpty(
+            empty
+        );
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       Google Drive Preview URL
+       ================================================= */
+
+    const fileUrl =
+        "https://drive.google.com/file/d/" +
+        encodeURIComponent(
+            driveFileId
+        ) +
+        "/preview";
 
 
     /* -----------------------------------------------
@@ -4471,172 +4495,66 @@ async function openWorkFileModal(
     }
 
     /* =================================================
-   POSTER JPG
-   เปิดเป็นรูปตรง ๆ
-   ไม่ผ่าน PDF.js
+   GOOGLE DRIVE PREVIEW
+   ใช้ iframe เดิมสำหรับแสดงทั้งบทคัดย่อและโปสเตอร์
    ================================================= */
 
-    /* =================================================
-   POSTER JPG — FAST DISPLAY
+    try {
 
-   แสดงพื้นที่รูปทันที
-   ไม่รอ onload
-   ================================================= */
-
-    if (
-        type === "poster"
-    ) {
-
-        /* -----------------------------------------------
-           ซ่อน PDF
-           ----------------------------------------------- */
+        /* ซ่อนตัว viewer เก่า */
 
         pdfViewer.hidden =
             true;
 
 
-        pdf.hidden =
+        pdfPages.innerHTML =
+            "";
+
+
+        poster.hidden =
             true;
 
 
-        /* -----------------------------------------------
-           เตรียม Poster
-           ----------------------------------------------- */
-
-        resetPosterZoom(
-            poster
-        );
+        poster.src =
+            "";
 
 
-        setupPosterZoom(
-            poster,
-            modal
-        );
+        /* ใช้ iframe เดิม */
 
-
-        poster.loading =
-            "eager";
-
-
-        poster.decoding =
-            "async";
-
-
-        poster.fetchPriority =
-            "high";
-
-
-        /* -----------------------------------------------
-           แสดง Poster ทันที
-           ไม่รอโหลดครบทั้งไฟล์
-           ----------------------------------------------- */
-
-        poster.hidden =
+        pdf.hidden =
             false;
 
 
-        loading.hidden =
-            true;
-
-
-        poster.onerror =
+        pdf.onload =
             function () {
 
-                poster.hidden =
+                loading.hidden =
+                    true;
+
+            };
+
+
+        pdf.onerror =
+            function () {
+
+                loading.hidden =
+                    true;
+
+
+                pdf.hidden =
                     true;
 
 
                 showWorkFileEmpty(
                     empty,
-                    "โหลดโปสเตอร์ไม่สำเร็จ"
+                    "โหลดไฟล์จาก Google Drive ไม่สำเร็จ"
                 );
 
             };
 
 
-        poster.src =
+        pdf.src =
             fileUrl;
-
-
-        return;
-
-    }
-
-    /* =================================================
-       LOCAL PDF
-       ใช้ PDF.js เหมือนกันทั้ง Abstract / Poster
-
-       ไม่ผ่าน GAS
-       ไม่ผ่าน Google Drive
-       ================================================= */
-
-    try {
-
-        const rendered =
-            await renderPdfForIPad({
-
-                url:
-                    fileUrl
-
-            });
-
-
-        if (
-            !rendered
-        ) {
-
-            throw new Error(
-                "ไม่สามารถแสดงไฟล์ได้"
-            );
-
-        }
-
-
-        loading.hidden =
-            true;
-
-
-        pdfViewer.hidden =
-            false;
-
-
-        pdf.hidden =
-            true;
-
-
-        poster.hidden =
-            true;
-
-
-        resetPdfZoom(
-            pdfPages
-        );
-
-
-        /* -----------------------------------------------
-           ทุกไฟล์เริ่มจากบนสุดเสมอ
-           ----------------------------------------------- */
-
-        pdfViewer.scrollTop =
-            0;
-
-
-        pdfViewer.scrollLeft =
-            0;
-
-
-        requestAnimationFrame(
-            function () {
-
-                pdfViewer.scrollTop =
-                    0;
-
-
-                pdfViewer.scrollLeft =
-                    0;
-
-            }
-        );
 
 
         return;
@@ -4647,7 +4565,7 @@ async function openWorkFileModal(
     ) {
 
         console.error(
-            "Local Work File Error:",
+            "Google Drive Preview Error:",
             error
         );
 
@@ -4656,11 +4574,11 @@ async function openWorkFileModal(
             true;
 
 
-        pdfViewer.hidden =
+        pdf.hidden =
             true;
 
 
-        pdf.hidden =
+        pdfViewer.hidden =
             true;
 
 
@@ -4670,13 +4588,7 @@ async function openWorkFileModal(
 
         showWorkFileEmpty(
             empty,
-            "โหลดไฟล์ไม่สำเร็จ: " +
-            (
-                error &&
-                    error.message
-                    ? error.message
-                    : "Unknown error"
-            )
+            "โหลดไฟล์ไม่สำเร็จ"
         );
 
     }
