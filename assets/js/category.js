@@ -1610,9 +1610,66 @@ document.addEventListener(
 );
 
 /* =====================================================
+   PRELOAD POSTER IMAGE
+   ===================================================== */
+
+function preloadPosterImage(
+    url
+) {
+
+    return new Promise(
+        function (
+            resolve
+        ) {
+
+            if (
+                !url
+            ) {
+
+                resolve();
+
+                return;
+
+            }
+
+
+            const image =
+                new Image();
+
+
+            image.onload =
+                function () {
+
+                    resolve();
+
+                };
+
+
+            image.onerror =
+                function () {
+
+                    resolve();
+
+                };
+
+
+            image.src =
+                String(
+                    url
+                ).trim();
+
+        }
+    );
+
+}
+
+/* =====================================================
    PRELOAD WORK FILES
-   โหลดไฟล์เข้า Browser Cache + Memory Cache ทีละไฟล์
-   กัน iPad ยิงหลาย PDF พร้อมกัน
+
+   Abstract = PDF
+   Poster   = JPG
+
+   โหลดล่วงหน้าแค่ 3 ไฟล์แรก
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1667,9 +1724,15 @@ function preloadWorkFiles(
                     abstractUrl
                 ) {
 
-                    preloadQueue.push(
-                        abstractUrl
-                    );
+                    preloadQueue.push({
+
+                        type:
+                            "pdf",
+
+                        url:
+                            abstractUrl
+
+                    });
 
                 }
 
@@ -1678,9 +1741,15 @@ function preloadWorkFiles(
                     posterUrl
                 ) {
 
-                    preloadQueue.push(
-                        posterUrl
-                    );
+                    preloadQueue.push({
+
+                        type:
+                            "image",
+
+                        url:
+                            posterUrl
+
+                    });
 
                 }
 
@@ -1695,12 +1764,29 @@ function preloadWorkFiles(
 
 
             for (
-                const fileUrl of limitedQueue
+                const item of limitedQueue
             ) {
 
-                await cachePdfFile(
-                    fileUrl
-                );
+                if (
+                    item.type === "pdf"
+                ) {
+
+                    await cachePdfFile(
+                        item.url
+                    );
+
+                }
+
+
+                else if (
+                    item.type === "image"
+                ) {
+
+                    await preloadPosterImage(
+                        item.url
+                    );
+
+                }
 
 
                 await new Promise(
@@ -4378,6 +4464,98 @@ async function openWorkFileModal(
         showWorkFileEmpty(
             empty
         );
+
+
+        return;
+
+    }
+
+    /* =================================================
+   POSTER JPG
+   เปิดเป็นรูปตรง ๆ
+   ไม่ผ่าน PDF.js
+   ================================================= */
+
+    /* =================================================
+   POSTER JPG — FAST DISPLAY
+
+   แสดงพื้นที่รูปทันที
+   ไม่รอ onload
+   ================================================= */
+
+    if (
+        type === "poster"
+    ) {
+
+        /* -----------------------------------------------
+           ซ่อน PDF
+           ----------------------------------------------- */
+
+        pdfViewer.hidden =
+            true;
+
+
+        pdf.hidden =
+            true;
+
+
+        /* -----------------------------------------------
+           เตรียม Poster
+           ----------------------------------------------- */
+
+        resetPosterZoom(
+            poster
+        );
+
+
+        setupPosterZoom(
+            poster,
+            modal
+        );
+
+
+        poster.loading =
+            "eager";
+
+
+        poster.decoding =
+            "async";
+
+
+        poster.fetchPriority =
+            "high";
+
+
+        /* -----------------------------------------------
+           แสดง Poster ทันที
+           ไม่รอโหลดครบทั้งไฟล์
+           ----------------------------------------------- */
+
+        poster.hidden =
+            false;
+
+
+        loading.hidden =
+            true;
+
+
+        poster.onerror =
+            function () {
+
+                poster.hidden =
+                    true;
+
+
+                showWorkFileEmpty(
+                    empty,
+                    "โหลดโปสเตอร์ไม่สำเร็จ"
+                );
+
+            };
+
+
+        poster.src =
+            fileUrl;
 
 
         return;
