@@ -1426,16 +1426,13 @@ function renderCriteria() {
                 <div class="criterion-score">
 
                     <input
-    type="tel"
-    class="score-input"
-    id="score${index + 1}"
-    data-max="${maxScore}"
-    placeholder="0"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    autocomplete="off"
-    enterkeyhint="next"
->
+                        type="text"
+                        class="score-input"
+                        id="score${index + 1}"
+                        data-max="${maxScore}"
+                        placeholder="0"
+                        readonly
+                    >
 
                     <span>
                         / ${maxScore}
@@ -1473,37 +1470,260 @@ function bindScoreInputs() {
         );
 
 
+    const numpad =
+        document.getElementById(
+            "scoreNumpad"
+        );
+
+
+    if (
+        !numpad
+    ) {
+
+        console.warn(
+            "ไม่พบ #scoreNumpad"
+        );
+
+        return;
+
+    }
+
+
+    let activeInput =
+        null;
+
+
+    function positionNumpad(
+        input
+    ) {
+
+        if (
+            !input
+        ) {
+            return;
+        }
+
+
+        const rect =
+            input.getBoundingClientRect();
+
+
+        numpad.style.position =
+            "fixed";
+
+
+        numpad.style.left =
+            (
+                rect.left +
+                rect.width / 2
+            ) +
+            "px";
+
+
+        numpad.style.top =
+            (
+                rect.bottom +
+                8
+            ) +
+            "px";
+
+
+        numpad.style.transform =
+            "translateX(-50%)";
+
+
+        numpad.style.zIndex =
+            "9999";
+
+    }
+
+
+    function openNumpad(
+        input
+    ) {
+
+        activeInput =
+            input;
+
+
+        numpad.hidden =
+            false;
+
+
+        numpad.style.display =
+            "grid";
+
+
+        positionNumpad(
+            input
+        );
+
+    }
+
+
+    function closeNumpad() {
+
+        activeInput =
+            null;
+
+
+        numpad.hidden =
+            true;
+
+
+        numpad.style.display =
+            "none";
+
+    }
+
+
+    function goToNextInput() {
+
+        if (
+            !activeInput
+        ) {
+            return;
+        }
+
+
+        const currentIndex =
+            inputs.indexOf(
+                activeInput
+            );
+
+
+        const nextInput =
+            inputs[
+            currentIndex + 1
+            ];
+
+
+        if (
+            nextInput
+        ) {
+
+            activeInput =
+                nextInput;
+
+
+            nextInput.focus();
+
+
+            positionNumpad(
+                nextInput
+            );
+
+
+            nextInput.scrollIntoView({
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
+            });
+
+        }
+        else {
+
+            closeNumpad();
+
+        }
+
+    }
+
+
     inputs.forEach(
         function (
-            input,
-            index
+            input
         ) {
 
             input.addEventListener(
-                "input",
+                "click",
+                function (
+                    event
+                ) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    openNumpad(
+                        input
+                    );
+
+                }
+            );
+
+
+            input.addEventListener(
+                "focus",
                 function () {
 
-                    /* -----------------------------------------
-                       รับเฉพาะตัวเลข
-                       ----------------------------------------- */
+                    openNumpad(
+                        input
+                    );
 
-                    input.value =
-                        String(
-                            input.value ||
-                            ""
-                        ).replace(
-                            /[^0-9]/g,
-                            ""
-                        );
+                }
+            );
+
+        }
+    );
 
 
-                    /* -----------------------------------------
-                       ยังไม่กรอก
-                       ----------------------------------------- */
+    numpad
+        .querySelectorAll(
+            "[data-score]"
+        )
+        .forEach(
+            function (
+                button
+            ) {
 
-                    if (
-                        input.value === ""
+                button.addEventListener(
+                    "click",
+                    function (
+                        event
                     ) {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        if (
+                            !activeInput
+                        ) {
+                            return;
+                        }
+
+
+                        const score =
+                            Number(
+                                button.dataset.score
+                            );
+
+
+                        const max =
+                            Number(
+                                activeInput.dataset.max
+                            ) || 0;
+
+
+                        if (
+                            score > max
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        activeInput.value =
+                            String(
+                                score
+                            );
+
 
                         updateTotalScore();
 
@@ -1511,133 +1731,46 @@ function bindScoreInputs() {
 
                         saveScoreDraftDebounced();
 
-                        return;
+
+                        goToNextInput();
 
                     }
+                );
+
+            }
+        );
 
 
-                    /* -----------------------------------------
-                       จำกัดคะแนนไม่ให้เกิน Max
-                       ----------------------------------------- */
+    document.addEventListener(
+        "click",
+        function (
+            event
+        ) {
 
-                    normalizeScoreInput(
-                        input
-                    );
+            if (
+                numpad.contains(
+                    event.target
+                )
+            ) {
 
+                return;
 
-                    updateTotalScore();
-
-                    updateCriteriaProgress();
-
-                    saveScoreDraftDebounced();
-
-
-                    /* -----------------------------------------
-                       กรอกแล้ว → ไปช่องถัดไปอัตโนมัติ
-
-                       สำหรับคะแนน 0–9
-                       เมื่อพิมพ์เลข 1 ตัวจะเลื่อนไปเลย
-                       ----------------------------------------- */
-
-                    if (
-                        input.value.length >= 1
-                    ) {
-
-                        const nextInput =
-                            inputs[
-                            index + 1
-                            ];
+            }
 
 
-                        if (
-                            nextInput
-                        ) {
+            if (
+                event.target.classList &&
+                event.target.classList.contains(
+                    "score-input"
+                )
+            ) {
 
-                            nextInput.focus();
+                return;
 
-                            nextInput.select();
-
-                        }
-                        else {
-
-                            /* ช่องสุดท้าย
-                               ปิดคีย์บอร์ด */
-
-                            input.blur();
-
-                        }
-
-                    }
-
-                }
-            );
+            }
 
 
-            input.addEventListener(
-                "change",
-                function () {
-
-                    normalizeScoreInput(
-                        input
-                    );
-
-
-                    updateTotalScore();
-
-                    updateCriteriaProgress();
-
-                    saveScoreDraft();
-
-                }
-            );
-
-
-            /* -----------------------------------------
-               กด Enter / Next
-               ไปช่องถัดไปด้วย
-               ----------------------------------------- */
-
-            input.addEventListener(
-                "keydown",
-                function (
-                    event
-                ) {
-
-                    if (
-                        event.key !== "Enter"
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    event.preventDefault();
-
-
-                    const nextInput =
-                        inputs[
-                        index + 1
-                        ];
-
-
-                    if (
-                        nextInput
-                    ) {
-
-                        nextInput.focus();
-
-                        nextInput.select();
-
-                    }
-                    else {
-
-                        input.blur();
-
-                    }
-
-                }
-            );
+            closeNumpad();
 
         }
     );
@@ -1649,7 +1782,9 @@ function bindScoreInputs() {
         );
 
 
-    if (comment) {
+    if (
+        comment
+    ) {
 
         comment.addEventListener(
             "input",

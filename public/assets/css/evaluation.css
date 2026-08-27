@@ -3588,3 +3588,71 @@ and (max-width: 1100px) {
     }
 
 }
+
+/* =====================================================
+   SCORE NUMPAD
+   ===================================================== */
+
+.score-numpad {
+    position: fixed;
+
+    display: grid;
+    grid-template-columns: repeat(3, 52px);
+
+    gap: 8px;
+
+    padding: 10px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18);
+
+    z-index: 9999;
+}
+
+
+.score-numpad[hidden] {
+    display: none !important;
+}
+
+
+.score-numpad button {
+    width: 52px;
+    height: 52px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f2f4f7;
+
+    font-family: "Prompt", sans-serif;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+.score-numpad button:active {
+    transform: scale(0.95);
+}
+
+
+/* =====================================================
+   SCORE INPUT
+   ===================================================== */
+
+.score-input[readonly] {
+    cursor: pointer;
+
+    caret-color: transparent;
+
+    user-select: none;
+}
