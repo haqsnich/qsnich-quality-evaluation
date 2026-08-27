@@ -1,0 +1,4256 @@
+.category-page {
+  min-height: 100vh;
+}
+
+.category-content {
+  width: min(1100px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 0px 0 55px;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.category-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  min-height: 78px;
+
+  padding: 16px 24px;
+
+  margin-bottom: 45px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  border:
+    1px solid rgba(74, 153, 148, 0.12);
+
+  box-shadow:
+    0 8px 28px rgba(60, 80, 80, 0.07);
+
+  backdrop-filter:
+    blur(12px);
+
+}
+
+.category-header-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.category-logo-wrap,
+.category-logo {
+  display: none;
+}
+
+.category-header-text {
+  min-width: 0;
+}
+
+.category-event-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #3F6664;
+  line-height: 1.5;
+}
+
+.category-event-year {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #777;
+}
+
+
+/* =====================================================
+   JUDGE
+   ===================================================== */
+
+.category-judge {
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding: 9px 16px;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.82);
+
+  border: 1px solid rgba(74, 153, 148, 0.30);
+
+  box-shadow:
+    0 7px 22px rgba(74, 153, 148, 0.10);
+}
+
+.category-judge-label {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 2px;
+}
+
+.category-judge-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #356F6C;
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.category-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.category-title-mark {
+  flex-shrink: 0;
+
+  width: 5px;
+  height: 43px;
+
+  margin-top: 3px;
+
+  border-radius: 99px;
+
+  background:
+    linear-gradient(to bottom,
+      #4A9994,
+      #D9B45A);
+}
+
+.category-title h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+
+  color: #293636;
+}
+
+.category-title p {
+  margin: 7px 0 0;
+
+  font-size: 15px;
+  color: #777;
+}
+
+
+/* =====================================================
+   WORKS HEADER
+   ===================================================== */
+
+.works-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 6px !important;
+}
+
+
+/* =====================================================
+   WORKS HEADER - LEFT
+   ===================================================== */
+
+.works-header-text {
+
+  min-width: 0;
+
+  flex: 1;
+
+}
+
+
+.works-header-text h1 {
+
+  margin: 0;
+
+  font-size: 30px;
+
+  line-height: 1.25;
+
+  font-weight: 700;
+
+  color: #202B35;
+
+}
+
+
+.works-header-text p {
+
+  margin: 5px 0 0;
+
+  font-size: 16px;
+
+  line-height: 1.45;
+
+  color: #666;
+
+}
+
+
+/* =====================================================
+   SUMMARY
+   ===================================================== */
+
+.category-summary {
+
+  margin: 0;
+
+  flex-shrink: 0;
+
+}
+
+
+.summary-cards {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+/* =====================================================
+   SUMMARY CARD
+   ===================================================== */
+
+.summary-card {
+
+  width: 104px;
+
+  min-width: 104px;
+
+  height: 62px;
+
+  padding: 7px 8px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #FFFFFF;
+
+  border: 1px solid rgba(74, 153, 148, 0.15);
+
+  box-shadow:
+    0 2px 8px rgba(60, 80, 80, 0.06);
+
+}
+
+
+.summary-label {
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  font-weight: 500;
+
+  color: #666;
+
+  white-space: nowrap;
+
+}
+
+
+.summary-value {
+
+  margin-top: 2px;
+
+  font-size: 24px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  color: #3E8C87;
+
+}
+
+
+/* =====================================================
+   WORK LIST
+   ===================================================== */
+
+.work-list {
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 10px;
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+
+/* =====================================================
+   WORK CARD
+   ===================================================== */
+
+.work-card {
+
+  width: 100%;
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    48px minmax(0, 1fr) minmax(360px, auto);
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 18px 20px;
+
+  background: #FFFFFF;
+
+  border: 1px solid #DCE9E8;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 14px rgba(60, 80, 80, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.work-card:hover {
+
+  transform: translateY(-2px);
+
+  border-color: rgba(74, 153, 148, 0.28);
+
+  box-shadow:
+    0 8px 20px rgba(60, 80, 80, 0.08);
+
+}
+
+
+/* =====================================================
+   WORK ORDER
+   ===================================================== */
+
+.work-order {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #F1F6F3;
+
+  color: #3E8C87;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+}
+
+
+/* =====================================================
+   WORK CONTENT
+   ===================================================== */
+
+.work-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+}
+
+
+/* =====================================================
+   CATEGORY
+   ===================================================== */
+
+.work-category {
+
+  margin-bottom: 5px;
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+
+  color: #D28A00;
+
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.work-title {
+
+  width: 100%;
+
+  font-size: 17px;
+
+  line-height: 1.45;
+
+  font-weight: 600;
+
+  color: #182B35;
+
+  word-break: break-word;
+
+}
+
+
+/* =====================================================
+   DEPARTMENT
+   ===================================================== */
+
+.work-department {
+
+  margin-top: 5px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 400;
+
+  color: #5F6B70;
+
+}
+
+/* =====================================================
+   EMPTY
+   ===================================================== */
+
+.empty-state {
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 50px 20px;
+
+  text-align: center;
+
+}
+
+
+.empty-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  margin: 0 auto 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #EDF7F5;
+
+  color: #3E8C87;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+
+.empty-state h2 {
+
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #26343A;
+
+}
+
+
+.empty-state p {
+
+  margin: 7px 0 0;
+
+  font-size: 14px;
+
+  color: #777;
+
+}
+
+
+.category-error {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        18px
+        24px;
+
+    margin:
+        24px
+        0;
+
+    border:
+        1px solid
+        #FFD1D1;
+
+    border-radius:
+        14px;
+
+    background:
+        #FFF7F7;
+
+    color:
+        #D9363E;
+}
+
+/* =====================================================
+   ERROR MASCOT
+   ===================================================== */
+
+.error-mascot {
+    display: block;
+
+    width: 150px;
+    max-width: 45vw;
+    height: auto;
+
+    margin:
+        0 auto 12px;
+
+    object-fit: contain;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  .works-header {
+
+    align-items: flex-start;
+
+    gap: 14px;
+
+  }
+
+
+  .works-header-text h1 {
+
+    font-size: 26px;
+
+  }
+
+
+  .works-header-text p {
+
+    font-size: 14px;
+
+  }
+
+
+  .summary-card {
+
+    width: 82px;
+
+    min-height: 58px;
+
+    padding: 7px 8px;
+
+  }
+
+
+  .summary-label {
+
+    font-size: 11px;
+
+  }
+
+
+  .summary-value {
+
+    font-size: 22px;
+
+  }
+
+
+    .work-card {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .work-actions {
+    justify-self: center;
+    align-self: center;
+  }
+
+}
+
+
+  .work-order {
+
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 15px;
+
+  }
+
+
+  .work-title {
+
+    font-size: 16px;
+
+  }
+
+
+  .work-department {
+
+    font-size: 13px;
+
+  }
+
+
+@media (max-width: 560px) {
+
+  .works-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .category-summary {
+
+    width: 100%;
+
+  }
+
+
+  .summary-cards {
+
+    justify-content: flex-start;
+
+  }
+
+
+  .summary-card {
+
+    width: 120px;
+
+  }
+
+
+  .work-card {
+
+    grid-template-columns: 40px minmax(0, 1fr);
+
+    gap: 10px;
+
+  }
+
+}
+
+
+/* =====================================================
+   HEADER TEXT
+   ===================================================== */
+
+.works-header-text {
+
+  min-width: 0;
+
+}
+
+
+.works-header-text h1 {
+
+  margin: 0;
+
+}
+
+
+.works-header-text p {
+
+  margin: 5px 0 0;
+
+}
+
+
+/* =====================================================
+   SUMMARY
+   ===================================================== */
+
+.category-summary {
+
+  margin: 0;
+
+  flex-shrink: 0;
+
+}
+
+
+.summary-cards {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+.summary-card {
+
+  width: 92px;
+
+  min-height: 62px;
+
+  padding: 8px 10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  background: #FFFFFF;
+
+  border: 1px solid rgba(74, 153, 148, 0.15);
+
+  box-shadow:
+    0 2px 8px rgba(60, 80, 80, 0.06);
+
+}
+
+
+.summary-label {
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+  font-weight: 500;
+
+  color: #666;
+
+  white-space: nowrap;
+
+}
+
+
+.summary-value {
+
+  margin-top: 2px;
+
+  font-size: 24px;
+
+  line-height: 1.15;
+
+  font-weight: 700;
+
+  color: #3E8C87;
+
+}
+
+/* =====================================================
+   CATEGORY GROUP
+   รองรับทั้ง class ใหม่และของเดิม
+   ===================================================== */
+
+.category-group {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.category-group-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 12px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #356F6C;
+}
+
+.category-group-title::before {
+  content: "";
+
+  width: 4px;
+  height: 22px;
+
+  border-radius: 99px;
+
+  background: #4A9994;
+}
+
+
+/* =====================================================
+   WORK LIST
+   ===================================================== */
+
+.work-list {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   WORK CARD
+   ===================================================== */
+
+.work-card {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 17px;
+
+  min-height: 128px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(74, 153, 148, 0.13);
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 8px 25px rgba(60, 80, 80, 0.055);
+
+  font-family: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(74, 153, 148, 0.28);
+
+  box-shadow:
+    0 12px 30px rgba(60, 80, 80, 0.09);
+}
+
+
+/* =====================================================
+   NUMBER
+   รองรับ work-number + work-order
+   ===================================================== */
+
+.work-number,
+.work-order {
+  flex-shrink: 0;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(135deg,
+      rgba(74, 153, 148, 0.13),
+      rgba(233, 179, 63, 0.10));
+
+  color: #418B87;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   WORK CONTENT
+   รองรับ work-info + work-content
+   ===================================================== */
+
+.work-info,
+.work-content {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =====================================================
+   CATEGORY
+   ===================================================== */
+
+.work-category {
+
+  margin-bottom: 5px;
+
+  font-size: 14px;
+
+  line-height: 1.4;
+
+  font-weight: 600;
+
+  color: #D95C5C;
+
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.work-title {
+
+  margin: 0;
+
+  font-size: 21px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+
+  color: #263838;
+
+}
+
+
+/* =====================================================
+   PRESENTER
+   ชื่อผู้นำเสนอ
+   ===================================================== */
+
+.work-presenter {
+
+  margin-top: 9px;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+
+  color: #4A9994;
+
+}
+
+
+/* =====================================================
+   DEPARTMENT
+   หน่วยงาน
+   ===================================================== */
+
+.work-department {
+
+  margin-top: 3px;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+  font-weight: 500;
+
+  color: #7A8585;
+
+}
+
+
+/* =====================================================
+   BUTTON
+   รองรับทั้ง work-arrow + work-button
+   ===================================================== */
+
+.work-arrow,
+.work-button {
+  flex-shrink: 0;
+
+  width: 70px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #4A9994;
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* ถ้า JS สร้างลูกศร → เปลี่ยนเป็นคำว่า ประเมิน */
+
+.work-arrow {
+  font-size: 0;
+}
+
+.work-arrow::after {
+  content: "ประเมิน";
+  font-size: 13px;
+}
+
+.work-arrow:hover,
+.work-button:hover {
+  background: #3F8884;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(74, 153, 148, 0.20);
+}
+
+
+/* =====================================================
+   EMPTY
+   ===================================================== */
+
+.empty-state {
+  padding: 55px 20px;
+
+  text-align: center;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.78);
+
+  border: 1px solid rgba(74, 153, 148, 0.10);
+}
+
+.empty-icon {
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(74, 153, 148, 0.10);
+
+  color: #4A9994;
+}
+
+.empty-state h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  color: #555;
+}
+
+.empty-state p {
+  margin: 8px 0 0;
+
+  font-size: 14px;
+
+  color: #999;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  .category-content {
+    width: min(100% - 32px, 680px);
+    padding-top: 0px;
+  }
+
+  .category-header {
+    align-items: flex-start;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .category-content {
+    width: calc(100% - 24px);
+  }
+
+  .category-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .category-judge {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .category-title h1 {
+    font-size: 26px;
+  }
+
+  .work-card {
+    min-height: 120px;
+    padding: 15px;
+    gap: 13px;
+  }
+
+  .work-number,
+  .work-order {
+    width: 40px;
+    height: 40px;
+  }
+
+  .work-title {
+    font-size: 15px;
+  }
+
+  .work-arrow,
+  .work-button {
+    width: 62px;
+    height: 38px;
+  }
+
+}
+
+/* =====================================================
+   HEADER V3 — CARNIVAL THEME
+   ===================================================== */
+
+.category-header {
+
+  width: 100vw;
+
+  min-height: 82px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding: 14px 28px;
+
+  margin-left: 50%;
+
+  transform: translateX(-50%);
+
+  margin-bottom: 45px;
+
+  background:
+    linear-gradient(110deg,
+      #FBE5E4 0%,
+      #FBE5E4 45%,
+      #E8F4F2 100%);
+
+  color: #3F4548;
+
+  border-radius: 0;
+
+  border-bottom:
+    4px solid #E58B91;
+
+  box-shadow:
+    0 5px 18px rgba(180, 120, 130, 0.12);
+
+  position: relative;
+
+  overflow: hidden;
+
+}
+
+.category-header::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+
+  height: 220px;
+
+  right: 18%;
+
+  top: -170px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(74, 153, 148, 0.12);
+
+}
+
+.category-header::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+
+  height: 130px;
+
+  right: 5%;
+
+  bottom: -90px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(239, 151, 138, 0.20);
+
+}
+
+.category-header-left {
+
+  min-width: 0;
+
+}
+
+
+.category-system-name {
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+  line-height: 1.3;
+
+  color: #41484B;
+
+}
+
+
+.category-event-name {
+
+  font-size: 13px;
+
+  font-weight: 400;
+
+  color: #D56F78;
+
+}
+
+
+.category-event-year {
+
+  font-size: 12px;
+
+  color: #8C7A82;
+
+}
+
+
+.category-header-right {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  flex-shrink: 0;
+
+}
+
+
+.category-judge {
+
+  padding: 8px 17px;
+
+  border-radius: 12px;
+
+  background: #E9DFFF;
+
+  box-shadow:
+    0 3px 10px rgba(130, 100, 170, 0.12);
+
+}
+
+.category-judge-label {
+
+  display: block;
+
+  font-size: 11px;
+
+  color: #8875A5;
+
+  margin-bottom: 2px;
+
+}
+
+
+.category-judge-name {
+
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #5D4C78;
+
+}
+
+
+.category-logout-button {
+
+  padding: 10px 17px;
+
+  border-radius: 12px;
+
+  border: 1px solid #E8A0A4;
+
+  background: #FFE0E2;
+
+  color: #B85D67;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+
+}
+
+.category-logout-button:hover {
+
+  background: #FFD1D5;
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.category-logout-button:active {
+
+  transform: scale(0.97);
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .category-header {
+
+    align-items: flex-start;
+
+  }
+
+
+  .category-header-right {
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .category-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 20px;
+
+  }
+
+
+  .category-header-right {
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+  }
+
+}
+
+.category-loading {
+
+  min-height: 250px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+}
+
+#categoryLoading.cache-hidden {
+    display: none !important;
+}
+
+
+.category-loading-title {
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #303838;
+
+}
+
+
+.category-loading-text {
+
+  font-size: 14px;
+
+  color: #888;
+
+}
+
+/* =====================================================
+   LOADING CHARACTER
+   ===================================================== */
+
+.category-loading {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+}
+
+
+.category-loading-character {
+
+  width: 150px;
+
+  height: auto;
+
+  display: block;
+
+  animation:
+    runnerBounce 0.55s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes runnerBounce {
+
+  0% {
+
+    transform:
+      translateY(5px) rotate(-2deg);
+
+  }
+
+  100% {
+
+    transform:
+      translateY(-8px) rotate(2deg);
+
+  }
+
+}
+
+
+.category-loading-title {
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  color: #303838;
+
+}
+
+
+.category-loading-text {
+
+  font-size: 14px;
+
+  color: #888;
+
+}
+
+.category-loading {
+
+  min-height: 0;
+
+  max-height: 320px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  opacity: 1;
+
+  margin-top: 0;
+
+  margin-bottom: 30px;
+
+  transition:
+    max-height 0.55s ease,
+    opacity 0.35s ease,
+    margin 0.55s ease;
+
+}
+
+
+.category-loading.hide {
+
+  max-height: 0;
+
+  opacity: 0;
+
+  margin-top: 0;
+
+  margin-bottom: 0;
+
+}
+
+/* =====================================================
+   TYPOGRAPHY — ขยายตัวอักษรหน้ารายการผลงาน
+   ===================================================== */
+
+/* ชื่อระบบบน Header */
+.category-system-name {
+  font-size: 22px;
+}
+
+/* ชื่องาน */
+.category-event-name {
+  font-size: 15px;
+}
+
+/* ปี */
+.category-event-year {
+  margin-top: 0 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #000000 !important;
+  line-height: 1.5 !important;
+}
+
+
+/* หัวข้อหลัก */
+.category-title h1 {
+  font-size: 30px;
+}
+
+/* คำอธิบายใต้หัวข้อ */
+.category-title p {
+  font-size: 16px;
+}
+
+
+/* กล่องจำนวนผลงาน */
+.summary-label {
+  font-size: 15px;
+}
+
+.summary-value {
+  font-size: 20px;
+}
+
+.summary-unit {
+  font-size: 15px;
+}
+
+
+/* ชื่อประเภทผลงาน */
+.work-category-title {
+  font-size: 17px;
+}
+
+
+/* ชื่อผลงาน */
+.work-title {
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* หน่วยงาน/รายละเอียดผลงาน */
+.work-meta {
+  font-size: 13px;
+}
+
+
+/* ปุ่มประเมิน */
+.work-evaluate-button {
+  font-size: 14px;
+}
+
+/* =====================================================
+   FIX CATEGORY GROUP SPACING
+   ===================================================== */
+
+/* หัวหมวดผลงาน เช่น CQI Oral Presentation */
+
+.work-category-group,
+.category-group,
+.work-group,
+.work-group-title,
+.category-title-text {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+
+/* ถ้าหัวหมวดเป็นตัวแรกของรายการ */
+
+#workList>div:first-child {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+/* =====================================================
+   CATEGORY GROUP TITLE
+   ===================================================== */
+
+.work-category-group-title {
+
+  grid-column: 1 / -1;
+
+  margin-top: 0 !important;
+
+  margin-bottom: 10px !important;
+
+  padding-top: 0 !important;
+
+  padding-bottom: 0 !important;
+
+  font-size: 18px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+
+  color: #D64545;
+
+}
+
+
+/* หัวหมวดตัวแรก - ลดช่องว่างด้านบน */
+
+#workList>.work-category-group-title:first-child {
+
+  margin-top: 0 !important;
+
+  padding-top: 0 !important;
+
+}
+
+/* =====================================================
+   FINAL FIX
+   ระยะระหว่าง WORKS HEADER → CATEGORY TITLE
+   ===================================================== */
+
+#workList {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  row-gap: 8px !important;
+  width: 100%;
+  margin-top: 8px !important;
+  padding-top: 0 !important;
+}
+
+/* หัวหมวด เช่น CQI Oral Presentation */
+
+#workList>.work-category-group-title {
+  grid-column: 1 / -1;
+
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+
+/* หัวหมวดตัวแรกโดยเฉพาะ */
+
+#workList>.work-category-group-title:first-child {
+  margin-top: 0 !important;
+}
+
+
+/* HEADER ก่อนรายการผลงาน */
+
+.works-header {
+  margin-bottom: 0 !important;
+}
+
+/* =====================================================
+   FINAL — ขยายข้อมูลผู้นำเสนอและหน่วยงาน
+   ===================================================== */
+
+/* ชื่อผู้นำเสนอ */
+.work-presenter {
+
+  font-size: 17px !important;
+
+  font-weight: 600 !important;
+
+  line-height: 1.6 !important;
+
+  color: #3E8C87 !important;
+
+  margin-top: 5px !important;
+
+}
+
+
+/* หน่วยงาน */
+.work-department {
+
+  font-size: 15px !important;
+
+  font-weight: 400 !important;
+
+  line-height: 1.5 !important;
+
+  color: #666666 !important;
+
+  margin-top: 2px !important;
+
+}
+
+/* =====================================================
+   HEADER — กรรมการ + ออกจากระบบ
+   ===================================================== */
+
+/* กล่องกรรมการ */
+.category-judge {
+  min-width: 210px !important;
+  padding: 12px 18px !important;
+}
+
+
+/* คำว่า กรรมการ */
+.category-judge-label {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+}
+
+
+/* ชื่อกรรมการ */
+.category-judge-name {
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+}
+
+
+/* ปุ่มออกจากระบบ */
+.category-logout-button {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+
+  padding: 12px 20px !important;
+
+  min-width: 110px !important;
+  min-height: 46px !important;
+}
+
+/* =====================================================
+   WORK CARD — เพิ่มลูกเล่นให้รายการผลงาน
+   ===================================================== */
+
+
+/* -----------------------------------------------------
+   1. การ์ดผลงาน
+   ----------------------------------------------------- */
+
+.work-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(74, 153, 148, 0.16) !important;
+
+  box-shadow:
+    0 4px 14px rgba(40, 70, 70, 0.06) !important;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease !important;
+
+}
+
+
+/* แถบสีด้านซ้าย */
+
+.work-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: linear-gradient(to bottom,
+      #4A9994,
+      #D8B85A);
+
+  opacity: 0.75;
+
+  border-radius: 10px 0 0 10px;
+
+}
+
+
+/* -----------------------------------------------------
+   2. ตอนเอาเมาส์วาง
+   ----------------------------------------------------- */
+
+.work-card:hover {
+
+  transform: translateY(-3px);
+
+  border-color: rgba(74, 153, 148, 0.28) !important;
+
+  box-shadow:
+    0 9px 24px rgba(40, 70, 70, 0.10) !important;
+
+}
+
+
+/* -----------------------------------------------------
+   3. เลขลำดับ
+   ----------------------------------------------------- */
+
+.work-order {
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-order {
+
+  transform: scale(1.06);
+
+}
+
+
+/* -----------------------------------------------------
+   4. ชื่อประเภท
+   ----------------------------------------------------- */
+
+.work-category {
+
+  letter-spacing: 0.1px;
+
+}
+
+
+/* -----------------------------------------------------
+   5. ชื่อผลงาน
+   ----------------------------------------------------- */
+
+.work-title {
+
+  transition:
+    color 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-title {
+
+  color: #2F7773 !important;
+
+}
+
+
+/* -----------------------------------------------------
+   6. หน่วยงาน / ผู้นำเสนอ
+   ----------------------------------------------------- */
+
+.work-department {
+
+  transition:
+    color 0.2s ease !important;
+
+}
+
+
+.work-card:hover .work-department {
+
+  color: #4A7774 !important;
+
+}
+
+/* =====================================================
+   WORK ORDER — Badge
+   ===================================================== */
+
+.work-order {
+
+  position: relative;
+
+  font-weight: 700 !important;
+
+  border: 1px solid rgba(74, 153, 148, 0.10);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+
+}
+
+/* =====================================================
+   WORK CARD — ซ่อนประเภทผลงานที่ซ้ำในแต่ละการ์ด
+   ===================================================== */
+
+.work-card .work-category {
+  display: none !important;
+}
+
+/* =====================================================
+   WORK CARD — ขยับเฉพาะตอนกดปุ่ม
+   ===================================================== */
+
+
+/* การ์ดปกติ */
+
+.work-card {
+
+  cursor: default !important;
+
+}
+
+
+/* เอา Hover movement ออก */
+
+.work-card:hover {
+
+  transform: none !important;
+
+}
+
+
+/* ไม่ให้ hover เปลี่ยนเงาหรือขอบ */
+
+.work-card:hover {
+
+  box-shadow:
+    0 4px 14px rgba(60, 80, 80, 0.05) !important;
+
+  border-color:
+    #DCE9E8 !important;
+
+}
+
+
+/* =====================================================
+   WORK CARD — ล็อกสีชื่อเรื่อง
+   ===================================================== */
+
+.work-card:hover .work-title {
+
+  color: #263238 !important;
+
+}
+
+
+/* =====================================================
+   มือถือ / หน้าจอแคบ
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .work-actions {
+
+    width: 100%;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    margin-left: 0;
+
+    margin-top: 12px;
+
+  }
+
+}
+
+/* ค่าเริ่มต้น — คอม / iPad แนวนอน */
+.presenter-ipad-portrait {
+  display: none;
+}
+
+.presenter-desktop {
+  display: inline;
+}
+
+
+/* =====================================================
+   iPad แนวตั้งเท่านั้น
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+  .presenter-desktop {
+    display: none;
+  }
+
+  .presenter-ipad-portrait {
+    display: inline;
+  }
+
+}
+
+/* =====================================================
+   JUDGE BOX — GREEN THEME
+   ===================================================== */
+
+.category-judge {
+  background: #E8F4F2 !important;
+
+  border: 1px solid rgba(74, 153, 148, 0.30) !important;
+
+  box-shadow:
+    0 7px 22px rgba(74, 153, 148, 0.10) !important;
+}
+
+.category-judge-name {
+  color: #356F6C !important;
+}
+
+.category-judge-label {
+  color: #4A9994 !important;
+}
+
+
+/* =====================================================
+   WORK ACTIONS
+   ===================================================== */
+
+.work-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+
+/* =====================================================
+   ACTION BUTTON
+   ===================================================== */
+
+.work-action-button {
+  width: 126px;
+  min-width: 126px;
+  height: 42px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #BFD8D6;
+  border-radius: 10px;
+
+  background: #FFFFFF;
+  color: #4A7774;
+
+  font-family: "Prompt", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s ease,
+    box-shadow 0.18s ease;
+}
+
+
+/* =====================================================
+   ICON
+   ===================================================== */
+
+.work-action-icon {
+  position: static;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  line-height: 1;
+}
+
+.work-action-text {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  line-height: 1;
+}
+
+
+/* =====================================================
+   HOVER
+   ===================================================== */
+
+.work-action-button:not(.is-primary):hover {
+  background: #F3F9F8;
+  border-color: #4A9994;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 4px 10px rgba(74, 153, 148, 0.10);
+}
+
+
+/* =====================================================
+   ลงคะแนน
+   ===================================================== */
+
+.work-action-button.is-primary {
+  border-color: #4A9994;
+
+  background: #4A9994;
+  color: #FFFFFF;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 3px 8px rgba(74, 153, 148, 0.16);
+}
+
+
+.work-action-button.is-primary:hover {
+  background: #3E8C87;
+  border-color: #3E8C87;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(74, 153, 148, 0.20);
+}
+
+
+/* =====================================================
+   ACTIVE
+   ===================================================== */
+
+.work-action-button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+
+/* =====================================================
+   FOCUS
+   ===================================================== */
+
+.work-action-button:focus-visible {
+  outline:
+    3px solid rgba(74, 153, 148, 0.25);
+
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+  .work-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .work-action-button {
+    width: 126px;
+    min-width: 126px;
+  }
+
+}
+
+/* =====================================================
+   iPad แนวตั้ง — ขยายปุ่ม Action
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+  .work-action-button {
+    width: 150px !important;
+    min-width: 150px !important;
+  }
+
+}
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-actions {
+    justify-content: center !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+}
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-card {
+    grid-template-columns:
+      48px
+      minmax(0, 1fr)
+      minmax(0, 1fr) !important;
+  }
+
+}
+
+/* =====================================================
+   iPad Portrait — จัดกลุ่มปุ่มให้อยู่กลางพื้นที่ของตัวเอง
+   ===================================================== */
+
+@media (min-width: 768px)
+  and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  .work-actions {
+    justify-self: center !important;
+    align-self: center !important;
+
+    width: max-content !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 8px !important;
+
+    margin: 0 !important;
+  }
+
+}
+
+/* =====================================================
+   WORK FILE POPUP
+   ===================================================== */
+
+.work-file-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+.work-file-modal[hidden] {
+    display: none;
+}
+
+
+.work-file-modal-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background:
+        rgba(35, 45, 44, 0.48);
+
+    backdrop-filter: blur(4px);
+}
+
+
+.work-file-modal-dialog {
+    position: relative;
+    z-index: 1;
+
+    width: min(1100px, 94vw);
+    height: min(820px, 92vh);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #FFFFFF;
+
+    border:
+        1px solid
+        #DDE9E7;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px
+        rgba(40, 70, 68, 0.20);
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.work-file-modal-header {
+    flex: 0 0 auto;
+
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        10px
+        16px
+        10px
+        20px;
+
+    border-bottom:
+        1px solid
+        #E8EFEE;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-modal-title {
+    font-size: 17px;
+    font-weight: 600;
+
+    color: #2F4A48;
+}
+
+
+.work-file-modal-close {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #60706E;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+
+.work-file-modal-close:hover {
+    background: #F2F7F6;
+    color: #2F4A48;
+}
+
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
+
+.work-file-modal-content {
+    position: relative;
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background: #F5F8F7;
+}
+
+
+.work-file-pdf {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-poster {
+    display: block;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+.work-file-modal-empty {
+    padding: 30px;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    color: #7A8785;
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.work-file-modal-footer {
+    flex: 0 0 auto;
+
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 10px 16px;
+
+    border-top:
+        1px solid
+        #E8EFEE;
+
+    background: #FFFFFF;
+}
+
+
+.work-file-fullscreen,
+.work-file-score {
+    min-height: 42px;
+
+    padding:
+        8px
+        16px;
+
+    border-radius: 9px;
+
+    font-family: "Prompt", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.15s ease;
+}
+
+
+.work-file-fullscreen {
+    color: #3E716D;
+
+    background: #F3F9F8;
+
+    border:
+        1px solid
+        #BFD8D6;
+}
+
+
+.work-file-fullscreen:hover {
+    background: #EAF5F3;
+}
+
+
+.work-file-score {
+    color: #FFFFFF;
+
+    background: #4A9994;
+
+    border: none;
+}
+
+
+.work-file-score:hover {
+    background: #3E8C87;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    .work-file-modal {
+        padding: 10px;
+    }
+
+    .work-file-modal-dialog {
+        width: 100%;
+        height: 94vh;
+
+        border-radius: 13px;
+    }
+
+    .work-file-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .work-file-fullscreen,
+    .work-file-score {
+        width: 100%;
+    }
+
+}
+
+/* =====================================================
+   HIDE LOADING COMPLETELY WHEN CACHE IS READY
+   ===================================================== */
+
+#categoryLoading[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   แก้ไขคะแนน
+   ===================================================== */
+
+.work-action-button.is-warning {
+  border-color: #E6B84A;
+  background: #F4C95D;
+  color: #5C4A16;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 3px 8px rgba(230, 184, 74, 0.20);
+}
+
+
+.work-action-button.is-warning:hover {
+  background: #EABD4F;
+  border-color: #D9AA35;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(230, 184, 74, 0.25);
+}
+
+/* =====================================================
+   WORK FILE POPUP — SMOOTH OPEN
+   ===================================================== */
+
+.work-file-modal:not([hidden]) {
+
+    animation:
+        workFileBackdropIn
+        0.28s
+        ease-out
+        both;
+
+}
+
+
+.work-file-modal:not([hidden])
+.work-file-modal-dialog {
+
+    animation:
+        workFileDialogIn
+        0.38s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* -----------------------------------------------------
+   พื้นหลัง
+   ----------------------------------------------------- */
+
+@keyframes workFileBackdropIn {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* -----------------------------------------------------
+   กล่อง Popup
+   ----------------------------------------------------- */
+
+@keyframes workFileDialogIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(14px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* -----------------------------------------------------
+   ลด Animation หากผู้ใช้ตั้งค่า Reduce Motion
+   ----------------------------------------------------- */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .work-file-modal:not([hidden]),
+    .work-file-modal:not([hidden])
+    .work-file-modal-dialog {
+
+        animation: none;
+
+    }
+
+}
+
+/* =====================================================
+   PAGE TRANSITION — ไปหน้าลงคะแนน
+   ===================================================== */
+
+body {
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+}
+
+
+body.page-leaving {
+
+    opacity: 0;
+
+    transform:
+        translateY(-8px);
+
+    pointer-events: none;
+
+}
+
+/* =====================================================
+   SCORE SCALE GUIDE
+   ระดับคะแนน 5 - 1
+   ===================================================== */
+
+.evaluation-scale-guide {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin:
+        12px 0 20px;
+
+}
+
+
+/* =====================================================
+   แต่ละระดับคะแนน
+   ===================================================== */
+
+.evaluation-scale-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 62px;
+
+    padding:
+        8px 6px;
+
+    border:
+        1px solid #dcebed;
+
+    border-radius:
+        12px;
+
+    background:
+        #ffffff;
+
+    box-sizing:
+        border-box;
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+
+}
+
+
+/* =====================================================
+   เลขคะแนน
+   ===================================================== */
+
+.evaluation-scale-item strong {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 28px;
+
+    height: 28px;
+
+    margin-bottom:
+        4px;
+
+    border-radius:
+        50%;
+
+    background:
+        #e7f5f5;
+
+    color:
+        #287f82;
+
+    font-size:
+        15px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+}
+
+
+/* =====================================================
+   คำอธิบาย
+   ===================================================== */
+
+.evaluation-scale-item span {
+
+    color:
+        #5f6b73;
+
+    font-size:
+        13px;
+
+    font-weight:
+        500;
+
+    line-height:
+        1.3;
+
+    text-align:
+        center;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =====================================================
+   Hover เบา ๆ
+   ===================================================== */
+
+.evaluation-scale-item:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #b9dfe1;
+
+    box-shadow:
+        0 4px 12px
+        rgba(
+            43,
+            127,
+            130,
+            0.08
+        );
+
+}
+
+
+/* =====================================================
+   Responsive
+   ===================================================== */
+
+@media (
+    max-width: 700px
+) {
+
+    .evaluation-scale-guide {
+
+        gap:
+            6px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            58px;
+
+        padding:
+            7px 4px;
+
+    }
+
+
+    .evaluation-scale-item strong {
+
+        width:
+            26px;
+
+        height:
+            26px;
+
+        font-size:
+            14px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            11px;
+
+    }
+
+}
+
+
+@media (
+    max-width: 480px
+) {
+
+    .evaluation-scale-guide {
+
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        gap:
+            4px;
+
+    }
+
+
+    .evaluation-scale-item {
+
+        min-height:
+            54px;
+
+        border-radius:
+            10px;
+
+    }
+
+
+    .evaluation-scale-item span {
+
+        font-size:
+            10px;
+
+    }
+
+}
+
+/* =====================================================
+   CATEGORY — iPAD PORTRAIT FINAL V2
+   768 - 1024px แนวตั้งเท่านั้น
+
+   Layout:
+   เลข | รายละเอียดผลงาน | ปุ่มแนวตั้ง
+   ===================================================== */
+
+@media (min-width: 768px)
+and (max-width: 1024px)
+and (orientation: portrait) {
+
+    /* =================================================
+       PAGE
+       ================================================= */
+
+    .category-content {
+        width: calc(100% - 40px) !important;
+        max-width: none !important;
+        padding-bottom: 45px;
+    }
+
+
+    /* =================================================
+       HEADER
+       ================================================= */
+
+    .category-header {
+        min-height: 78px !important;
+
+        padding:
+            13px
+            20px !important;
+
+        gap: 18px !important;
+
+        margin-bottom: 28px !important;
+    }
+
+
+    .category-system-name {
+        font-size: 20px !important;
+    }
+
+
+    .category-event-name {
+        font-size: 14px !important;
+    }
+
+
+    .category-event-year {
+        font-size: 13px !important;
+    }
+
+
+    /* =================================================
+       กรรมการ
+       ================================================= */
+
+    .category-header-right {
+        gap: 10px !important;
+    }
+
+
+    .category-judge {
+        min-width: 180px !important;
+
+        padding:
+            9px
+            14px !important;
+    }
+
+
+    .category-judge-label {
+        font-size: 12px !important;
+    }
+
+
+    .category-judge-name {
+        font-size: 15px !important;
+    }
+
+
+    .category-logout-button {
+        min-width: auto !important;
+        min-height: 42px !important;
+
+        padding:
+            9px
+            14px !important;
+
+        font-size: 14px !important;
+    }
+
+
+    /* =================================================
+       หัวรายการ + Summary
+       ================================================= */
+
+    .works-header {
+        align-items: center !important;
+
+        gap: 16px !important;
+
+        margin-bottom: 10px !important;
+    }
+
+
+    .works-header-text h1 {
+        font-size: 26px !important;
+    }
+
+
+    .works-header-text p {
+        font-size: 14px !important;
+    }
+
+
+    .summary-cards {
+        gap: 8px !important;
+    }
+
+
+    .summary-card {
+        width: 92px !important;
+        min-width: 92px !important;
+        height: 62px !important;
+
+        padding:
+            6px
+            7px !important;
+    }
+
+
+    .summary-label {
+        font-size: 12px !important;
+    }
+
+
+    .summary-value {
+        font-size: 21px !important;
+    }
+
+
+    /* =================================================
+       หัวหมวด
+       ================================================= */
+
+    #workList > .work-category-group-title {
+        margin-top: 8px !important;
+        margin-bottom: 3px !important;
+
+        font-size: 18px !important;
+    }
+
+
+    /* =================================================
+       WORK CARD
+
+       เลข | รายละเอียดผลงาน | Actions
+
+       ให้รายละเอียดกินพื้นที่หลัก
+       Actions อยู่ขวาแนวตั้ง
+       ================================================= */
+
+    .work-card {
+        display: grid !important;
+
+        grid-template-columns:
+            48px
+            minmax(0, 1fr)
+            154px !important;
+
+        grid-template-rows:
+            auto !important;
+
+        align-items: center !important;
+
+        column-gap: 15px !important;
+        row-gap: 0 !important;
+
+        min-height: 0 !important;
+
+        padding:
+            17px
+            18px !important;
+
+        border-radius: 17px !important;
+    }
+
+
+    /* =================================================
+       เลขผลงาน
+       ================================================= */
+
+    .work-order,
+    .work-number {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        align-self: center !important;
+
+        width: 44px !important;
+        height: 44px !important;
+
+        font-size: 16px !important;
+    }
+
+
+    /* =================================================
+       รายละเอียด
+       ================================================= */
+
+    .work-content,
+    .work-info {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        width: 100% !important;
+        min-width: 0 !important;
+
+        align-self: center !important;
+    }
+
+
+    /* ชื่อผลงาน */
+
+    .work-title {
+        width: 100% !important;
+
+        font-size: 17px !important;
+        line-height: 1.5 !important;
+
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* =================================================
+       ผู้นำเสนอ
+
+       iPad แนวตั้งกลับมาใช้รูปแบบเดียวกับ Desktop
+       ไม่แยกชื่อคนละบรรทัด
+       ================================================= */
+
+    .presenter-desktop {
+        display: inline !important;
+    }
+
+
+    .presenter-ipad-portrait {
+        display: none !important;
+    }
+
+
+    .work-presenter {
+        margin-top: 6px !important;
+
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+
+        white-space: normal !important;
+    }
+
+
+    /* หน่วยงาน */
+
+    .work-department {
+        margin-top: 2px !important;
+
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+    }
+
+
+    /* =================================================
+       ACTIONS — ขวาแนวตั้ง
+       ================================================= */
+
+    .work-actions {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+
+        width: 154px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        align-items: stretch !important;
+        justify-content: center !important;
+
+        gap: 8px !important;
+
+        margin: 0 !important;
+
+        justify-self: end !important;
+        align-self: center !important;
+    }
+
+
+    /* =================================================
+       ปุ่ม
+       ================================================= */
+
+    .work-action-button {
+        width: 154px !important;
+        min-width: 154px !important;
+
+        height: 42px !important;
+
+        padding:
+            0
+            10px !important;
+
+        font-size: 13px !important;
+
+        border-radius: 10px !important;
+    }
+
+
+    .work-action-icon {
+        font-size: 15px !important;
+    }
+
+
+    .work-action-text {
+        font-size: 13px !important;
+    }
+
+
+    /* =================================================
+       ถ้ามีเพียง 2 ปุ่ม
+       ก็ยังอยู่กึ่งกลางแนวตั้ง
+       ================================================= */
+
+    .work-actions:has(.work-action-button:nth-child(2):last-child) {
+        justify-content: center !important;
+    }
+
+
+    /* =================================================
+       ระยะห่างแต่ละรายการ
+       ================================================= */
+
+    #workList {
+        row-gap: 10px !important;
+    }
+
+
+    .work-list {
+        gap: 10px !important;
+    }
+
+}
+
+/* =====================================================
+   FORCE iPAD PORTRAIT LAYOUT
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-card {
+        display: grid !important;
+
+        grid-template-columns:
+            48px
+            minmax(0, 1fr)
+            160px !important;
+
+        grid-template-rows:
+            auto !important;
+
+        align-items: center !important;
+
+        column-gap: 16px !important;
+        row-gap: 0 !important;
+    }
+
+
+    .work-order {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        align-self: center !important;
+    }
+
+
+    .work-content {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+
+    .work-actions {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+
+        width: 160px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        align-items: stretch !important;
+        justify-content: center !important;
+
+        gap: 8px !important;
+
+        margin: 0 !important;
+
+        flex-wrap: nowrap !important;
+
+        justify-self: end !important;
+        align-self: center !important;
+    }
+
+
+    .work-action-button {
+        width: 160px !important;
+        min-width: 160px !important;
+        max-width: 160px !important;
+
+        height: 42px !important;
+
+        flex:
+            0 0 42px !important;
+    }
+
+
+    /* ชื่อผู้นำเสนอแบบปกติ มี comma */
+
+    .presenter-desktop {
+        display: inline !important;
+    }
+
+    .presenter-ipad-portrait {
+        display: none !important;
+    }
+
+}
+
+.work-file-poster[hidden],
+.work-file-pdf[hidden],
+.work-file-modal-empty[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   WORK FILE LOADING
+   ===================================================== */
+
+.work-file-loading {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    background: #F5F8F7;
+
+    z-index: 5;
+}
+
+
+.work-file-loading[hidden] {
+    display: none !important;
+}
+
+
+.work-file-spinner {
+    width: 42px;
+    height: 42px;
+
+    border: 4px solid #D9E9E7;
+    border-top-color: #4A9994;
+
+    border-radius: 50%;
+
+    animation:
+        workFileSpinnerRotate
+        0.75s
+        linear
+        infinite;
+}
+
+
+.work-file-loading-text {
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #52716F;
+}
+
+
+@keyframes workFileSpinnerRotate {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* =====================================================
+   POSTER FULLSCREEN + ZOOM
+   ===================================================== */
+
+/* ตอนเข้า fullscreen */
+
+.work-file-poster:fullscreen {
+    max-width: none !important;
+    max-height: none !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    object-fit: contain;
+
+    cursor: grab;
+}
+
+
+.work-file-poster:fullscreen:active {
+    cursor: grabbing;
+}
+
+/* =====================================================
+   WORK FILE VIEWER — CENTER FIX
+   ===================================================== */
+
+.work-file-modal-content {
+    position: relative !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* PDF ต้องกินพื้นที่ viewer เต็ม */
+
+.work-file-pdf:not([hidden]) {
+    display: block !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    flex: 1 1 100% !important;
+
+    border: 0 !important;
+}
+
+
+/* Poster อยู่กึ่งกลาง */
+
+.work-file-poster:not([hidden]) {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: 100% !important;
+
+    margin: auto !important;
+
+    object-fit: contain !important;
+
+    flex: 0 0 auto !important;
+}
+
+
+/* ของที่ hidden ต้องไม่กินพื้นที่เด็ดขาด */
+
+.work-file-pdf[hidden],
+.work-file-poster[hidden],
+.work-file-modal-empty[hidden],
+.work-file-loading[hidden] {
+    display: none !important;
+}
+
+/* =====================================================
+   iPad — FILE PREVIEW FIX
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal-dialog {
+        width: 96vw !important;
+        height: 92vh !important;
+    }
+
+
+    .work-file-modal-content {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* บทคัดย่อ */
+
+    .work-file-pdf:not([hidden]) {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        flex: 1 1 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* โปสเตอร์ */
+
+    .work-file-poster:not([hidden]) {
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 96% !important;
+        max-height: 96% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        flex: 0 0 auto !important;
+    }
+
+
+    /* ตัวที่ซ่อนห้ามกินพื้นที่ */
+
+    .work-file-pdf[hidden],
+    .work-file-poster[hidden],
+    .work-file-modal-empty[hidden],
+    .work-file-loading[hidden] {
+        display: none !important;
+    }
+
+}
+/* =====================================================
+   iPad — FULLSCREEN IN SAME PAGE
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        padding: 0 !important;
+
+        z-index: 99999 !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+
+        margin: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        flex: 1 1 auto !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+    }
+
+
+    /* PDF เต็มพื้นที่ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-pdf:not([hidden]) {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Poster กลางหน้าจอ */
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster:not([hidden]) {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+    }
+
+}
+
+/* =====================================================
+   POSTER ZOOM + PAN
+   ===================================================== */
+
+.work-file-poster {
+    touch-action: none !important;
+
+    transform-origin: 0 0 !important;
+
+    will-change: transform;
+
+    user-select: none !important;
+
+    -webkit-user-select: none !important;
+
+    -webkit-user-drag: none;
+}
+
+
+/* ตอน iPad Fullscreen จำลอง
+   ไม่ให้ container เลื่อนแทนรูป */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-modal-content {
+
+    overflow: hidden !important;
+
+}
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-poster:not([hidden]) {
+
+    position: relative !important;
+
+    touch-action: none !important;
+
+    pointer-events: auto !important;
+
+    cursor: grab;
+
+    max-width: none !important;
+    max-height: none !important;
+}
+
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-poster:not([hidden]):active {
+
+    cursor: grabbing;
+}
+
+/* =====================================================
+   iPad PDF CANVAS VIEWER
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #E9EEED;
+
+    touch-action: none !important;
+}
+
+
+/* กลุ่มหน้าทั้งหมด */
+
+.work-file-pdf-pages {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    transform-origin: 0 0;
+
+    will-change: transform;
+}
+
+
+/* แต่ละหน้า */
+
+.work-file-pdf-page {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.10);
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* hidden ต้องหายจริง */
+
+.work-file-pdf-viewer[hidden] {
+    display: none !important;
+}
+
+
+/* iPad Fullscreen */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-viewer {
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow: hidden !important;
+}
+
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-pages {
+
+    touch-action: none !important;
+}
+
+/* =====================================================
+   iPad — POSTER FULL VIEW
+   ===================================================== */
+
+@media (min-width: 700px) and (max-width: 1100px) {
+
+    .work-file-modal.is-ipad-fullscreen {
+        padding: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-dialog {
+
+        width: 100vw !important;
+        height: 100vh !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        border-radius: 0 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-modal-content {
+
+        width: 100% !important;
+        height: 100% !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        background: #111 !important;
+    }
+
+
+    .work-file-modal.is-ipad-fullscreen
+    .work-file-poster {
+
+        display: block !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 100% !important;
+
+        margin: auto !important;
+
+        object-fit: contain !important;
+
+        transform-origin: center center !important;
+
+        touch-action: none !important;
+    }
+
+}
+
+/* =====================================================
+   WORK FILE — HIDDEN FIX
+   element ที่ hidden ต้องหายจริง
+   ===================================================== */
+
+#workFileModalEmpty[hidden],
+#workFilePdf[hidden],
+#workFilePdfViewer[hidden],
+#workFilePoster[hidden],
+#workFileLoading[hidden] {
+    display: none !important;
+}
+
+.work-file-modal-content {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
+.work-file-poster {
+    touch-action: none !important;
+    transform-origin: center center !important;
+    will-change: transform;
+}
+
+/* =====================================================
+   PDF CUSTOM ZOOM
+   ซูมเฉพาะเอกสาร ไม่ซูม Popup
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    touch-action: none !important;
+}
+
+
+.work-file-pdf-pages {
+    width: 100%;
+
+    transform-origin: center top;
+
+    will-change: transform;
+
+    touch-action: none !important;
+}
+
+
+.work-file-pdf-page {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto 16px;
+}
+
+/* =====================================================
+   CATEGORY CONTENT ENTER
+   Animation ตอนรายการผลงานแสดง
+   ===================================================== */
+
+#workList.content-enter {
+
+    animation:
+        categoryContentEnter
+        0.48s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        )
+        both;
+
+}
+
+
+/* =====================================================
+   CATEGORY CONTENT ENTER KEYFRAMES
+   ===================================================== */
+
+@keyframes categoryContentEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(18px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+/* =====================================================
+   WORK FILE PDF — SCROLL FIX
+   ใช้ทั้งบทคัดย่อ + โปสเตอร์ PDF
+   ===================================================== */
+
+/* ล็อกหน้าเว็บด้านหลังไม่ให้เลื่อนตอน Popup เปิด */
+body.work-file-modal-open {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+}
+
+
+/* Popup content ไม่เป็นตัวรับ scroll */
+.work-file-modal-content {
+    overflow: hidden !important;
+}
+
+
+/* =====================================================
+   ตัว Viewer เป็นพื้นที่เลื่อนจริง
+   ===================================================== */
+
+.work-file-pdf-viewer {
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+
+    -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior: contain;
+
+    touch-action: pan-x pan-y pinch-zoom !important;
+
+    scrollbar-gutter: stable;
+}
+
+
+/* =====================================================
+   กลุ่ม PDF ทุกหน้า
+   ===================================================== */
+
+.work-file-pdf-pages {
+    position: relative !important;
+
+    width: 100% !important;
+
+    min-height: 100%;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    transform-origin: center top !important;
+}
+
+
+/* =====================================================
+   แต่ละหน้า PDF
+   ===================================================== */
+
+.work-file-pdf-page {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+
+    flex: 0 0 auto;
+
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   iPad Fullscreen
+   ต้องยังเลื่อน PDF ได้
+   ===================================================== */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-pdf-viewer {
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+
+    -webkit-overflow-scrolling: touch;
+
+    touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+
+/* อย่าให้ content แย่ง scroll จาก viewer */
+.work-file-modal.is-ipad-fullscreen
+.work-file-modal-content {
+
+    overflow: hidden !important;
+
+}

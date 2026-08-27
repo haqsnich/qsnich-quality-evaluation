@@ -1,0 +1,202 @@
+/*
+========================================================
+ระบบประเมินผลงาน
+Global Background Theme
+Version : 2.0.0
+========================================================
+*/
+
+
+/* ========================================================
+   PAGE BASE
+   ======================================================== */
+
+.app-page {
+
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+}
+
+
+/* ========================================================
+   GLOBAL BACKGROUND
+   ======================================================== */
+
+.global-background {
+
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  background:
+
+    radial-gradient(
+      circle at 8% 12%,
+      rgba(74, 153, 148, 0.16) 0%,
+      rgba(74, 153, 148, 0.07) 14%,
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 92% 88%,
+      rgba(217, 107, 107, 0.13) 0%,
+      rgba(217, 107, 107, 0.05) 14%,
+      transparent 31%
+    ),
+
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(233, 179, 63, 0.09) 0%,
+      transparent 22%
+    ),
+
+    linear-gradient(
+      135deg,
+      #FFFDFC 0%,
+      #FFF9F4 40%,
+      #F9FCFB 75%,
+      #F6FBFA 100%
+    );
+
+}
+
+
+/* ========================================================
+   DOT PATTERN
+   ======================================================== */
+
+.global-background::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+
+    radial-gradient(
+      circle,
+      rgba(74, 153, 148, 0.09) 1px,
+      transparent 1px
+    );
+
+  background-size: 28px 28px;
+
+  opacity: 0.45;
+
+}
+
+
+/* ========================================================
+   DECORATIVE ORB
+   ======================================================== */
+
+.global-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 520px;
+  height: 520px;
+
+  left: -270px;
+  top: -270px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(74, 153, 148, 0.13);
+
+  background:
+
+    radial-gradient(
+      circle,
+      rgba(74, 153, 148, 0.08) 0%,
+      rgba(74, 153, 148, 0.025) 42%,
+      transparent 70%
+    );
+
+  box-shadow:
+
+    0 0 0 35px
+    rgba(74, 153, 148, 0.015),
+
+    0 0 0 75px
+    rgba(74, 153, 148, 0.010);
+
+  animation:
+    globalOrbMove
+    16s
+    ease-in-out
+    infinite alternate;
+
+}
+
+
+/* ========================================================
+   GLOBAL ANIMATION
+   ======================================================== */
+
+@keyframes globalOrbMove {
+
+  0% {
+
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg);
+
+  }
+
+  100% {
+
+    transform:
+      translate3d(22px, 18px, 0)
+      rotate(5deg);
+
+  }
+
+}
+
+
+/* ========================================================
+   APP CONTENT
+   ======================================================== */
+
+#app {
+
+  position: relative;
+
+  z-index: 1;
+
+}
+
+
+/* ========================================================
+   REDUCED MOTION
+   ======================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .global-background::after {
+
+    animation: none;
+
+  }
+
+}

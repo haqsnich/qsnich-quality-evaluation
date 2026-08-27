@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <title>ระบบประเมินผลงาน มหกรรมคุณภาพ ส.เด็ก</title>
+
+
+  <!-- ================= GOOGLE FONT ================= -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- ================= CSS ================= -->
+
+  <link
+    rel="stylesheet"
+    href="./assets/css/base.css"
+  >
+
+  <!-- Global Background -->
+  <link
+    rel="stylesheet"
+    href="./assets/css/background.css"
+  >
+
+  <!-- Login -->
+  <link
+    rel="stylesheet"
+    href="./assets/css/login.css"
+  >
+
+</head>
+
+
+<body class="app-page">
+
+
+  <!-- =====================================================
+       GLOBAL BACKGROUND
+       ใช้ร่วมกันทุกหน้าของระบบ
+       ===================================================== -->
+
+  <div
+    class="global-background"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =====================================================
+       APPLICATION
+       ===================================================== -->
+
+  <div id="app">
+
+
+    <!-- ================= LOGIN PAGE ================= -->
+
+    <main class="login-page">
+
+
+      <div class="login-content">
+
+
+        <!-- ================= LOGO ================= -->
+
+        <div class="login-logo-wrap">
+
+          <img
+            src="./assets/images/Logo QSNICH พื้นขาว.png"
+            alt="โลโก้โรงพยาบาล"
+            class="login-logo"
+          >
+
+        </div>
+
+
+        <!-- ================= SYSTEM TITLE ================= -->
+
+<div class="login-title">
+
+  <h1>
+    ระบบประเมินผลงาน
+  </h1>
+
+  <div class="login-event">
+
+    <h2 class="login-event-name">
+      งานมหกรรมคุณภาพ ส.เด็กฯ
+    </h2>
+
+    <div class="login-event-number">
+      ครั้งที่ 28 ประจำปี 2569
+    </div>
+
+  </div>
+
+</div>
+
+
+        <!-- ================= LOGIN PANEL ================= -->
+
+        <section class="login-panel">
+
+
+          <div class="login-form">
+
+
+            <label
+              for="judgeSelect"
+              class="form-label"
+            >
+              กรรมการ
+            </label>
+
+
+            <!-- ================= CUSTOM DROPDOWN ================= -->
+
+            <div
+              class="custom-select"
+              id="judgeDropdown"
+            >
+
+
+              <button
+                type="button"
+                class="custom-select-trigger"
+                id="judgeDropdownTrigger"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+
+                <span id="judgeSelectedText">
+                  กรุณาเลือกชื่อกรรมการ
+                </span>
+
+
+                <span class="custom-select-arrow">
+
+                  <span></span>
+
+                </span>
+
+              </button>
+
+
+              <div
+                class="custom-select-menu"
+                id="judgeDropdownMenu"
+                role="listbox"
+              >
+
+                <!--
+                  JavaScript จะสร้าง
+                  รายชื่อกรรมการตรงนี้
+                -->
+
+              </div>
+
+
+            </div>
+
+
+            <!-- ================= ERROR ================= -->
+
+            <div
+              id="loginError"
+              class="form-error"
+              aria-live="polite"
+            ></div>
+
+
+            <!-- ================= LOGIN BUTTON ================= -->
+
+            <button
+              id="loginButton"
+              class="login-button"
+              type="button"
+              disabled
+            >
+
+              เข้าสู่ระบบ
+
+            </button>
+
+
+          </div>
+
+
+        </section>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <div class="login-footer">
+
+
+          <span>
+            กลุ่มงานพัฒนาคุณภาพ
+          </span>
+
+
+          <span class="footer-year">
+            Version 1.0.0 | พ.ศ. 2569
+          </span>
+
+
+        </div>
+
+
+      </div>
+
+
+    </main>
+
+
+  </div>
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="./assets/js/config.js"></script>
+
+  <script src="./assets/js/app.js"></script>
+
+
+</body>
+
+</html>

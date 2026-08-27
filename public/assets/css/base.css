@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Prompt', sans-serif;
+  background: #FFF9F2;
+  color: #2F2F2F;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* =====================================================
+   iPAD / TOUCH DEVICE — LOCK PAGE PINCH ZOOM
+   ยังเลื่อนหน้าได้ แต่ไม่ให้ pinch ทั้งเว็บ
+   ===================================================== */
+
+html,
+body {
+    touch-action: pan-x pan-y;
+}
+
+
+/* ส่วนดูโปสเตอร์เต็มจอ
+   ให้ JS custom pinch ของเราจัดการเอง */
+
+.work-file-modal.is-ipad-fullscreen
+.work-file-poster {
+    touch-action: none !important;
+}
