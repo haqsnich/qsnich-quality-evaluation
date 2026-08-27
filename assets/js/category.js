@@ -1602,8 +1602,8 @@ document.addEventListener(
 
 /* =====================================================
    PRELOAD WORK FILES
-   ใช้ไฟล์ Local จากเว็บโดยตรง
-   ไม่ผ่าน GAS / Google Drive
+   โหลดไฟล์ Local รอเบื้องหลัง
+   ใช้รหัสผลงานเป็นชื่อไฟล์
    ===================================================== */
 
 function preloadWorkFiles(
@@ -1624,7 +1624,7 @@ function preloadWorkFiles(
 
     /*
      * รอให้หน้า Category แสดงก่อน
-     * แล้วค่อย preload เบื้องหลัง
+     * ไม่แย่งโหลดตอนรายชื่อกำลังขึ้น
      */
 
     setTimeout(
@@ -1635,7 +1635,18 @@ function preloadWorkFiles(
                     work
                 ) {
 
-                    if (!work) {
+                    const workId =
+                        String(
+                            work &&
+                                work.id
+                                ? work.id
+                                : ""
+                        ).trim();
+
+
+                    if (
+                        !workId
+                    ) {
 
                         return;
 
@@ -1643,57 +1654,54 @@ function preloadWorkFiles(
 
 
                     /* =========================================
-                       ABSTRACT PDF
+                       PRELOAD ABSTRACT
                        ========================================= */
 
-                    if (
-                        work.pdf_url
-                    ) {
-
-                        const abstractUrl =
-                            String(
-                                work.pdf_url
-                            ).trim();
-
-
-                        const abstractLink =
-                            document.createElement(
-                                "link"
-                            );
-
-
-                        abstractLink.rel =
-                            "prefetch";
-
-
-                        abstractLink.as =
-                            "fetch";
-
-
-                        abstractLink.href =
-                            abstractUrl;
-
-
-                        document.head.appendChild(
-                            abstractLink
+                    const abstractLink =
+                        document.createElement(
+                            "link"
                         );
 
-                    }
+
+                    abstractLink.rel =
+                        "prefetch";
+
+
+                    abstractLink.href =
+                        "./files/abstracts/" +
+                        workId +
+                        ".pdf";
+
+
+                    document.head.appendChild(
+                        abstractLink
+                    );
 
 
                     /* =========================================
-                       POSTER PDF
+                       PRELOAD POSTER
+                       เฉพาะหมวดที่มีโปสเตอร์
                        ========================================= */
 
+                    const posterCategories = [
+
+                        "CQI Poster Presentation",
+
+                        "CQI Digital Poster presentation",
+
+                        "KM"
+
+                    ];
+
+
                     if (
-                        work.poster_url
-                    ) {
-
-                        const posterUrl =
+                        posterCategories.includes(
                             String(
-                                work.poster_url
-                            ).trim();
-
+                                work.category ||
+                                ""
+                            ).trim()
+                        )
+                    ) {
 
                         const posterLink =
                             document.createElement(
@@ -1705,12 +1713,10 @@ function preloadWorkFiles(
                             "prefetch";
 
 
-                        posterLink.as =
-                            "fetch";
-
-
                         posterLink.href =
-                            posterUrl;
+                            "./files/posters/" +
+                            workId +
+                            ".pdf";
 
 
                         document.head.appendChild(
@@ -3281,9 +3287,14 @@ async function ensurePdfJsForIPad() {
 }
 
 /* =====================================================
-   PDF CANVAS VIEWER
-   ใช้ไฟล์ Local โดยตรง
-   Render ทุกหน้า
+   LOCAL PDF CANVAS VIEWER
+   ใช้ได้ทั้งบทคัดย่อ + โปสเตอร์
+
+   สำคัญ:
+   Browser โหลดไฟล์ก่อน
+   แล้วส่ง ArrayBuffer ให้ PDF.js
+
+   แก้ Safari / iPad Missing PDF
    ===================================================== */
 
 async function renderPdfForIPad(
@@ -3321,7 +3332,9 @@ async function renderPdfForIPad(
         !window.pdfjsLib
     ) {
 
-        return false;
+        throw new Error(
+            "ไม่สามารถโหลด PDF Viewer ได้"
+        );
 
     }
 
@@ -3331,7 +3344,9 @@ async function renderPdfForIPad(
         !source.url
     ) {
 
-        return false;
+        throw new Error(
+            "ไม่พบที่อยู่ไฟล์ PDF"
+        );
 
     }
 
@@ -3342,23 +3357,167 @@ async function renderPdfForIPad(
             "";
 
 
-        /*
-         * Local PDF
-         * ไม่ผ่าน GAS
-         * ไม่ผ่าน Drive
-         */
+        /* =============================================
+           สร้าง URL แบบสมบูรณ์
 
-        const loadingTask =
-            window.pdfjsLib.getDocument(
+           new URL จะจัดการ:
+           - ภาษาไทย
+           - space
+           - วงเล็บ
+           - smart quote
+           - relative path
+           ============================================= */
+
+        const fileUrl =
+            new URL(
                 String(
                     source.url
-                ).trim()
+                ).trim(),
+                window.location.href
             );
+
+
+        console.log(
+            "LOCAL PDF FETCH =",
+            fileUrl.href
+        );
+
+
+        /* =============================================
+           โหลด PDF ด้วย Browser ก่อน
+
+           ไม่ให้ PDF.js fetch URL เอง
+           ============================================= */
+
+        const response =
+            await fetch(
+                fileUrl.href,
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "default"
+                }
+            );
+
+
+        console.log(
+            "PDF RESPONSE =",
+            response.status,
+            response.url
+        );
+
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                "หาไฟล์ PDF ไม่เจอ" +
+                " | HTTP " +
+                response.status
+            );
+
+        }
+
+
+        /* =============================================
+           ตรวจว่าได้ PDF จริง
+           ============================================= */
+
+        const contentType =
+            String(
+                response.headers.get(
+                    "content-type"
+                ) ||
+                ""
+            ).toLowerCase();
+
+
+        console.log(
+            "PDF CONTENT TYPE =",
+            contentType
+        );
+
+
+        /*
+         * ไม่บังคับ application/pdf
+         * เพราะ GitHub / Cloudflare บางครั้งส่ง
+         * application/octet-stream ได้
+         */
+
+
+        /* =============================================
+           อ่านไฟล์เข้า Memory
+           ============================================= */
+
+        const arrayBuffer =
+            await response.arrayBuffer();
+
+
+        if (
+            !arrayBuffer ||
+            arrayBuffer.byteLength === 0
+        ) {
+
+            throw new Error(
+                "ไฟล์ PDF ว่างเปล่า"
+            );
+
+        }
+
+
+        console.log(
+            "PDF SIZE =",
+            arrayBuffer.byteLength
+        );
+
+
+        /* =============================================
+           ส่งข้อมูลให้ PDF.js โดยตรง
+
+           PDF.js ไม่ต้องยิง Network เองอีก
+           ============================================= */
+
+        const loadingTask =
+            window.pdfjsLib.getDocument({
+
+                data:
+                    new Uint8Array(
+                        arrayBuffer
+                    )
+
+            });
 
 
         const pdfDocument =
             await loadingTask.promise;
 
+
+        /* =============================================
+           iPad ใช้ Scale ต่ำกว่า
+           ลด Memory
+
+           Desktop ยังชัดเต็ม
+           ============================================= */
+
+        const isIPadDevice =
+            /iPad|Macintosh/.test(
+                navigator.userAgent
+            ) &&
+            navigator.maxTouchPoints > 1;
+
+
+        const renderScale =
+            isIPadDevice
+                ? 1.35
+                : 2;
+
+
+        /* =============================================
+           Render ทุกหน้า
+           ============================================= */
 
         for (
             let pageNumber = 1;
@@ -3376,7 +3535,7 @@ async function renderPdfForIPad(
                 page.getViewport({
 
                     scale:
-                        2
+                        renderScale
 
                 });
 
@@ -3405,7 +3564,11 @@ async function renderPdfForIPad(
 
             const context =
                 canvas.getContext(
-                    "2d"
+                    "2d",
+                    {
+                        alpha:
+                            false
+                    }
                 );
 
 
@@ -3427,8 +3590,45 @@ async function renderPdfForIPad(
         }
 
 
+        /* =============================================
+           เปิด Viewer
+           ============================================= */
+
         viewer.hidden =
             false;
+
+
+        /* =============================================
+           ทุกไฟล์เริ่มบนสุด
+           ============================================= */
+
+        viewer.scrollTop =
+            0;
+
+
+        viewer.scrollLeft =
+            0;
+
+
+        requestAnimationFrame(
+            function () {
+
+                viewer.scrollTop =
+                    0;
+
+
+                viewer.scrollLeft =
+                    0;
+
+            }
+        );
+
+
+        console.log(
+            "LOCAL PDF READY =",
+            pdfDocument.numPages,
+            "pages"
+        );
 
 
         return true;
@@ -3439,7 +3639,7 @@ async function renderPdfForIPad(
     ) {
 
         console.error(
-            "Local PDF Error:",
+            "LOCAL PDF ERROR =",
             error
         );
 
@@ -3813,6 +4013,10 @@ async function openWorkFileModal(
        หา URL
        ================================================= */
 
+    /* =================================================
+   หา URL ไฟล์จาก works.json
+   ================================================= */
+
     let fileUrl =
         "";
 
@@ -3841,6 +4045,56 @@ async function openWorkFileModal(
                     ? work.poster_url
                     : ""
             ).trim();
+
+    }
+
+
+    if (
+        !fileUrl
+    ) {
+
+        loading.hidden =
+            true;
+
+
+        showWorkFileEmpty(
+            empty
+        );
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       ABSTRACT
+       ================================================= */
+
+    if (
+        type === "abstract"
+    ) {
+
+        fileUrl =
+            "./files/abstracts/" +
+            workId +
+            ".pdf";
+
+    }
+
+
+    /* =================================================
+       POSTER
+       ================================================= */
+
+    else if (
+        type === "poster"
+    ) {
+
+        fileUrl =
+            "./files/posters/" +
+            workId +
+            ".pdf";
 
     }
 
