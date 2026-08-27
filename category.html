@@ -23,7 +23,7 @@
     <!-- ================= CSS ================= -->
 
     <script>
-        const DEV_VERSION = "1.1.7";
+        const DEV_VERSION = "1.1.11";
 
         document.write(
             '<link rel="stylesheet" href="./assets/css/base.css?v=' +
@@ -238,78 +238,6 @@
 
             </div>
 
-            <!-- =====================================================
-     WORK FILE POPUP
-     ===================================================== -->
-
-            <div id="workFileModal" class="work-file-modal" hidden>
-
-                <div class="work-file-modal-backdrop" data-modal-close></div>
-
-
-                <div class="work-file-modal-dialog" role="dialog" aria-modal="true"
-                    aria-labelledby="workFileModalTitle">
-
-                    <!-- HEADER -->
-
-                    <div class="work-file-modal-header">
-
-                        <div id="workFileModalTitle" class="work-file-modal-title">
-                            ดูผลงาน
-                        </div>
-
-                        <button type="button" id="workFileModalClose" class="work-file-modal-close" aria-label="ปิด">
-                            ×
-                        </button>
-
-                    </div>
-
-
-                    <!-- CONTENT -->
-
-                    <div class="work-file-modal-content">
-
-                        <div id="workFileLoading" class="work-file-loading" hidden>
-
-                            <div class="work-file-spinner"></div>
-
-                            <div class="work-file-loading-text">
-                                กำลังโหลดไฟล์...
-                            </div>
-
-                        </div>
-
-                        <div id="workFileModalEmpty" class="work-file-modal-empty" hidden>
-                            ยังไม่มีไฟล์สำหรับผลงานนี้
-                        </div>
-
-
-                        <iframe id="workFilePdf" class="work-file-pdf" hidden title="บทคัดย่อ"></iframe>
-
-                        <div id="workFilePdfViewer" class="work-file-pdf-viewer" hidden>
-                            <div id="workFilePdfPages" class="work-file-pdf-pages"></div>
-                        </div>
-
-
-                        <img id="workFilePoster" class="work-file-poster" hidden alt="โปสเตอร์ผลงาน">
-
-                    </div>
-
-
-                    <!-- FOOTER -->
-
-                    <div class="work-file-modal-footer">
-
-                        <button type="button" id="workFileScore" class="work-file-score">
-                            📝 ไปหน้าลงคะแนน
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
 
         </main>
 
@@ -333,31 +261,6 @@
             DEV_VERSION +
             '"><\/script>'
         );
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
-    </script>
-
-    <script>
-
-        if (window.pdfjsLib) {
-
-            pdfjsLib.GlobalWorkerOptions.workerSrc =
-                "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-
-        }
-
-    </script>
-
-
-    <script>
-
-        document.write(
-            '<script src="./assets/js/category.js?v=' +
-            DEV_VERSION +
-            '"><\/script>'
-        );
-
     </script>
 
 </body>
