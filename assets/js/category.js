@@ -4425,6 +4425,44 @@ async function openWorkFileModal(
 
     }
 
+    /* -----------------------------------------------
+   ไม่มีไฟล์
+   ----------------------------------------------- */
+
+    if (
+        !driveFileId
+    ) {
+
+        alert(
+            "ไม่พบไฟล์สำหรับผลงานนี้"
+        );
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       GOOGLE DRIVE DIRECT
+       ================================================= */
+
+    const fileUrl =
+        "https://drive.google.com/file/d/" +
+        encodeURIComponent(
+            driveFileId
+        ) +
+        "/view";
+
+
+    window.location.href =
+        fileUrl;
+
+
+    return;
+
+}
+
 /* =====================================================
    WORK FILE POPUP — CLOSE
    ===================================================== */
