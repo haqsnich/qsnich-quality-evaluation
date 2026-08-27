@@ -3163,17 +3163,9 @@ function setupPdfJsWorker(
     }
 
 
-    const version =
-        String(
-            lib.version ||
-            PDFJS_FALLBACK_VERSION
-        ).trim();
-
-
     lib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
-        version +
-        "/pdf.worker.min.js";
+        "./assets/js/pdf.worker.min.js?v=" +
+        DEV_VERSION;
 
 }
 
@@ -3216,9 +3208,8 @@ async function ensurePdfJsForIPad() {
 
 
                 script.src =
-                    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/" +
-                    PDFJS_FALLBACK_VERSION +
-                    "/pdf.min.js";
+                    "./assets/js/pdf.min.js?v=" +
+                    DEV_VERSION;
 
 
                 script.async =
